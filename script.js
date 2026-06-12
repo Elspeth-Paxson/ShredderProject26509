@@ -21,7 +21,7 @@ function showTab(tabId) {
 let slideIndex = 0;
 
 function showSlides() {
-    let slides = document.querySelectorAll(".slide");
+    let slides = document.querySelectorAll(".slideshow .slide");
 
     slides.forEach(slide => {
         slide.classList.remove("active");
