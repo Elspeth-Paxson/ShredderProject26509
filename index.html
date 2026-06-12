@@ -23,31 +23,49 @@
     </p>
 </header>
 
-    <section>
-        <h2>About the Project</h2>
+<!-- NAV TABS -->
+<nav class="tabs">
+    <button class="tab active" onclick="showTab('home')">Home</button>
+    <button class="tab" onclick="showTab('about')">About</button>
+    <button class="tab" onclick="showTab('goals')">Goals</button>
+    <button class="tab" onclick="showTab('gallery')">Gallery</button>
+</nav>
 
-        <p>
-            The 3D Plastic Shredder Version II is a senior engineering
-            capstone project focused on converting plastic waste into
-            reusable shredded material. This project improves upon
-            previous designs to create a more efficient, reliable,
-            and user-friendly shredding system.
-        </p>
-    </section>
+<!-- HOME -->
+<section id="home" class="tab-content">
+    <h2>Welcome</h2>
+    <p>
+        Welcome to our senior design project website!
+    </p>
+</section>
 
-    <section>
-        <h2>Project Goals</h2>
+<!-- ABOUT -->
+<section id="about" class="tab-content" style="display:none;">
+    <h2>About the Project</h2>
 
-        <ul>
-            <li>Improve shredding performance</li>
-            <li>Increase system reliability</li>
-            <li>Enhance user safety</li>
-            <li>Support plastic recycling efforts</li>
-        </ul>
-    </section>
+    <p>
+        The 3D Plastic Shredder Version II is a senior engineering
+        capstone project focused on converting plastic waste into
+        reusable shredded material. This project improves upon
+        previous designs to create a more efficient, reliable,
+        and user-friendly shredding system.
+    </p>
+</section>
 
+<!-- GOALS -->
+<section id="goals" class="tab-content" style="display:none;">
+    <h2>Project Goals</h2>
 
-<section>
+    <ul>
+        <li>Improve shredding performance</li>
+        <li>Increase system reliability</li>
+        <li>Enhance user safety</li>
+        <li>Support plastic recycling efforts</li>
+    </ul>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="tab-content" style="display:none;">
     <h2>Gallery</h2>
 
     <img src="images/Shredder.jpg" alt="Plastic Shredder Prototype">
@@ -57,9 +75,9 @@
     </p>
 </section>
 
-    <footer>
-        <p>Senior Design Project 2026</p>
-    </footer>
+<footer>
+    <p>Senior Design Project 2026</p>
+</footer>
 
 <script src="script.js"></script>
 </body>
