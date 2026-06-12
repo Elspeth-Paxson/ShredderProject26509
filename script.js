@@ -1,22 +1,18 @@
 function sayHello(event) {
-    alert(""Welcome to the Plastic Shredder Project! 🚀");
+    alert("Welcome to the Plastic Shredder Project! 🚀");
 
     createConfetti(event.clientX, event.clientY);
 }
 
-function showTab(tabId) {
-  // hide all sections
+function showTab(tabId, event) {
   const sections = document.querySelectorAll(".tab-content");
   sections.forEach(section => section.style.display = "none");
 
-  // remove active class from all buttons
   const buttons = document.querySelectorAll(".tab");
   buttons.forEach(btn => btn.classList.remove("active"));
 
-  // show selected section
   document.getElementById(tabId).style.display = "block";
 
-  // highlight clicked button
   event.target.classList.add("active");
 }
 
