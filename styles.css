@@ -74,19 +74,21 @@ h3 {
     font-weight: bold;
     border: none;
     cursor: pointer;
-    background: #eee;
+    background: #0C234B;   /* Arizona blue */
+    color: white;
     border-radius: 10px;
     transition: all 0.2s ease;
 }
 
 .tab:hover {
     transform: scale(1.05);
-    background: #ddd;
+    opacity: 0.9;
 }
 
+/* ACTIVE TAB */
 .tab.active {
-  background: #333;
-  color: white;
+    background: #AB0520;   /* Arizona red */
+    color: white;
 }
 
 .tab-content {
