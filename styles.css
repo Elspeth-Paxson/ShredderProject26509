@@ -62,9 +62,11 @@ h3 {
     color: #7CFC00;
     font-size: 2rem;
 }
+
 .tabs {
     display: flex;
-    gap: 15px;   /* more space between tabs */
+    justify-content: center;
+    gap: 15px;
     margin: 20px 0;
 }
 
