@@ -44,32 +44,35 @@ function createConfetti(x, y) {
 
     const colors = ["#AB0520", "#0C234B", "#2f6fdd", "#aaaaaa", "#ffcc00"];
 
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 80; i++) {   // 🔥 MORE PIECES = BIGGER EXPLOSION
         const piece = document.createElement("div");
         piece.classList.add("confetti");
 
-        // random color (like shredded plastic bits)
         piece.style.background = colors[Math.floor(Math.random() * colors.length)];
 
-        // random starting position around click
-        piece.style.left = x + (Math.random() * 40 - 20) + "px";
-        piece.style.top = y + (Math.random() * 20 - 10) + "px";
+        // start at click point
+        piece.style.left = x + "px";
+        piece.style.top = y + "px";
 
-        // random size variation (like uneven shredding)
-        const size = Math.random() * 6 + 4;
+        // 💥 RANDOM RADIAL EXPLOSION
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 300 + 50;  // BIGGER RANGE
+
+        const dx = Math.cos(angle) * distance + "px";
+        const dy = Math.sin(angle) * distance + "px";
+
+        piece.style.setProperty("--x", dx);
+        piece.style.setProperty("--y", dy);
+
+        // random size variation
+        const size = Math.random() * 8 + 4;
         piece.style.width = size + "px";
         piece.style.height = size * (Math.random() * 2 + 1) + "px";
-
-        // random horizontal drift
-        const drift = (Math.random() * 100 - 50) + "px";
-        piece.style.setProperty("--drift", drift);
-
-        piece.style.animationDuration = (Math.random() * 1 + 1) + "s";
 
         container.appendChild(piece);
 
         setTimeout(() => {
             piece.remove();
-        }, 1500);
+        }, 1200);
     }
 }
