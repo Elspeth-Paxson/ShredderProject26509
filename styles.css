@@ -173,33 +173,34 @@ h3 {
     width: 100%;
     border-radius: 8px;
 }
+
 .arrow-container {
     font-size: 100px;
     font-weight: bold;
     animation:
         arrowMove 1.5s infinite ease-in-out,
-        rainbow 4s infinite linear;
+        uaColors 3s infinite ease-in-out;
 }
 
-@keyframes rainbow {
+@keyframes arrowMove {
+    0%   { transform: translateX(0); }
+    50%  { transform: translateX(15px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes uaColors {
     0% {
-        color: red;
-        text-shadow: 0 0 10px red;
+        color: #AB0520;
+        text-shadow: 0 0 8px rgba(171, 5, 32, 0.5);
     }
-    25% {
-        color: yellow;
-        text-shadow: 0 0 10px yellow;
-    }
+
     50% {
-        color: green;
-        text-shadow: 0 0 10px green;
+        color: #0C234B;
+        text-shadow: 0 0 8px rgba(12, 35, 75, 0.5);
     }
-    75% {
-        color: blue;
-        text-shadow: 0 0 10px blue;
-    }
+
     100% {
-        color: violet;
-        text-shadow: 0 0 10px violet;
+        color: #AB0520;
+        text-shadow: 0 0 8px rgba(171, 5, 32, 0.5);
     }
 }
