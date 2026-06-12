@@ -13,7 +13,7 @@ function showTab(tabId, event) {
 
   document.getElementById(tabId).style.display = "block";
 
-  event.target.classList.add("active");
+  event.currentTarget.classList.add("active");
 }
 
 let slideIndex = 0;
