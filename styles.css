@@ -153,3 +153,41 @@ h3 {
 .slide.active {
     display: block;
 }
+
+.comparison {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 30px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.comparison-card {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.comparison-card img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.arrow-container {
+    font-size: 80px;
+    color: #AB0520; /* U of A red */
+    animation: pulseArrow 1.5s infinite;
+}
+
+@keyframes pulseArrow {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(12px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
