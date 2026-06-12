@@ -55,19 +55,26 @@ h3 {
     color: #7CFC00;
     font-size: 2rem;
 }
-
 .tabs {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+    display: flex;
+    gap: 15px;   /* more space between tabs */
+    margin: 20px 0;
 }
 
 .tab {
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  background: #eee;
-  border-radius: 6px;
+    padding: 18px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    background: #eee;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.tab:hover {
+    transform: scale(1.05);
+    background: #ddd;
 }
 
 .tab.active {
