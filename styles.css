@@ -7,7 +7,7 @@ body {
 
 header {
     background: linear-gradient(135deg, #e60000, #ff1a1a);
-    color: #1f4f91;
+    color: black;
     text-align: center;
     padding: 40px 20px;
 
@@ -17,7 +17,7 @@ header {
 header h1,
 header h2,
 header p {
-    color: #1f4f91;
+    color: black;
     text-shadow: 0 1px 1px rgba(255,255,255,0.2);
 }
 
