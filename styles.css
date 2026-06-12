@@ -173,21 +173,33 @@ h3 {
     width: 100%;
     border-radius: 8px;
 }
-
 .arrow-container {
-    font-size: 80px;
-    color: #AB0520; /* U of A red */
-    animation: pulseArrow 1.5s infinite;
+    font-size: 100px;
+    font-weight: bold;
+    animation:
+        arrowMove 1.5s infinite ease-in-out,
+        rainbow 4s infinite linear;
 }
 
-@keyframes pulseArrow {
+@keyframes rainbow {
     0% {
-        transform: translateX(0);
+        color: red;
+        text-shadow: 0 0 10px red;
+    }
+    25% {
+        color: yellow;
+        text-shadow: 0 0 10px yellow;
     }
     50% {
-        transform: translateX(12px);
+        color: green;
+        text-shadow: 0 0 10px green;
+    }
+    75% {
+        color: blue;
+        text-shadow: 0 0 10px blue;
     }
     100% {
-        transform: translateX(0);
+        color: violet;
+        text-shadow: 0 0 10px violet;
     }
 }
