@@ -7,11 +7,18 @@ body {
 
 header {
     background: linear-gradient(135deg, #e60000, #ff1a1a);
-    color: white;
+    color: #0b1f3a;
     text-align: center;
-    padding: 50px;
+    padding: 40px 20px;
 
     text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+header h1,
+header h2,
+header p {
+    color: #0b1f3a;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.2);
 }
 
 .logo {
