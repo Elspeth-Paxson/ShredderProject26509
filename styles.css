@@ -45,22 +45,21 @@ header p {
         box-shadow: 0 0 5px rgba(171, 5, 32, 0.3);
     }
 }
-
 .team-roster span {
     background: #0C234B;   /* Arizona blue */
     color: white;
     padding: 6px 12px;
     border-radius: 20px;
-    font-size: 14px;
     font-weight: bold;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
     cursor: default;
 }
 
 .team-roster span:hover {
-    background: #AB0520;
-    transform: translateY(-2px) scale(1.05);
-    animation: pulseGlow 1s infinite;
+    background: #FFD200;   /* gold highlight */
+    color: #0C234B;        /* blue text for contrast */
+    transform: translateY(-3px) scale(1.06);
+    box-shadow: 0 0 12px rgba(255, 210, 0, 0.6);
 }
 
 section {
