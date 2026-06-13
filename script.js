@@ -37,7 +37,7 @@ function teamEffect(type, event) {
 function createLightning(x, y, depth = 0) {
     const container = document.getElementById("confetti-container");
 
-    const branches = depth === 0 ? 4 : Math.floor(Math.random() * 3);
+    const branches = depth === 0 ? 6 : Math.floor(Math.random() * 4 + 2);
 
     for (let i = 0; i < branches; i++) {
         const bolt = document.createElement("div");
@@ -46,8 +46,8 @@ function createLightning(x, y, depth = 0) {
 
         container.appendChild(bolt);
 
-        const angle = Math.random() * 2 * Math.PI;
-        const length = (Math.random() * 120 + 40) / (depth + 1);
+        const angle = Math.random() * Math.PI * 2;
+        const length = (Math.random() * 160 + 80) / (depth + 1);
 
         const endX = x + Math.cos(angle) * length;
         const endY = y + Math.sin(angle) * length;
@@ -58,16 +58,66 @@ function createLightning(x, y, depth = 0) {
         bolt.style.setProperty("--x", (endX - x) + "px");
         bolt.style.setProperty("--y", (endY - y) + "px");
 
-        bolt.style.opacity = Math.max(1 - depth * 0.35, 0.25);
+        // 🔥 intensity scaling (THIS is what makes it feel “electrical”)
+        const intensity = Math.max(1 - depth * 0.25, 0.3);
+        bolt.style.opacity = intensity;
+        bolt.style.filter = `drop-shadow(0 0 ${8 * intensity}px #00BFFF)`;
 
-        setTimeout(() => bolt.remove(), 650);
+        // random size variation = energy variation
+        bolt.style.fontSize = (14 + Math.random() * 18) + "px";
 
-        if (depth < 2 && Math.random() > 0.45) {
+        // fast flicker pop
+        bolt.style.animationDuration = (0.3 + Math.random() * 0.3) + "s";
+
+        setTimeout(() => bolt.remove(), 700);
+
+        // ⚡ branching chaos (this is what makes it feel alive)
+        if (depth < 3 && Math.random() > 0.35) {
             setTimeout(() => {
                 createLightning(endX, endY, depth + 1);
-            }, 60);
+            }, 40);
         }
     }
+
+    // 💥 central flash burst (THIS is the missing “wow” piece)
+    createFlash(x, y);
+}
+
+function createFlash(x, y) {
+    const flash = document.createElement("div");
+    flash.style.position = "absolute";
+    flash.style.left = x + "px";
+    flash.style.top = y + "px";
+    flash.style.width = "10px";
+    flash.style.height = "10px";
+    flash.style.borderRadius = "50%";
+    flash.style.background = "white";
+    flash.style.boxShadow = "0 0 40px 20px #00BFFF";
+    flash.style.transform = "translate(-50%, -50%)";
+    flash.style.pointerEvents = "none";
+    flash.style.opacity = "1";
+
+    document.getElementById("confetti-container").appendChild(flash);
+
+    let size = 10;
+    let opacity = 1;
+
+    function animate() {
+        size += 18;
+        opacity *= 0.85;
+
+        flash.style.width = size + "px";
+        flash.style.height = size + "px";
+        flash.style.opacity = opacity;
+
+        if (opacity > 0.05) {
+            requestAnimationFrame(animate);
+        } else {
+            flash.remove();
+        }
+    }
+
+    animate();
 }
 
 function createGears(x, y) {
