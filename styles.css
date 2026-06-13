@@ -62,6 +62,41 @@ header p {
     box-shadow: 0 0 12px rgba(255, 210, 0, 0.6);
 }
 
+
+/* ⚡ Lightning */
+.spark {
+    position: absolute;
+    font-size: 18px;
+    color: #00BFFF;
+    pointer-events: none;
+    animation: sparkMove 0.6s ease-out forwards, sparkFlicker 0.15s infinite alternate;
+}
+
+@keyframes sparkMove {
+    from {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translate(var(--x), var(--y)) scale(0.4);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkFlicker {
+    0% { filter: brightness(2); opacity: 1; }
+    100% { filter: brightness(0.6); opacity: 0.4; }
+}
+
+
+/* ⚙️ Gears */
+.gear {
+    position: absolute;
+    font-size: 18px;
+    pointer-events: none;
+    will-change: transform;
+}
+
 section {
     background-color: white;
     margin: 20px auto;
