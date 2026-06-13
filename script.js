@@ -297,7 +297,15 @@ function createSpecialMarcusRocketLoop(x, y) {
     const container = document.getElementById("confetti-container");
 
     const rocket = document.createElement("div");
-    rocket.innerText = "🚀";
+    rocket.classList.add("rocket");
+    
+    rocket.innerHTML = `
+        <div class="rocket-nose"></div>
+        <div class="rocket-body"></div>
+        <div class="rocket-fin left"></div>
+        <div class="rocket-fin right"></div>
+        <div class="rocket-flame"></div>
+    `;
 
     rocket.style.position = "absolute";
     rocket.style.left = x + "px";
