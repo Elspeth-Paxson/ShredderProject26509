@@ -58,11 +58,13 @@ function createLightning(x, y, depth = 0) {
         // direction vector
         const dx = endX - x;
         const dy = endY - y;
-
-        line.style.setProperty("--dx", dx + "px");
-        line.style.setProperty("--dy", dy + "px");
+        
+        line.style.setProperty("--dx", dx);
+        line.style.setProperty("--dy", dy);
 
         line.style.setProperty("--rot", Math.atan2(dy, dx) + "rad");
+
+        line.style.animationDelay = (Math.random() * 0.1) + "s";
 
         // branching (soft, not explosive)
         if (depth < 3 && Math.random() > 0.5) {
