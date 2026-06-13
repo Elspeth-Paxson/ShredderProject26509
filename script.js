@@ -37,13 +37,13 @@ function teamEffect(type, event) {
 function createLightning(x, y) {
     const container = document.getElementById("confetti-container");
 
-    const bolts = 4; // 👈 number of lightning strands per click
+    const bolts = 4;
 
     for (let b = 0; b < bolts; b++) {
 
         const svgNS = "http://www.w3.org/2000/svg";
-
         const svg = document.createElementNS(svgNS, "svg");
+
         svg.style.position = "absolute";
         svg.style.left = "0";
         svg.style.top = "0";
@@ -53,15 +53,14 @@ function createLightning(x, y) {
 
         const path = document.createElementNS(svgNS, "path");
 
-        // slight spread per bolt
+        // ⚡ direction per bolt
         const baseAngle = Math.random() * Math.PI * 2;
-        const spread = 0.6; // keeps them grouped, not exploding everywhere
-        const angle = baseAngle + (Math.random() - 0.5) * spread;
+        const angle = baseAngle + (Math.random() - 0.5) * 0.5;
 
         let d = `M ${x} ${y}`;
 
         let segments = 7;
-        let length = 160 + Math.random() * 60;
+        let length = 160 + Math.random() * 80;
 
         let cx = x;
         let cy = y;
@@ -72,28 +71,37 @@ function createLightning(x, y) {
             cx += Math.cos(angle) * step;
             cy += Math.sin(angle) * step;
 
-            // controlled “lightning wiggle”
-            let offsetX = (Math.random() - 0.5) * 25;
-            let offsetY = (Math.random() - 0.5) * 25;
+            let wiggleX = (Math.random() - 0.5) * 25;
+            let wiggleY = (Math.random() - 0.5) * 25;
 
-            d += ` L ${cx + offsetX} ${cy + offsetY}`;
+            d += ` L ${cx + wiggleX} ${cy + wiggleY}`;
         }
 
         path.setAttribute("d", d);
-        path.setAttribute("stroke", "#00E5FF");
+
+        // ⚡ CINEMATIC STROKE
+        path.setAttribute("stroke", "#BFF6FF");
         path.setAttribute("stroke-width", "2.5");
         path.setAttribute("fill", "none");
         path.setAttribute("stroke-linecap", "round");
+        path.setAttribute("stroke-linejoin", "round");
 
-        path.style.filter =
-            "drop-shadow(0 0 6px #00E5FF) drop-shadow(0 0 12px #1E90FF)";
+        // ⚡ CINEMATIC GLOW (IMPORTANT PART)
+        path.style.filter = `
+            drop-shadow(0 0 4px #00E5FF)
+            drop-shadow(0 0 10px #1E90FF)
+            drop-shadow(0 0 18px rgba(0, 229, 255, 0.6))
+        `;
 
-        // draw animation
+        // ⚡ DRAW ANIMATION
         const lengthTotal = 400;
         path.style.strokeDasharray = lengthTotal;
         path.style.strokeDashoffset = lengthTotal;
         path.style.transition =
-            "stroke-dashoffset 0.35s ease-out, opacity 0.5s ease-out";
+            "stroke-dashoffset 0.25s ease-out, opacity 0.6s ease-out";
+
+        // slight natural variation
+        path.style.opacity = 0.85 + Math.random() * 0.15;
 
         svg.appendChild(path);
         container.appendChild(svg);
@@ -102,10 +110,10 @@ function createLightning(x, y) {
             path.style.strokeDashoffset = "0";
         });
 
-        // stagger fade so it feels like electrical discharge sequence
+        // fade out
         setTimeout(() => {
             path.style.opacity = "0";
-        }, 200 + b * 60);
+        }, 250 + Math.random() * 120);
 
         setTimeout(() => {
             svg.remove();
