@@ -22,7 +22,14 @@ function teamEffect(type, event) {
     const y = event.clientY;
 
     if (type === "electrical") {
-        createLightning(x, y, 0);
+        createRipple(x, y);
+        createLightning(x, y);
+
+        // ⚡ NEW: delayed secondary arc (residual discharge)
+        setTimeout(() => {
+            createLightning(x + (Math.random() - 0.5) * 30,
+                            y + (Math.random() - 0.5) * 30);
+        }, 180);
     }
 
     if (type === "mechanical") {
@@ -32,6 +39,44 @@ function teamEffect(type, event) {
     if (type === "management") {
         createConfetti(x, y);
     }
+}
+
+function createRipple(x, y) {
+    const ripple = document.createElement("div");
+
+    ripple.style.position = "absolute";
+    ripple.style.left = x + "px";
+    ripple.style.top = y + "px";
+    ripple.style.width = "10px";
+    ripple.style.height = "10px";
+    ripple.style.borderRadius = "50%";
+    ripple.style.border = "2px solid rgba(0, 229, 255, 0.35)";
+    ripple.style.boxShadow = "0 0 12px rgba(0, 229, 255, 0.2)";
+    ripple.style.transform = "translate(-50%, -50%)";
+    ripple.style.pointerEvents = "none";
+    ripple.style.opacity = "0.6";
+
+    document.getElementById("confetti-container").appendChild(ripple);
+
+    let size = 10;
+    let opacity = 0.6;
+
+    function animate() {
+        size += 6;
+        opacity *= 0.93;
+
+        ripple.style.width = size + "px";
+        ripple.style.height = size + "px";
+        ripple.style.opacity = opacity;
+
+        if (opacity > 0.05) {
+            requestAnimationFrame(animate);
+        } else {
+            ripple.remove();
+        }
+    }
+
+    animate();
 }
 
 function createLightning(x, y) {
