@@ -6,6 +6,7 @@
     <title>3D Plastic Shredder Version II</title>
 
     <link rel="stylesheet" href="styles.css">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 <body>
     
@@ -224,37 +225,55 @@
     </p>
 </section>
 
-    <!-- DESIGN -->
+<!-- DESIGN -->
 <section id="design" class="tab-content" style="display:none;">
+
     <h2>Design</h2>
 
-    <div class="photo-grid">
+    <!-- INTERACTIVE CAD MODEL -->
+    <div class="card">
+        <h3>Interactive CAD Model</h3>
 
-        <div class="photo-card">
-            <img src="images/cadmodel.png" alt="CAD Model">
-            <h3>CAD Model</h3>
-            <p>
-                Complete SolidWorks model of the shredder assembly.
-            </p>
-        </div>
+        <!-- Replace shredder.glb with the real file later -->
+        <model-viewer
+            src="models/shredder.glb"
+            alt="3D Plastic Shredder Model"
+            camera-controls
+            auto-rotate
+            shadow-intensity="1"
+            style="width:100%; height:600px; background:#f5f5f5; border-radius:10px;">
+        </model-viewer>
 
-        <div class="photo-card">
-            <img src="images/explodedview.png" alt="Exploded View">
-            <h3>Exploded View</h3>
-            <p>
-                Exploded assembly showing major components and part relationships.
-            </p>
-        </div>
-
-        <div class="photo-card">
-            <img src="images/assembly.png" alt="Assembly">
-            <h3>Assembly</h3>
-            <p>
-                Final assembled shredder system.
-            </p>
-        </div>
-
+        <p>
+            Interactive 3D model coming soon. Users will be able to rotate,
+            zoom, and inspect the complete shredder assembly.
+        </p>
     </div>
+
+    <!-- EXPLODED VIEW -->
+    <div class="card">
+        <h3>Exploded View</h3>
+
+        <img src="images/explodedview.png" alt="Exploded View">
+
+        <p>
+            Exploded assembly showing the relationship between major
+            components including the hopper, housing, shafts, blades,
+            bearings, motor, and drive system.
+        </p>
+    </div>
+
+    <!-- FINAL ASSEMBLY -->
+    <div class="card">
+        <h3>Final Assembly</h3>
+
+        <img src="images/assembly.png" alt="Assembly">
+
+        <p>
+            Fully assembled Plastic Shredder Version II prototype.
+        </p>
+    </div>
+
 </section>
 
 <footer>
