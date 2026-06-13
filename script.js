@@ -325,10 +325,10 @@ function createSpecialMarcusRocketLoop(x, y) {
     const startX = x;
     const startY = y;
 
-    // ✅ moved inward so it doesn't stick to edge
-    const leftEdgeX = 80;
+    // ✅ NOT too far left anymore
+    const leftEdgeX = 140;
 
-    const topExitY = -120;
+    const topExitY = -150;
 
     let posX = x;
     let posY = y;
@@ -374,13 +374,13 @@ function createSpecialMarcusRocketLoop(x, y) {
     function animate() {
 
         // =========================
-        // PHASE 1: MOVE LEFT
+        // PHASE 1: MOVE LEFT (NO ROTATION)
         // =========================
         if (phase === 1) {
             t += 0.006;
 
             posX = startX + (leftEdgeX - startX) * t;
-            posY = startY + Math.sin(t * Math.PI) * 40;
+            posY = startY + Math.sin(t * Math.PI) * 35;
 
             if (t >= 1) {
                 posX = leftEdgeX;
@@ -396,7 +396,7 @@ function createSpecialMarcusRocketLoop(x, y) {
         }
 
         // =========================
-        // PHASE 2: STRAIGHT UP (FIXED ROTATION)
+        // PHASE 2: STRAIGHT UP (FIXED)
         // =========================
         else if (phase === 2) {
 
@@ -406,9 +406,9 @@ function createSpecialMarcusRocketLoop(x, y) {
             posX = leftEdgeX;
             posY = ascentStartY + (topExitY - ascentStartY) * t;
 
-            // 🔥 only tiny vibration (no sideways tilt confusion)
-            posX += (Math.random() - 0.5) * 0.4;
-            posY += (Math.random() - 0.5) * 0.4;
+            // tiny vibration only
+            posX += (Math.random() - 0.5) * 0.3;
+            posY += (Math.random() - 0.5) * 0.3;
 
             path.style.left = leftEdgeX + "px";
             path.style.top = ascentStartY + "px";
@@ -425,17 +425,14 @@ function createSpecialMarcusRocketLoop(x, y) {
         }
 
         // =========================
-        // ROTATION FIX
+        // ROTATION FIX (THIS WAS THE BUG)
         // =========================
         let angle;
 
         if (phase === 1) {
-            const dx = posX - (rocket._lastX || posX);
-            const dy = posY - (rocket._lastY || posY);
-            angle = Math.atan2(dy, dx);
+            angle = 0; // keep upright during horizontal move
         } else {
-            // 🚀 FORCE STRAIGHT UP DURING ASCENT
-            angle = -Math.PI / 2;
+            angle = -Math.PI / 2; // ALWAYS straight up
         }
 
         rocket.style.left = posX + "px";
@@ -445,9 +442,6 @@ function createSpecialMarcusRocketLoop(x, y) {
             translate(-50%, -50%)
             rotate(${angle}rad)
         `;
-
-        rocket._lastX = posX;
-        rocket._lastY = posY;
 
         requestAnimationFrame(animate);
     }
