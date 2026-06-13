@@ -16,8 +16,7 @@ function showTab(tabId, event) {
   event.currentTarget.classList.add("active");
 }
 
-
-function teamEffect(type, event) {
+function teamEffect(type, name, event) {
     const x = event.clientX;
     const y = event.clientY;
 
@@ -35,11 +34,11 @@ function teamEffect(type, event) {
     }
     
     if (type === "mechanical") {
-        createGears(x, y);
+        createGears(event.clientX, event.clientY);
     
-        if (event.target.dataset.name === "Marcus") {
+        if (name === "Marcus") {
             setTimeout(() => {
-                createSpecialMarcusRocketLoop(x, y);
+                createRocketLoop(event.clientX, event.clientY);
             }, 200);
         }
     }
