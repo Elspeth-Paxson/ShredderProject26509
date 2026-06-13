@@ -33,9 +33,15 @@ function teamEffect(type, event) {
                 );
         }, 180);
     }
-
+    
     if (type === "mechanical") {
         createGears(x, y);
+    
+        if (event.target.dataset.name === "Marcus") {
+            setTimeout(() => {
+                createSpecialMarcusRocketLoop(x, y);
+            }, 200);
+        }
     }
 
     if (type === "management") {
@@ -286,6 +292,75 @@ function createGears(x, y) {
 
         animate();
     }
+}
+
+function createSpecialMarcusRocketLoop(x, y) {
+    const container = document.getElementById("confetti-container");
+
+    const rocket = document.createElement("div");
+    rocket.innerText = "🚀";
+
+    rocket.style.position = "absolute";
+    rocket.style.left = x + "px";
+    rocket.style.top = y + "px";
+    rocket.style.fontSize = "18px";
+    rocket.style.pointerEvents = "none";
+    rocket.style.transform = "translate(-50%, -50%)";
+    rocket.style.filter = "drop-shadow(0 0 6px rgba(0,0,0,0.2))";
+
+    container.appendChild(rocket);
+
+    // ✨ contrail element
+    const trail = document.createElement("div");
+    trail.style.position = "absolute";
+    trail.style.width = "2px";
+    trail.style.height = "2px";
+    trail.style.background = "rgba(0, 229, 255, 0.6)";
+    trail.style.boxShadow = "0 0 8px rgba(0, 229, 255, 0.4)";
+    trail.style.borderRadius = "50%";
+    trail.style.pointerEvents = "none";
+
+    container.appendChild(trail);
+
+    let t = 0;
+
+    const startX = x;
+    const startY = y;
+
+    const endX = -50; // 👈 left edge target (slightly off-screen)
+
+    function animate() {
+        t += 0.015;
+
+        // linear motion toward left edge
+        const posX = startX + (endX - startX) * t;
+
+        // smooth arc (loop-like wave, not chaotic)
+        const arc = Math.sin(t * Math.PI * 2) * 80;
+
+        const posY = startY + arc;
+
+        rocket.style.left = posX + "px";
+        rocket.style.top = posY + "px";
+
+        // ✨ contrail follows behind (lagging slightly)
+        trail.style.left = (posX + 10) + "px";
+        trail.style.top = (posY + 10) + "px";
+
+        // fade both smoothly
+        const fade = Math.max(1 - t, 0);
+        rocket.style.opacity = fade;
+        trail.style.opacity = fade * 0.6;
+
+        if (t < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            rocket.remove();
+            trail.remove();
+        }
+    }
+
+    animate();
 }
 
 function createConfetti(x, y) {
