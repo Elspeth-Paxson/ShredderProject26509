@@ -94,19 +94,6 @@ header p {
     100% { filter: brightness(0.6); opacity: 0.4; }
 }
 
-.electric-line {
-    position: absolute;
-    height: 3px;
-    background: linear-gradient(90deg, #00E5FF, #1E90FF);
-    border-radius: 10px;
-    pointer-events: none;
-
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
-
-    transform-origin: left center;
-
-    animation: flowFade 0.6s ease-out forwards;
-}
 
 @keyframes flowFade {
     0% {
@@ -142,21 +129,7 @@ header p {
     }
 }
 
-@keyframes growLine {
-    from {
-        transform: scaleX(0) rotate(var(--rot));
-        opacity: 1;
-    }
-    to {
-        transform: scaleX(1) rotate(var(--rot));
-        opacity: 1;
-    }
-}
 
-@keyframes fadeLine {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
-}
 
 
 /* ⚙️ Gears */
