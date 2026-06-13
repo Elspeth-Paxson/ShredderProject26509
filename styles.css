@@ -63,13 +63,19 @@ header p {
 }
 
 
-/* ⚡ Lightning */
 .spark {
     position: absolute;
     font-size: 18px;
-    color: #00BFFF;
+    color: #00E5FF;
     pointer-events: none;
-    animation: sparkMove 0.6s ease-out forwards, sparkFlicker 0.15s infinite alternate;
+
+    animation: sparkMove 0.5s ease-out forwards, sparkFlicker 0.08s infinite alternate;
+
+    /* 💡 key change: electric glow instead of flat color */
+    text-shadow:
+        0 0 6px #00E5FF,
+        0 0 12px #1E90FF,
+        0 0 18px rgba(255,255,255,0.6);
 }
 
 @keyframes sparkMove {
