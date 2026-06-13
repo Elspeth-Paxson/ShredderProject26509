@@ -94,6 +94,35 @@ header p {
     100% { filter: brightness(0.6); opacity: 0.4; }
 }
 
+.electric-line {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: linear-gradient(to right, #00E5FF, #1E90FF, transparent);
+    pointer-events: none;
+
+    transform-origin: left center;
+
+    animation: growLine 0.35s ease-out forwards, fadeLine 0.7s ease-out forwards;
+    filter: drop-shadow(0 0 6px #00E5FF);
+}
+
+@keyframes growLine {
+    from {
+        transform: scaleX(0) rotate(var(--rot));
+        opacity: 1;
+    }
+    to {
+        transform: scaleX(1) rotate(var(--rot));
+        opacity: 1;
+    }
+}
+
+@keyframes fadeLine {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
 
 /* ⚙️ Gears */
 .gear {
