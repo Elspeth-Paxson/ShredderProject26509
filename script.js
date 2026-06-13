@@ -34,64 +34,33 @@ function teamEffect(type, event) {
     }
 }
 
-function createLightning(x, y, depth = 0) {
+function createLightning(x, y) {
     const container = document.getElementById("confetti-container");
 
-    const branches = depth === 0 ? 6 : Math.floor(Math.random() * 3 + 2);
+    const lines = 6;
 
-    for (let i = 0; i < branches; i++) {
+    for (let i = 0; i < lines; i++) {
+        const line = document.createElement("div");
+        line.classList.add("electric-line");
 
-        // 🔥 create jagged multi-point arc
-        let points = [];
-        let segments = 6 + Math.floor(Math.random() * 4);
+        const angle = (Math.PI * 2 * i) / lines;
+        const length = 60 + Math.random() * 60;
 
-        let prevX = x;
-        let prevY = y;
+        const endX = Math.cos(angle) * length;
+        const endY = Math.sin(angle) * length;
 
-        const angle = Math.random() * Math.PI * 2;
-        const totalLength = 120 + Math.random() * 120;
+        const rot = Math.atan2(endY, endX);
 
-        for (let s = 0; s < segments; s++) {
-            const progress = s / segments;
+        line.style.left = x + "px";
+        line.style.top = y + "px";
+        line.style.width = length + "px";
+        line.style.transform = `rotate(${rot}rad)`;
 
-            const wiggle = (Math.random() - 0.5) * 25;
+        container.appendChild(line);
 
-            const px = x + Math.cos(angle) * totalLength * progress + wiggle;
-            const py = y + Math.sin(angle) * totalLength * progress + wiggle;
-
-            if (s > 0) {
-                const line = document.createElement("div");
-                line.classList.add("electric-line");
-
-                const dx = px - prevX;
-                const dy = py - prevY;
-
-                const length = Math.sqrt(dx * dx + dy * dy);
-                const rot = Math.atan2(dy, dx);
-
-                line.style.left = prevX + "px";
-                line.style.top = prevY + "px";
-                line.style.width = length + "px";
-                line.style.transform = `rotate(${rot}rad)`;
-
-                container.appendChild(line);
-
-                setTimeout(() => line.remove(), 350);
-            }
-
-            prevX = px;
-            prevY = py;
-        }
-
-        // ⚡ branching (real lightning behavior)
-        if (depth < 2 && Math.random() > 0.4) {
-            setTimeout(() => {
-                createLightning(prevX, prevY, depth + 1);
-            }, 40);
-        }
+        setTimeout(() => line.remove(), 600);
     }
 }
-
 function createFlash(x, y) {
     const flash = document.createElement("div");
     flash.style.position = "absolute";
