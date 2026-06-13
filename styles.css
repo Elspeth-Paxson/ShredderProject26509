@@ -141,6 +141,7 @@ h3 {
     padding: 10px;
     border-radius: 10px;
     text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .photo-card img {
@@ -150,9 +151,25 @@ h3 {
     display: block;
 }
 
+/* hover effect */
+.photo-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.photo-card:hover img {
+    transform: scale(1.08);
+}
+
 .photo-card p {
     margin-top: 10px;
     font-size: 14px;
+    transition: color 0.25s ease;
+}
+
+.photo-card:hover p {
+    color: #AB0520; /* Arizona red */
+    font-weight: bold;
 }
 
 .placeholder {
