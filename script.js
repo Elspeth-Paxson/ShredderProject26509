@@ -33,33 +33,71 @@ function teamEffect(type, event) {
         createConfetti(x, y);
     }
 }
-
 function createLightning(x, y) {
     const container = document.getElementById("confetti-container");
 
-    const lines = 6;
+    const svgNS = "http://www.w3.org/2000/svg";
 
-    for (let i = 0; i < lines; i++) {
-        const line = document.createElement("div");
-        line.classList.add("electric-line");
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.style.position = "absolute";
+    svg.style.left = "0";
+    svg.style.top = "0";
+    svg.style.width = "100%";
+    svg.style.height = "100%";
+    svg.style.pointerEvents = "none";
 
-        const angle = (Math.PI * 2 * i) / lines;
-        const length = 60 + Math.random() * 60;
+    const path = document.createElementNS(svgNS, "path");
 
-        const endX = Math.cos(angle) * length;
-        const endY = Math.sin(angle) * length;
+    // 🔥 build ONE jagged lightning bolt
+    let d = `M ${x} ${y}`;
 
-        const rot = Math.atan2(endY, endX);
+    let segments = 8;
+    let length = 180;
+    let angle = Math.random() * Math.PI * 2;
 
-        line.style.left = x + "px";
-        line.style.top = y + "px";
-        line.style.width = length + "px";
-        line.style.transform = `rotate(${rot}rad)`;
+    let cx = x;
+    let cy = y;
 
-        container.appendChild(line);
+    for (let i = 0; i < segments; i++) {
+        let progress = i / segments;
 
-        setTimeout(() => line.remove(), 600);
+        let offset = (Math.random() - 0.5) * 40;
+
+        cx += Math.cos(angle) * (length / segments);
+        cy += Math.sin(angle) * (length / segments);
+
+        d += ` L ${cx + offset} ${cy + offset}`;
     }
+
+    path.setAttribute("d", d);
+
+    path.setAttribute("stroke", "#00E5FF");
+    path.setAttribute("stroke-width", "2.5");
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke-linecap", "round");
+
+    path.style.filter = "drop-shadow(0 0 6px #00E5FF) drop-shadow(0 0 12px #1E90FF)";
+
+    // 🔥 animation using stroke drawing trick
+    const lengthTotal = 400;
+    path.style.strokeDasharray = lengthTotal;
+    path.style.strokeDashoffset = lengthTotal;
+    path.style.transition = "stroke-dashoffset 0.35s ease-out, opacity 0.5s ease-out";
+
+    svg.appendChild(path);
+    container.appendChild(svg);
+
+    requestAnimationFrame(() => {
+        path.style.strokeDashoffset = "0";
+    });
+
+    setTimeout(() => {
+        path.style.opacity = "0";
+    }, 250);
+
+    setTimeout(() => {
+        svg.remove();
+    }, 600);
 }
 function createFlash(x, y) {
     const flash = document.createElement("div");
