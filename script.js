@@ -37,52 +37,43 @@ function teamEffect(type, event) {
 function createLightning(x, y, depth = 0) {
     const container = document.getElementById("confetti-container");
 
-    const branches = depth === 0 ? 6 : Math.floor(Math.random() * 4 + 2);
+    const branches = depth === 0 ? 5 : Math.floor(Math.random() * 3 + 1);
 
     for (let i = 0; i < branches; i++) {
-        const bolt = document.createElement("div");
-        bolt.classList.add("spark");
-        bolt.innerText = "⚡";
+        const line = document.createElement("div");
+        line.classList.add("electric-line");
 
-        container.appendChild(bolt);
+        container.appendChild(line);
 
         const angle = Math.random() * Math.PI * 2;
-        const length = (Math.random() * 160 + 80) / (depth + 1);
+        const length = (Math.random() * 140 + 60) / (depth + 1);
 
         const endX = x + Math.cos(angle) * length;
         const endY = y + Math.sin(angle) * length;
 
-        bolt.style.left = x + "px";
-        bolt.style.top = y + "px";
+        // start position
+        line.style.left = x + "px";
+        line.style.top = y + "px";
 
-        bolt.style.setProperty("--x", (endX - x) + "px");
-        bolt.style.setProperty("--y", (endY - y) + "px");
+        // direction vector
+        const dx = endX - x;
+        const dy = endY - y;
 
-        // 🔥 intensity scaling (THIS is what makes it feel “electrical”)
-        const intensity = Math.max(1 - depth * 0.25, 0.3);
-        bolt.style.opacity = intensity;
-        bolt.style.filter = `drop-shadow(0 0 ${8 * intensity}px #00BFFF)`;
+        line.style.setProperty("--dx", dx + "px");
+        line.style.setProperty("--dy", dy + "px");
 
-        // random size variation = energy variation
-        bolt.style.fontSize = (14 + Math.random() * 18) + "px";
+        line.style.setProperty("--rot", Math.atan2(dy, dx) + "rad");
 
-        // fast flicker pop
-        bolt.style.animationDuration = (0.3 + Math.random() * 0.3) + "s";
-
-        setTimeout(() => bolt.remove(), 700);
-
-        // ⚡ branching chaos (this is what makes it feel alive)
-        if (depth < 3 && Math.random() > 0.35) {
+        // branching (soft, not explosive)
+        if (depth < 3 && Math.random() > 0.5) {
             setTimeout(() => {
                 createLightning(endX, endY, depth + 1);
-            }, 40);
+            }, 80);
         }
+
+        setTimeout(() => line.remove(), 700);
     }
-
-    // 💥 central flash burst (THIS is the missing “wow” piece)
-    createFlash(x, y);
 }
-
 function createFlash(x, y) {
     const flash = document.createElement("div");
     flash.style.position = "absolute";
