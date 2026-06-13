@@ -16,7 +16,7 @@ function showTab(tabId, event) {
   event.currentTarget.classList.add("active");
 }
 
-function teamEffect(type, event, name = "") {
+function teamEffect(type, name = "", event) {
     if (!event) return; // prevents crashes
 
     const x = event.clientX;
