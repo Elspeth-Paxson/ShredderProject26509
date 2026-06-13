@@ -309,17 +309,12 @@ function createSpecialMarcusRocketLoop(x, y) {
 
     container.appendChild(rocket);
 
-    // =========================
-    // TELEMETRY LINE
-    // =========================
     const path = document.createElement("div");
     path.classList.add("telemetry-line");
 
     path.style.position = "absolute";
     path.style.width = "2px";
     path.style.height = "0px";
-    path.style.left = "0px";
-    path.style.top = "0px";
     path.style.pointerEvents = "none";
 
     container.appendChild(path);
@@ -330,16 +325,15 @@ function createSpecialMarcusRocketLoop(x, y) {
     const startX = x;
     const startY = y;
 
-    const leftEdgeX = 20;
+    // ✅ moved inward so it doesn't stick to edge
+    const leftEdgeX = 80;
+
     const topExitY = -120;
 
     let posX = x;
     let posY = y;
     let ascentStartY = 0;
 
-    // =========================
-    // PULSE EFFECT
-    // =========================
     function pulse(x, y) {
         const glow = document.createElement("div");
 
@@ -402,7 +396,7 @@ function createSpecialMarcusRocketLoop(x, y) {
         }
 
         // =========================
-        // PHASE 2: ASCENT (WITH THRUST)
+        // PHASE 2: STRAIGHT UP (FIXED ROTATION)
         // =========================
         else if (phase === 2) {
 
@@ -412,37 +406,37 @@ function createSpecialMarcusRocketLoop(x, y) {
             posX = leftEdgeX;
             posY = ascentStartY + (topExitY - ascentStartY) * t;
 
-            // 🔥 thrust vibration
-            const shakeX = (Math.random() - 0.5) * 1.2;
-            const shakeY = (Math.random() - 0.5) * 1.2;
+            // 🔥 only tiny vibration (no sideways tilt confusion)
+            posX += (Math.random() - 0.5) * 0.4;
+            posY += (Math.random() - 0.5) * 0.4;
 
-            posX += shakeX;
-            posY += shakeY;
-
-            // 📡 update telemetry line
             path.style.left = leftEdgeX + "px";
             path.style.top = ascentStartY + "px";
             path.style.height = (ascentStartY - posY) + "px";
 
             if (t >= 1) {
-
-                // fade telemetry instead of instant delete
                 path.style.transition = "opacity 1.2s ease-out";
                 path.style.opacity = "0";
 
                 setTimeout(() => path.remove(), 1200);
-
                 rocket.remove();
                 return;
             }
         }
 
         // =========================
-        // ROTATION
+        // ROTATION FIX
         // =========================
-        const dx = posX - (rocket._lastX || posX);
-        const dy = posY - (rocket._lastY || posY);
-        const angle = Math.atan2(dy, dx);
+        let angle;
+
+        if (phase === 1) {
+            const dx = posX - (rocket._lastX || posX);
+            const dy = posY - (rocket._lastY || posY);
+            angle = Math.atan2(dy, dx);
+        } else {
+            // 🚀 FORCE STRAIGHT UP DURING ASCENT
+            angle = -Math.PI / 2;
+        }
 
         rocket.style.left = posX + "px";
         rocket.style.top = posY + "px";
@@ -460,6 +454,7 @@ function createSpecialMarcusRocketLoop(x, y) {
 
     animate();
 }
+
 function createConfetti(x, y) {
     const container = document.getElementById("confetti-container");
 
