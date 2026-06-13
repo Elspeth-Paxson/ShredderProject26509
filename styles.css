@@ -301,3 +301,71 @@ h3 {
     color: #0C234B;
     font-size: 1.5rem;
 }
+
+.rocket {
+    position: absolute;
+    width: 18px;
+    height: 40px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    will-change: transform, left, top;
+}
+
+/* 🚀 body */
+.rocket-body {
+    position: absolute;
+    width: 10px;
+    height: 26px;
+    left: 4px;
+    top: 6px;
+    background: linear-gradient(#e6e6e6, #9aa0a6);
+    border-radius: 6px;
+}
+
+/* 🔺 nose cone */
+.rocket-nose {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    left: 4px;
+    top: -2px;
+    background: #cfd8dc;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* 🔧 fins */
+.rocket-fin {
+    position: absolute;
+    width: 6px;
+    height: 10px;
+    bottom: 4px;
+    background: #607d8b;
+}
+
+.rocket-fin.left {
+    left: 0px;
+    clip-path: polygon(100% 0%, 0% 50%, 100% 100%);
+}
+
+.rocket-fin.right {
+    right: 0px;
+    clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+}
+
+/* 🔥 engine glow */
+.rocket-flame {
+    position: absolute;
+    width: 8px;
+    height: 14px;
+    left: 5px;
+    bottom: -10px;
+    background: radial-gradient(circle, #00e5ff, #1e90ff, transparent);
+    filter: blur(1px);
+    opacity: 0.9;
+    animation: flameFlicker 0.08s infinite alternate;
+}
+
+@keyframes flameFlicker {
+    0% { transform: scaleY(1); opacity: 0.9; }
+    100% { transform: scaleY(1.4); opacity: 0.6; }
+}
