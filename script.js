@@ -38,7 +38,7 @@ function teamEffect(type, name, event) {
     
         if (name === "Marcus") {
             setTimeout(() => {
-                createRocketLoop(event.clientX, event.clientY);
+                createSpecialMarcusRocketLoop(event.clientX, event.clientY);
             }, 200);
         }
     }
