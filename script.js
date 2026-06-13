@@ -26,9 +26,11 @@ function teamEffect(type, event) {
         createLightning(x, y);
 
         // ⚡ NEW: delayed secondary arc (residual discharge)
-        setTimeout(() => {
-            createLightning(x + (Math.random() - 0.5) * 30,
-                            y + (Math.random() - 0.5) * 30);
+         setTimeout(() => {
+            createLightningShort(
+                x + (Math.random() - 0.5) * 25,
+                y + (Math.random() - 0.5) * 25
+                );
         }, 180);
     }
 
@@ -164,6 +166,79 @@ function createLightning(x, y) {
             svg.remove();
         }, 700);
     }
+}
+
+function createLightningShort(x, y) {
+    const container = document.getElementById("confetti-container");
+
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+
+    svg.style.position = "absolute";
+    svg.style.left = "0";
+    svg.style.top = "0";
+    svg.style.width = "100%";
+    svg.style.height = "100%";
+    svg.style.pointerEvents = "none";
+
+    const path = document.createElementNS(svgNS, "path");
+
+    const baseAngle = Math.random() * Math.PI * 2;
+    const angle = baseAngle + (Math.random() - 0.5) * 0.4;
+
+    let d = `M ${x} ${y}`;
+
+    let segments = 5;                 // 🔥 SHORTER (was 7)
+    let length = 70 + Math.random() * 40; // 🔥 MUCH SHORTER THAN MAIN
+
+    let cx = x;
+    let cy = y;
+
+    for (let i = 0; i < segments; i++) {
+        let step = length / segments;
+
+        cx += Math.cos(angle) * step;
+        cy += Math.sin(angle) * step;
+
+        let wiggleX = (Math.random() - 0.5) * 18;
+        let wiggleY = (Math.random() - 0.5) * 18;
+
+        d += ` L ${cx + wiggleX} ${cy + wiggleY}`;
+    }
+
+    path.setAttribute("d", d);
+
+    path.setAttribute("stroke", "#BFF6FF");
+    path.setAttribute("stroke-width", "2");
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke-linecap", "round");
+    path.setAttribute("stroke-linejoin", "round");
+
+    path.style.filter = `
+        drop-shadow(0 0 3px #00E5FF)
+        drop-shadow(0 0 8px #1E90FF)
+    `;
+
+    const lengthTotal = 250;
+    path.style.strokeDasharray = lengthTotal;
+    path.style.strokeDashoffset = lengthTotal;
+    path.style.transition =
+        "stroke-dashoffset 0.2s ease-out, opacity 0.4s ease-out";
+
+    svg.appendChild(path);
+    container.appendChild(svg);
+
+    requestAnimationFrame(() => {
+        path.style.strokeDashoffset = "0";
+    });
+
+    setTimeout(() => {
+        path.style.opacity = "0";
+    }, 180);
+
+    setTimeout(() => {
+        svg.remove();
+    }, 500);
 }
 
 function createGears(x, y) {
