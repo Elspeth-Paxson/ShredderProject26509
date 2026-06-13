@@ -379,23 +379,23 @@ function createSpecialMarcusRocketLoop(x, y) {
 
             posX = startX + (leftEdgeX - startX) * t;
             posY = startY + Math.sin(t * Math.PI) * 35;
-
-    if (t >= 1) {
-        posX = leftEdgeX;
-        posY = startY;
-    
-        ascentStartY = posY;
-    
-        phase = 2;
-        t = 0;
-    
-        // 🚀 instead of explosion → ignition boost
-        rocket.classList.add("ignite");
-    
-        setTimeout(() => {
-            rocket.classList.remove("ignite");
-        }, 400);
-    }
+        }
+        if (t >= 1) {
+            posX = leftEdgeX;
+            posY = startY;
+        
+            ascentStartY = posY;
+        
+            phase = 2;
+            t = 0;
+        
+            // 🚀 instead of explosion → ignition boost
+            rocket.classList.add("ignite");
+        
+            setTimeout(() => {
+                rocket.classList.remove("ignite");
+            }, 400);
+        }
 
         // =========================
         // PHASE 2: STRAIGHT UP (NO ROTATION EVER)
