@@ -171,74 +171,81 @@ function createLightning(x, y) {
 function createLightningShort(x, y) {
     const container = document.getElementById("confetti-container");
 
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
+    const bolts = 3; // 👈 multiple strands again, but fewer than main
 
-    svg.style.position = "absolute";
-    svg.style.left = "0";
-    svg.style.top = "0";
-    svg.style.width = "100%";
-    svg.style.height = "100%";
-    svg.style.pointerEvents = "none";
+    for (let b = 0; b < bolts; b++) {
 
-    const path = document.createElementNS(svgNS, "path");
+        const svgNS = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(svgNS, "svg");
 
-    const baseAngle = Math.random() * Math.PI * 2;
-    const angle = baseAngle + (Math.random() - 0.5) * 0.4;
+        svg.style.position = "absolute";
+        svg.style.left = "0";
+        svg.style.top = "0";
+        svg.style.width = "100%";
+        svg.style.height = "100%";
+        svg.style.pointerEvents = "none";
 
-    let d = `M ${x} ${y}`;
+        const path = document.createElementNS(svgNS, "path");
 
-    let segments = 5;                 // 🔥 SHORTER (was 7)
-    let length = 70 + Math.random() * 40; // 🔥 MUCH SHORTER THAN MAIN
+        const baseAngle = Math.random() * Math.PI * 2;
+        const angle = baseAngle + (Math.random() - 0.5) * 0.5;
 
-    let cx = x;
-    let cy = y;
+        let d = `M ${x} ${y}`;
 
-    for (let i = 0; i < segments; i++) {
-        let step = length / segments;
+        // 🔥 shorter + simpler than main lightning
+        let segments = 5;
+        let length = 70 + Math.random() * 50;
 
-        cx += Math.cos(angle) * step;
-        cy += Math.sin(angle) * step;
+        let cx = x;
+        let cy = y;
 
-        let wiggleX = (Math.random() - 0.5) * 18;
-        let wiggleY = (Math.random() - 0.5) * 18;
+        for (let i = 0; i < segments; i++) {
+            let step = length / segments;
 
-        d += ` L ${cx + wiggleX} ${cy + wiggleY}`;
+            cx += Math.cos(angle) * step;
+            cy += Math.sin(angle) * step;
+
+            let wiggleX = (Math.random() - 0.5) * 18;
+            let wiggleY = (Math.random() - 0.5) * 18;
+
+            d += ` L ${cx + wiggleX} ${cy + wiggleY}`;
+        }
+
+        path.setAttribute("d", d);
+
+        // ⚡ slightly softer than main lightning
+        path.setAttribute("stroke", "#BFF6FF");
+        path.setAttribute("stroke-width", "2");
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke-linecap", "round");
+        path.setAttribute("stroke-linejoin", "round");
+
+        path.style.filter = `
+            drop-shadow(0 0 3px #00E5FF)
+            drop-shadow(0 0 8px #1E90FF)
+        `;
+
+        const lengthTotal = 250;
+        path.style.strokeDasharray = lengthTotal;
+        path.style.strokeDashoffset = lengthTotal;
+        path.style.transition =
+            "stroke-dashoffset 0.2s ease-out, opacity 0.4s ease-out";
+
+        svg.appendChild(path);
+        container.appendChild(svg);
+
+        requestAnimationFrame(() => {
+            path.style.strokeDashoffset = "0";
+        });
+
+        setTimeout(() => {
+            path.style.opacity = "0";
+        }, 180 + b * 40); // slight stagger = more natural
+
+        setTimeout(() => {
+            svg.remove();
+        }, 500);
     }
-
-    path.setAttribute("d", d);
-
-    path.setAttribute("stroke", "#BFF6FF");
-    path.setAttribute("stroke-width", "2");
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke-linecap", "round");
-    path.setAttribute("stroke-linejoin", "round");
-
-    path.style.filter = `
-        drop-shadow(0 0 3px #00E5FF)
-        drop-shadow(0 0 8px #1E90FF)
-    `;
-
-    const lengthTotal = 250;
-    path.style.strokeDasharray = lengthTotal;
-    path.style.strokeDashoffset = lengthTotal;
-    path.style.transition =
-        "stroke-dashoffset 0.2s ease-out, opacity 0.4s ease-out";
-
-    svg.appendChild(path);
-    container.appendChild(svg);
-
-    requestAnimationFrame(() => {
-        path.style.strokeDashoffset = "0";
-    });
-
-    setTimeout(() => {
-        path.style.opacity = "0";
-    }, 180);
-
-    setTimeout(() => {
-        svg.remove();
-    }, 500);
 }
 
 function createGears(x, y) {
