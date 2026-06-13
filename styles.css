@@ -285,3 +285,11 @@ h3 {
         opacity: 0;
     }
 }
+.design-section {
+    margin-top: 30px;
+}
+
+.design-section h3 {
+    color: #0C234B;
+    font-size: 1.5rem;
+}
