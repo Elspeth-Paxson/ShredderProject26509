@@ -325,9 +325,7 @@ function createSpecialMarcusRocketLoop(x, y) {
     const startX = x;
     const startY = y;
 
-    // ✅ NOT too far left anymore
     const leftEdgeX = 140;
-
     const topExitY = -150;
 
     let posX = x;
@@ -374,7 +372,7 @@ function createSpecialMarcusRocketLoop(x, y) {
     function animate() {
 
         // =========================
-        // PHASE 1: MOVE LEFT (NO ROTATION)
+        // PHASE 1: MOVE LEFT
         // =========================
         if (phase === 1) {
             t += 0.006;
@@ -396,7 +394,7 @@ function createSpecialMarcusRocketLoop(x, y) {
         }
 
         // =========================
-        // PHASE 2: STRAIGHT UP (FIXED)
+        // PHASE 2: STRAIGHT UP (NO ROTATION EVER)
         // =========================
         else if (phase === 2) {
 
@@ -406,9 +404,9 @@ function createSpecialMarcusRocketLoop(x, y) {
             posX = leftEdgeX;
             posY = ascentStartY + (topExitY - ascentStartY) * t;
 
-            // tiny vibration only
-            posX += (Math.random() - 0.5) * 0.3;
-            posY += (Math.random() - 0.5) * 0.3;
+            // tiny vibration ONLY (no directional drift)
+            posX += (Math.random() - 0.5) * 0.2;
+            posY += (Math.random() - 0.5) * 0.2;
 
             path.style.left = leftEdgeX + "px";
             path.style.top = ascentStartY + "px";
@@ -425,23 +423,10 @@ function createSpecialMarcusRocketLoop(x, y) {
         }
 
         // =========================
-        // ROTATION FIX (THIS WAS THE BUG)
+        // ONLY POSITION (NO ROTATION)
         // =========================
-        let angle;
-
-        if (phase === 1) {
-            angle = 0; // keep upright during horizontal move
-        } else {
-            angle = -Math.PI / 2; // ALWAYS straight up
-        }
-
         rocket.style.left = posX + "px";
         rocket.style.top = posY + "px";
-
-        rocket.style.transform = `
-            translate(-50%, -50%)
-            rotate(${angle}rad)
-        `;
 
         requestAnimationFrame(animate);
     }
