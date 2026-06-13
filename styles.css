@@ -353,30 +353,31 @@ h3 {
     clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
 }
 
-/* 🔥 engine glow */
 .rocket-flame {
     position: absolute;
     width: 8px;
     height: 14px;
     left: 5px;
     bottom: -10px;
+
     background: radial-gradient(circle, #00e5ff, #1e90ff, transparent);
     filter: blur(1px);
     opacity: 0.9;
+
+    transform-origin: top center;
+
     animation: flameFlicker 0.08s infinite alternate;
+    transition: height 300ms ease, transform 300ms ease, opacity 300ms ease;
 }
 
 @keyframes flameFlicker {
-    0% { transform: scaleY(1); opacity: 0.9; }
-    100% { transform: scaleY(1.4); opacity: 0.6; }
+    0% { opacity: 0.9; filter: brightness(1.2); }
+    100% { opacity: 0.6; filter: brightness(0.8); }
 }
 
-.telemetry-line {
-    background: linear-gradient(
-        to bottom,
-        rgba(0, 229, 255, 0.6),
-        rgba(30, 144, 255, 0.15),
-        transparent
-    );
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.25);
+/* 🚀 ignition boost state */
+.rocket.ignite .rocket-flame {
+    height: 28px;
+    transform: scaleY(1.6);
+    opacity: 1;
 }
