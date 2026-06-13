@@ -33,107 +33,84 @@ function teamEffect(type, event) {
         createConfetti(x, y);
     }
 }
+
 function createLightning(x, y) {
     const container = document.getElementById("confetti-container");
 
-    const svgNS = "http://www.w3.org/2000/svg";
+    const bolts = 4; // 👈 number of lightning strands per click
 
-    const svg = document.createElementNS(svgNS, "svg");
-    svg.style.position = "absolute";
-    svg.style.left = "0";
-    svg.style.top = "0";
-    svg.style.width = "100%";
-    svg.style.height = "100%";
-    svg.style.pointerEvents = "none";
+    for (let b = 0; b < bolts; b++) {
 
-    const path = document.createElementNS(svgNS, "path");
+        const svgNS = "http://www.w3.org/2000/svg";
 
-    // 🔥 build ONE jagged lightning bolt
-    let d = `M ${x} ${y}`;
+        const svg = document.createElementNS(svgNS, "svg");
+        svg.style.position = "absolute";
+        svg.style.left = "0";
+        svg.style.top = "0";
+        svg.style.width = "100%";
+        svg.style.height = "100%";
+        svg.style.pointerEvents = "none";
 
-    let segments = 8;
-    let length = 180;
-    let angle = Math.random() * Math.PI * 2;
+        const path = document.createElementNS(svgNS, "path");
 
-    let cx = x;
-    let cy = y;
+        // slight spread per bolt
+        const baseAngle = Math.random() * Math.PI * 2;
+        const spread = 0.6; // keeps them grouped, not exploding everywhere
+        const angle = baseAngle + (Math.random() - 0.5) * spread;
 
-    for (let i = 0; i < segments; i++) {
-        let progress = i / segments;
+        let d = `M ${x} ${y}`;
 
-        let offset = (Math.random() - 0.5) * 40;
+        let segments = 7;
+        let length = 160 + Math.random() * 60;
 
-        cx += Math.cos(angle) * (length / segments);
-        cy += Math.sin(angle) * (length / segments);
+        let cx = x;
+        let cy = y;
 
-        d += ` L ${cx + offset} ${cy + offset}`;
-    }
+        for (let i = 0; i < segments; i++) {
+            let step = length / segments;
 
-    path.setAttribute("d", d);
+            cx += Math.cos(angle) * step;
+            cy += Math.sin(angle) * step;
 
-    path.setAttribute("stroke", "#00E5FF");
-    path.setAttribute("stroke-width", "2.5");
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke-linecap", "round");
+            // controlled “lightning wiggle”
+            let offsetX = (Math.random() - 0.5) * 25;
+            let offsetY = (Math.random() - 0.5) * 25;
 
-    path.style.filter = "drop-shadow(0 0 6px #00E5FF) drop-shadow(0 0 12px #1E90FF)";
-
-    // 🔥 animation using stroke drawing trick
-    const lengthTotal = 400;
-    path.style.strokeDasharray = lengthTotal;
-    path.style.strokeDashoffset = lengthTotal;
-    path.style.transition = "stroke-dashoffset 0.35s ease-out, opacity 0.5s ease-out";
-
-    svg.appendChild(path);
-    container.appendChild(svg);
-
-    requestAnimationFrame(() => {
-        path.style.strokeDashoffset = "0";
-    });
-
-    setTimeout(() => {
-        path.style.opacity = "0";
-    }, 250);
-
-    setTimeout(() => {
-        svg.remove();
-    }, 600);
-}
-function createFlash(x, y) {
-    const flash = document.createElement("div");
-    flash.style.position = "absolute";
-    flash.style.left = x + "px";
-    flash.style.top = y + "px";
-    flash.style.width = "10px";
-    flash.style.height = "10px";
-    flash.style.borderRadius = "50%";
-    flash.style.background = "white";
-    flash.style.boxShadow = "0 0 40px 20px #00BFFF";
-    flash.style.transform = "translate(-50%, -50%)";
-    flash.style.pointerEvents = "none";
-    flash.style.opacity = "1";
-
-    document.getElementById("confetti-container").appendChild(flash);
-
-    let size = 10;
-    let opacity = 1;
-
-    function animate() {
-        size += 18;
-        opacity *= 0.85;
-
-        flash.style.width = size + "px";
-        flash.style.height = size + "px";
-        flash.style.opacity = opacity;
-
-        if (opacity > 0.05) {
-            requestAnimationFrame(animate);
-        } else {
-            flash.remove();
+            d += ` L ${cx + offsetX} ${cy + offsetY}`;
         }
-    }
 
-    animate();
+        path.setAttribute("d", d);
+        path.setAttribute("stroke", "#00E5FF");
+        path.setAttribute("stroke-width", "2.5");
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke-linecap", "round");
+
+        path.style.filter =
+            "drop-shadow(0 0 6px #00E5FF) drop-shadow(0 0 12px #1E90FF)";
+
+        // draw animation
+        const lengthTotal = 400;
+        path.style.strokeDasharray = lengthTotal;
+        path.style.strokeDashoffset = lengthTotal;
+        path.style.transition =
+            "stroke-dashoffset 0.35s ease-out, opacity 0.5s ease-out";
+
+        svg.appendChild(path);
+        container.appendChild(svg);
+
+        requestAnimationFrame(() => {
+            path.style.strokeDashoffset = "0";
+        });
+
+        // stagger fade so it feels like electrical discharge sequence
+        setTimeout(() => {
+            path.style.opacity = "0";
+        }, 200 + b * 60);
+
+        setTimeout(() => {
+            svg.remove();
+        }, 700);
+    }
 }
 
 function createGears(x, y) {
