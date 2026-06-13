@@ -98,13 +98,26 @@ header p {
     position: absolute;
     width: 2px;
     height: 2px;
-    background: linear-gradient(to right, #00E5FF, #1E90FF, transparent);
+    background: #00E5FF;
     pointer-events: none;
 
-    transform-origin: left center;
+    box-shadow:
+        0 0 6px #00E5FF,
+        0 0 12px #1E90FF;
 
-    animation: growLine 0.35s ease-out forwards, fadeLine 0.7s ease-out forwards;
-    filter: drop-shadow(0 0 6px #00E5FF);
+    animation: electricTravel 0.6s ease-out forwards;
+}
+
+@keyframes electricTravel {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--dx), var(--dy)) scale(0.6);
+        opacity: 0;
+    }
 }
 
 @keyframes growLine {
