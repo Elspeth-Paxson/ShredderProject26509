@@ -369,3 +369,13 @@ h3 {
     0% { transform: scaleY(1); opacity: 0.9; }
     100% { transform: scaleY(1.4); opacity: 0.6; }
 }
+
+.telemetry-line {
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 229, 255, 0.6),
+        rgba(30, 144, 255, 0.15),
+        transparent
+    );
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.25);
+}
