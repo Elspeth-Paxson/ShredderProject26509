@@ -96,16 +96,30 @@ header p {
 
 .electric-line {
     position: absolute;
-    width: 2px;
-    height: 2px;
-    background: #00E5FF;
+    height: 3px;
+    background: linear-gradient(90deg, #ffffff, #00E5FF, #1E90FF);
+    border-radius: 2px;
     pointer-events: none;
 
     box-shadow:
         0 0 6px #00E5FF,
-        0 0 12px #1E90FF;
+        0 0 14px #1E90FF,
+        0 0 22px rgba(255,255,255,0.4);
 
-    animation: electricTravel 0.6s ease-out forwards;
+    transform-origin: left center;
+
+    animation: arcFade 0.35s ease-out forwards;
+}
+
+@keyframes arcFade {
+    0% {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scaleX(0.6);
+    }
 }
 
 @keyframes electricTravel {
