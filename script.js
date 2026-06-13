@@ -309,54 +309,137 @@ function createSpecialMarcusRocketLoop(x, y) {
 
     container.appendChild(rocket);
 
+    // =========================
+    // TELEMETRY LINE
+    // =========================
+    const path = document.createElement("div");
+    path.classList.add("telemetry-line");
+
+    path.style.position = "absolute";
+    path.style.width = "2px";
+    path.style.height = "0px";
+    path.style.left = "0px";
+    path.style.top = "0px";
+    path.style.pointerEvents = "none";
+
+    container.appendChild(path);
+
     let phase = 1;
     let t = 0;
 
     const startX = x;
     const startY = y;
 
-    const leftEdgeX = -60;
-    const topExitY = -80;
+    const leftEdgeX = 20;
+    const topExitY = -120;
 
     let posX = x;
     let posY = y;
+    let ascentStartY = 0;
 
-    function animate() {
-        t += 0.006; // 🐢 slower overall motion
+    // =========================
+    // PULSE EFFECT
+    // =========================
+    function pulse(x, y) {
+        const glow = document.createElement("div");
 
-        // -------------------------
-        // PHASE 1: move to left edge
-        // -------------------------
-        if (phase === 1) {
-            posX = startX + (leftEdgeX - startX) * t;
+        glow.style.position = "absolute";
+        glow.style.left = x + "px";
+        glow.style.top = y + "px";
+        glow.style.width = "10px";
+        glow.style.height = "10px";
+        glow.style.borderRadius = "50%";
+        glow.style.background = "rgba(0, 229, 255, 0.9)";
+        glow.style.boxShadow = "0 0 25px 10px rgba(0, 229, 255, 0.6)";
+        glow.style.transform = "translate(-50%, -50%)";
+        glow.style.pointerEvents = "none";
 
-            // slight stabilizing arc
-            posY = startY + Math.sin(t * Math.PI) * 40;
+        container.appendChild(glow);
 
-            if (t >= 1) {
-                phase = 2;
-                t = 0;
+        let s = 10;
+        let o = 1;
+
+        function animate() {
+            s += 14;
+            o *= 0.85;
+
+            glow.style.width = s + "px";
+            glow.style.height = s + "px";
+            glow.style.opacity = o;
+
+            if (o > 0.05) {
+                requestAnimationFrame(animate);
+            } else {
+                glow.remove();
             }
         }
 
-        // -------------------------
-        // PHASE 2: vertical ascent
-        // -------------------------
-        else if (phase === 2) {
-            posY = startY + (topExitY - startY) * t;
+        animate();
+    }
 
-            // locked near left edge
-            posX = leftEdgeX;
+    function animate() {
+
+        // =========================
+        // PHASE 1: MOVE LEFT
+        // =========================
+        if (phase === 1) {
+            t += 0.006;
+
+            posX = startX + (leftEdgeX - startX) * t;
+            posY = startY + Math.sin(t * Math.PI) * 40;
 
             if (t >= 1) {
+                posX = leftEdgeX;
+                posY = startY;
+
+                ascentStartY = posY;
+
+                phase = 2;
+                t = 0;
+
+                pulse(posX, posY);
+            }
+        }
+
+        // =========================
+        // PHASE 2: ASCENT (WITH THRUST)
+        // =========================
+        else if (phase === 2) {
+
+            const speed = 0.004 + (t * 0.01);
+            t += speed;
+
+            posX = leftEdgeX;
+            posY = ascentStartY + (topExitY - ascentStartY) * t;
+
+            // 🔥 thrust vibration
+            const shakeX = (Math.random() - 0.5) * 1.2;
+            const shakeY = (Math.random() - 0.5) * 1.2;
+
+            posX += shakeX;
+            posY += shakeY;
+
+            // 📡 update telemetry line
+            path.style.left = leftEdgeX + "px";
+            path.style.top = ascentStartY + "px";
+            path.style.height = (ascentStartY - posY) + "px";
+
+            if (t >= 1) {
+
+                // fade telemetry instead of instant delete
+                path.style.transition = "opacity 1.2s ease-out";
+                path.style.opacity = "0";
+
+                setTimeout(() => path.remove(), 1200);
+
                 rocket.remove();
                 return;
             }
         }
 
-        // -------------------------
-        // ROTATION (direction-based)
-        // -------------------------
+        // =========================
+        // ROTATION
+        // =========================
         const dx = posX - (rocket._lastX || posX);
         const dy = posY - (rocket._lastY || posY);
         const angle = Math.atan2(dy, dx);
@@ -377,7 +460,6 @@ function createSpecialMarcusRocketLoop(x, y) {
 
     animate();
 }
-
 function createConfetti(x, y) {
     const container = document.getElementById("confetti-container");
 
