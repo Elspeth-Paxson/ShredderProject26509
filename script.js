@@ -310,7 +310,6 @@ function createSpecialMarcusRocketLoop(x, y) {
     container.appendChild(rocket);
 
     const path = document.createElement("div");
-    path.classList.add("telemetry-line");
 
     path.style.position = "absolute";
     path.style.width = "2px";
