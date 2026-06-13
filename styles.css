@@ -308,8 +308,8 @@ h3 {
     height: 40px;
     pointer-events: none;
 
-    /* 🔧 IMPORTANT FIX */
-    transform-origin: center;
+    transform: translate(-50%, -50%);
+    will-change: left, top;
 }
 
 /* 🚀 body */
