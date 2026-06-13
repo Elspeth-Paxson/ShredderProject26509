@@ -298,7 +298,7 @@ function createSpecialMarcusRocketLoop(x, y) {
 
     const rocket = document.createElement("div");
     rocket.classList.add("rocket");
-    
+
     rocket.innerHTML = `
         <div class="rocket-nose"></div>
         <div class="rocket-body"></div>
@@ -307,79 +307,72 @@ function createSpecialMarcusRocketLoop(x, y) {
         <div class="rocket-flame"></div>
     `;
 
-    rocket.style.position = "absolute";
-    rocket.style.left = x + "px";
-    rocket.style.top = y + "px";
-    rocket.style.fontSize = "18px";
-    rocket.style.pointerEvents = "none";
-    rocket.style.transform = "translate(-50%, -50%)";
-    rocket.style.willChange = "transform, left, top";
-
     container.appendChild(rocket);
 
-    // ✨ stronger contrail
-    const trail = document.createElement("div");
-    trail.style.position = "absolute";
-    trail.style.width = "4px";
-    trail.style.height = "4px";
-    trail.style.borderRadius = "50%";
-    trail.style.background = "rgba(0, 229, 255, 0.85)";
-    trail.style.boxShadow = "0 0 10px rgba(0, 229, 255, 0.7)";
-    trail.style.pointerEvents = "none";
-
-    container.appendChild(trail);
-
+    let phase = 1;
     let t = 0;
 
     const startX = x;
     const startY = y;
-    const endX = -80;
 
-    let lastX = x;
-    let lastY = y;
+    const leftEdgeX = -60;
+    const topExitY = -80;
+
+    let posX = x;
+    let posY = y;
 
     function animate() {
-        // 🐢 slower = more readable motion
-        t += 0.008;
+        t += 0.006; // 🐢 slower overall motion
 
-        const posX = startX + (endX - startX) * t;
+        // -------------------------
+        // PHASE 1: move to left edge
+        // -------------------------
+        if (phase === 1) {
+            posX = startX + (leftEdgeX - startX) * t;
 
-        // smoother loop (less chaotic, more readable)
-        const arc = Math.sin(t * Math.PI * 2) * 70;
-        const posY = startY + arc;
+            // slight stabilizing arc
+            posY = startY + Math.sin(t * Math.PI) * 40;
 
-        // 🧭 compute direction for rotation
-        const dx = posX - lastX;
-        const dy = posY - lastY;
+            if (t >= 1) {
+                phase = 2;
+                t = 0;
+            }
+        }
+
+        // -------------------------
+        // PHASE 2: vertical ascent
+        // -------------------------
+        else if (phase === 2) {
+            posY = startY + (topExitY - startY) * t;
+
+            // locked near left edge
+            posX = leftEdgeX;
+
+            if (t >= 1) {
+                rocket.remove();
+                return;
+            }
+        }
+
+        // -------------------------
+        // ROTATION (direction-based)
+        // -------------------------
+        const dx = posX - (rocket._lastX || posX);
+        const dy = posY - (rocket._lastY || posY);
         const angle = Math.atan2(dy, dx);
 
-        // rotate rocket toward motion direction
+        rocket.style.left = posX + "px";
+        rocket.style.top = posY + "px";
+
         rocket.style.transform = `
             translate(-50%, -50%)
             rotate(${angle}rad)
         `;
 
-        rocket.style.left = posX + "px";
-        rocket.style.top = posY + "px";
+        rocket._lastX = posX;
+        rocket._lastY = posY;
 
-        // ✨ stronger visible trail (slightly delayed follow)
-        trail.style.left = (posX - dx * 2) + "px";
-        trail.style.top = (posY - dy * 2) + "px";
-
-        // fade but keep visible longer
-        const fade = Math.max(1 - t, 0);
-        rocket.style.opacity = fade;
-        trail.style.opacity = fade * 0.8;
-
-        lastX = posX;
-        lastY = posY;
-
-        if (t < 1) {
-            requestAnimationFrame(animate);
-        } else {
-            rocket.remove();
-            trail.remove();
-        }
+        requestAnimationFrame(animate);
     }
 
     animate();
