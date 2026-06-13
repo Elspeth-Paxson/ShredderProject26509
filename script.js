@@ -305,18 +305,18 @@ function createSpecialMarcusRocketLoop(x, y) {
     rocket.style.fontSize = "18px";
     rocket.style.pointerEvents = "none";
     rocket.style.transform = "translate(-50%, -50%)";
-    rocket.style.filter = "drop-shadow(0 0 6px rgba(0,0,0,0.2))";
+    rocket.style.willChange = "transform, left, top";
 
     container.appendChild(rocket);
 
-    // ✨ contrail element
+    // ✨ stronger contrail
     const trail = document.createElement("div");
     trail.style.position = "absolute";
-    trail.style.width = "2px";
-    trail.style.height = "2px";
-    trail.style.background = "rgba(0, 229, 255, 0.6)";
-    trail.style.boxShadow = "0 0 8px rgba(0, 229, 255, 0.4)";
+    trail.style.width = "4px";
+    trail.style.height = "4px";
     trail.style.borderRadius = "50%";
+    trail.style.background = "rgba(0, 229, 255, 0.85)";
+    trail.style.boxShadow = "0 0 10px rgba(0, 229, 255, 0.7)";
     trail.style.pointerEvents = "none";
 
     container.appendChild(trail);
@@ -325,31 +325,46 @@ function createSpecialMarcusRocketLoop(x, y) {
 
     const startX = x;
     const startY = y;
+    const endX = -80;
 
-    const endX = -50; // 👈 left edge target (slightly off-screen)
+    let lastX = x;
+    let lastY = y;
 
     function animate() {
-        t += 0.015;
+        // 🐢 slower = more readable motion
+        t += 0.008;
 
-        // linear motion toward left edge
         const posX = startX + (endX - startX) * t;
 
-        // smooth arc (loop-like wave, not chaotic)
-        const arc = Math.sin(t * Math.PI * 2) * 80;
-
+        // smoother loop (less chaotic, more readable)
+        const arc = Math.sin(t * Math.PI * 2) * 70;
         const posY = startY + arc;
+
+        // 🧭 compute direction for rotation
+        const dx = posX - lastX;
+        const dy = posY - lastY;
+        const angle = Math.atan2(dy, dx);
+
+        // rotate rocket toward motion direction
+        rocket.style.transform = `
+            translate(-50%, -50%)
+            rotate(${angle}rad)
+        `;
 
         rocket.style.left = posX + "px";
         rocket.style.top = posY + "px";
 
-        // ✨ contrail follows behind (lagging slightly)
-        trail.style.left = (posX + 10) + "px";
-        trail.style.top = (posY + 10) + "px";
+        // ✨ stronger visible trail (slightly delayed follow)
+        trail.style.left = (posX - dx * 2) + "px";
+        trail.style.top = (posY - dy * 2) + "px";
 
-        // fade both smoothly
+        // fade but keep visible longer
         const fade = Math.max(1 - t, 0);
         rocket.style.opacity = fade;
-        trail.style.opacity = fade * 0.6;
+        trail.style.opacity = fade * 0.8;
+
+        lastX = posX;
+        lastY = posY;
 
         if (t < 1) {
             requestAnimationFrame(animate);
