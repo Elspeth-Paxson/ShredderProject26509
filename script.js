@@ -16,7 +16,9 @@ function showTab(tabId, event) {
   event.currentTarget.classList.add("active");
 }
 
-function teamEffect(type, name, event) {
+function teamEffect(type, event, name = "") {
+    if (!event) return; // prevents crashes
+
     const x = event.clientX;
     const y = event.clientY;
 
@@ -24,21 +26,20 @@ function teamEffect(type, name, event) {
         createRipple(x, y);
         createLightning(x, y);
 
-        // ⚡ NEW: delayed secondary arc (residual discharge)
-         setTimeout(() => {
+        setTimeout(() => {
             createLightningShort(
                 x + (Math.random() - 0.5) * 25,
                 y + (Math.random() - 0.5) * 25
-                );
+            );
         }, 180);
     }
-    
+
     if (type === "mechanical") {
-        createGears(event.clientX, event.clientY);
-    
+        createGears(x, y);
+
         if (name === "Marcus") {
             setTimeout(() => {
-                createSpecialMarcusRocketLoop(event.clientX, event.clientY);
+                createSpecialMarcusRocketLoop(x, y);
             }, 200);
         }
     }
