@@ -97,18 +97,26 @@ header p {
 .electric-line {
     position: absolute;
     height: 3px;
-    background: linear-gradient(90deg, #ffffff, #00E5FF, #1E90FF);
-    border-radius: 2px;
+    background: linear-gradient(90deg, #00E5FF, #1E90FF);
+    border-radius: 10px;
     pointer-events: none;
 
-    box-shadow:
-        0 0 6px #00E5FF,
-        0 0 14px #1E90FF,
-        0 0 22px rgba(255,255,255,0.4);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
 
     transform-origin: left center;
 
-    animation: arcFade 0.35s ease-out forwards;
+    animation: flowFade 0.6s ease-out forwards;
+}
+
+@keyframes flowFade {
+    0% {
+        opacity: 1;
+        transform: scaleX(0.2);
+    }
+    100% {
+        opacity: 0;
+        transform: scaleX(1);
+    }
 }
 
 @keyframes arcFade {
