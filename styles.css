@@ -172,7 +172,7 @@ h3 {
 .photo-card p {
     margin-top: 10px;
     font-size: 14px;
-    color: #0C234B;   /* Arizona blue */
+    color: hotpink !important;
     transition: color 0.25s ease;
 }
 
