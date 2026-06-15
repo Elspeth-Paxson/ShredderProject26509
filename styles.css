@@ -384,5 +384,13 @@ h3 {
 }
 
 .photo-card p {
-    color: #0C234B;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #0C234B;   /* Arizona blue */
+    transition: color 0.25s ease;
+}
+
+.photo-card:hover p {
+    color: #AB0520;   /* Arizona red */
+    font-weight: bold;
 }
