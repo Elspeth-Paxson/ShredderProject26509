@@ -177,7 +177,7 @@ h3 {
 }
 
 .photo-card:hover p {
-    color: #AB0520; /* Arizona red */
+    color: #AB0520 !important;
     font-weight: bold;
 }
 
