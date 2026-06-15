@@ -382,3 +382,8 @@ h3 {
     transform: scaleY(1.6);
     opacity: 1;
 }
+
+.photo-card p {
+    color: blue !important;
+    outline: 3px solid red;
+}
