@@ -145,6 +145,7 @@ h3 {
 }
 
 .photo-card {
+    color: #0C234B; /*just added come back here!!!!*/
     background: #f5f5f5;
     padding: 10px;
     border-radius: 10px;
@@ -170,7 +171,6 @@ h3 {
 }
 
 .photo-card p {
-    color: #0C234B; /*just added come back here!!!!*/
     margin-top: 10px;
     font-size: 14px;
     transition: color 0.25s ease;
