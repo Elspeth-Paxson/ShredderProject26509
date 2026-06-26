@@ -493,3 +493,22 @@ h3 {
     transition: all 0.6s ease;
     z-index: 9999;
 }
+
+#feed-bag {
+    width: 180px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#feed-bag:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 12px rgba(171, 5, 32, 0.4));
+}
+
+.floating-print {
+    position: fixed;
+    font-size: 28px;
+    pointer-events: none;
+    transition: all 0.8s cubic-bezier(.2,.8,.2,1);
+    z-index: 9999;
+}
