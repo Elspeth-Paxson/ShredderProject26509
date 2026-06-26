@@ -509,3 +509,39 @@ h3 {
     transform:scale(1.06);
     filter:drop-shadow(0 0 12px rgba(255,210,0,.6));
 }
+
+.square{
+    width:32px;
+    height:32px;
+    background:#0C234B;
+    border-radius:4px;
+}
+
+.circle{
+    width:30px;
+    height:30px;
+    background:#AB0520;
+    border-radius:50%;
+}
+
+.triangle{
+    width:0;
+    height:0;
+    border-left:18px solid transparent;
+    border-right:18px solid transparent;
+    border-bottom:34px solid #FFD200;
+}
+
+.hexagon{
+    width:34px;
+    height:20px;
+    background:#0C234B;
+    clip-path:polygon(
+        25% 0%,
+        75% 0%,
+        100% 50%,
+        75% 100%,
+        25% 100%,
+        0% 50%
+    );
+}
