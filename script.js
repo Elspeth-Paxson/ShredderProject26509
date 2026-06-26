@@ -595,3 +595,87 @@ function react(type) {
         obj.remove();
     }, 800);
 }
+
+function feedBag() {
+    const img = document.getElementById("shredder-img");
+    const bag = document.getElementById("feed-bag");
+
+    const rect = img.getBoundingClientRect();
+    const bagRect = bag.getBoundingClientRect();
+
+    // random failed print types
+    const prints = ["cube", "string", "warp"];
+
+    const icons = {
+        cube: "⬛",
+        string: "🧵",
+        warp: "🫠"
+    };
+
+    const type = prints[Math.floor(Math.random() * prints.length)];
+
+    // create object that pops OUT of bag
+    const obj = document.createElement("div");
+    obj.className = "floating-print";
+    obj.innerText = icons[type];
+
+    document.body.appendChild(obj);
+
+    // start at bag position
+    const startX = bagRect.left + bagRect.width / 2;
+    const startY = bagRect.top + bagRect.height / 2;
+
+    obj.style.left = startX + "px";
+    obj.style.top = startY + "px";
+
+    // small delay so browser registers start position
+    requestAnimationFrame(() => {
+
+        // STEP 1: “pop out of bag”
+        obj.style.left = startX + 40 + "px";
+        obj.style.top = startY - 60 + "px";
+        obj.style.transform = "scale(1.2)";
+    });
+
+    // STEP 2: arc into shredder
+    setTimeout(() => {
+
+        const targetX = rect.right - rect.width * 0.25;
+        const targetY = rect.top + rect.height * 0.25;
+
+        obj.style.left = targetX + "px";
+        obj.style.top = targetY + "px";
+        obj.style.transform = "scale(0.2)";
+        obj.style.opacity = "0";
+
+    }, 350);
+
+    // shredder bounce
+    const shredderImg = document.getElementById("shredder-img");
+    shredderImg.classList.remove("pop");
+    void shredderImg.offsetWidth;
+    shredderImg.classList.add("pop");
+
+    // confetti (keep your fixed version)
+    createConfetti(
+        rect.right - 20,
+        rect.bottom - rect.height * 0.2
+    );
+
+    // facts (reuse your system)
+    const facts = {
+        cube: "Calibration cubes test dimensional accuracy.",
+        string: "Stringing comes from heat or retraction settings.",
+        warp: "Warping happens from uneven cooling shrinkage."
+    };
+
+    const output = document.getElementById("shredder-output");
+
+    setTimeout(() => {
+        output.innerHTML = `
+            <p>♻️ Recycled successfully!</p>
+            <p>${facts[type]}</p>
+        `;
+        obj.remove();
+    }, 900);
+}
