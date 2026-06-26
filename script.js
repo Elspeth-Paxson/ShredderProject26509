@@ -603,9 +603,6 @@ function feedBag() {
     const rect = img.getBoundingClientRect();
     const bagRect = bag.getBoundingClientRect();
 
-    const startX = bagRect.left + bagRect.width/2;
-    const startY = bagRect.top + bagRect.height/2;
-
     // random failed print types
     const prints = ["cube", "string", "warp"];
 
