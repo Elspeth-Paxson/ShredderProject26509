@@ -438,7 +438,7 @@ function createSpecialMarcusRocketLoop(x, y) {
     animate();
 }
 
-/*function createConfetti(x, y) {
+function createConfetti(x, y) {
     const container = document.getElementById("confetti-container");
 
     const colors = ["#AB0520", "#0C234B", "#FFD200", "#aaaaaa"];
@@ -465,7 +465,7 @@ function createSpecialMarcusRocketLoop(x, y) {
 
         setTimeout(() => piece.remove(), 1200);
     }
-} */
+} 
 
 let slideIndex = 0;
 
