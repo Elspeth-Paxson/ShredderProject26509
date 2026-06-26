@@ -534,7 +534,7 @@ function react(type) {
 
     const rect = img.getBoundingClientRect();
 
-    // create falling object
+    // create falling object FIRST
     const obj = document.createElement("div");
     obj.className = "falling-shape";
 
@@ -545,31 +545,42 @@ function react(type) {
     };
 
     obj.innerText = icons[type];
+
     document.body.appendChild(obj);
 
-    // start position (above screen center)
-    obj.style.left = window.innerWidth / 2 + "px";
-    obj.style.top = "80px";
+    // start position (center top)
+    const startX = window.innerWidth / 2;
+    const startY = 80;
 
-    // animate into shredder
-    setTimeout(() => {
-        obj.style.left = rect.right + "px";
-        obj.style.top = rect.top + rect.height / 2 + "px";
+    obj.style.left = startX + "px";
+    obj.style.top = startY + "px";
+
+    obj.style.transition = "all 0.75s ease-in-out";
+
+    // TARGET: top-right of shredder image (smooth + visible)
+    const targetX = rect.right - rect.width * 0.25;
+    const targetY = rect.top + rect.height * 0.25;
+
+    // trigger animation AFTER render
+    requestAnimationFrame(() => {
+        obj.style.left = targetX + "px";
+        obj.style.top = targetY + "px";
         obj.style.transform = "scale(0.2)";
         obj.style.opacity = "0";
-    }, 50);
+    });
 
     // shredder bounce
     img.classList.remove("pop");
     void img.offsetWidth;
     img.classList.add("pop");
 
-    // RIGHT-SIDE CONFETTI (unchanged function)
+    // CONFETTI (bottom-right burst feel)
     createConfetti(
-        rect.right + 10,
-        rect.top + rect.height * 0.4
+        rect.right - 20,
+        rect.bottom - rect.height * 0.2
     );
 
+    // facts
     const facts = {
         cube: "Calibration cubes test dimensional accuracy.",
         string: "Stringing is caused by temperature or retraction settings.",
@@ -582,5 +593,5 @@ function react(type) {
             <p>${facts[type]}</p>
         `;
         obj.remove();
-    }, 700);
+    }, 800);
 }
