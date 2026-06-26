@@ -527,3 +527,30 @@ function createConfetti(x, y) {
         }, 1200);
     }
 }
+
+function react(type) {
+    const img = document.getElementById("shredder-img");
+    const output = document.getElementById("shredder-output");
+
+    // restart pop animation
+    img.classList.remove("pop");
+    void img.offsetWidth;
+    img.classList.add("pop");
+
+    // confetti
+    launchConfetti();
+
+    // facts
+    const facts = {
+        cube: "Calibration cubes help verify printer accuracy and tuning.",
+        string: "Stringing usually comes from temperature or retraction settings.",
+        warp: "Warping happens when plastic cools unevenly and shrinks."
+    };
+
+    setTimeout(() => {
+        output.innerHTML = `
+            <p>♻️ Recycled successfully!</p>
+            <p>${facts[type]}</p>
+        `;
+    }, 300);
+}
