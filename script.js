@@ -438,7 +438,7 @@ function createSpecialMarcusRocketLoop(x, y) {
     animate();
 }
 
-function createConfetti(x, y) {
+/*function createConfetti(x, y) {
     const container = document.getElementById("confetti-container");
 
     const colors = ["#AB0520", "#0C234B", "#FFD200", "#aaaaaa"];
@@ -465,7 +465,7 @@ function createConfetti(x, y) {
 
         setTimeout(() => piece.remove(), 1200);
     }
-}
+} */
 
 let slideIndex = 0;
 
@@ -532,15 +532,17 @@ function react(type) {
     const img = document.getElementById("shredder-img");
     const output = document.getElementById("shredder-output");
 
-    // restart pop animation
+    if (!img || !output) return;
+
+    // pop animation
     img.classList.remove("pop");
     void img.offsetWidth;
     img.classList.add("pop");
 
-    // confetti
-    launchConfetti();
+    // confetti at center of shredder (not cursor-based)
+    const rect = img.getBoundingClientRect();
+    createConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
 
-    // facts
     const facts = {
         cube: "Calibration cubes help verify printer accuracy and tuning.",
         string: "Stringing usually comes from temperature or retraction settings.",
