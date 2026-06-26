@@ -527,73 +527,19 @@ function createConfetti(x, y) {
         }, 1200);
     }
 }
+const SHREDDER_FACTS = [
+    "PLA is biodegradable under industrial composting conditions.",
+    "Calibration cubes test dimensional accuracy.",
+    "Warping happens from uneven cooling.",
+    "Lower print temperatures can reduce stringing.",
+    "Catalyst Studios generates around 50 kg of plastic waste each semester.",
+    "Recycling failed prints helps reduce landfill waste."
+];
 
-function react(type) {
-    const img = document.getElementById("shredder-img");
-    const output = document.getElementById("shredder-output");
-
-    const rect = img.getBoundingClientRect();
-
-    // create falling object FIRST
-    const obj = document.createElement("div");
-    obj.className = "falling-shape";
-
-    const icons = {
-        cube: "⬛",
-        string: "🧵",
-        warp: "🫠"
-    };
-
-    obj.innerText = icons[type];
-
-    document.body.appendChild(obj);
-
-    // start position (center top)
-    const startX = window.innerWidth / 2;
-    const startY = 80;
-
-    obj.style.left = startX + "px";
-    obj.style.top = startY + "px";
-
-    obj.style.transition = "all 0.75s ease-in-out";
-
-    // TARGET: top-right of shredder image (smooth + visible)
-    const targetX = rect.right - rect.width * 0.25;
-    const targetY = rect.top + rect.height * 0.25;
-
-    // trigger animation AFTER render
-    requestAnimationFrame(() => {
-        obj.style.left = targetX + "px";
-        obj.style.top = targetY + "px";
-        obj.style.transform = "scale(0.2)";
-        obj.style.opacity = "0";
-    });
-
-    // shredder bounce
-    img.classList.remove("pop");
-    void img.offsetWidth;
-    img.classList.add("pop");
-
-    // CONFETTI (bottom-right burst feel)
-    createConfetti(
-        rect.right - 20,
-        rect.bottom - rect.height * 0.2
-    );
-
-    // facts
-    const facts = {
-        cube: "Calibration cubes test dimensional accuracy.",
-        string: "Stringing is caused by temperature or retraction settings.",
-        warp: "Warping comes from uneven cooling shrinkage."
-    };
-
-    setTimeout(() => {
-        output.innerHTML = `
-            <p>♻️ Recycled successfully!</p>
-            <p>${facts[type]}</p>
-        `;
-        obj.remove();
-    }, 800);
+function getRandomFact() {
+    return SHREDDER_FACTS[
+        Math.floor(Math.random() * SHREDDER_FACTS.length)
+    ];
 }
 
 function feedBag() {
@@ -610,13 +556,6 @@ function feedBag() {
         "triangle",
         "circle",
         "hexagon"
-    ];
-
-    const facts = [
-        "Calibration cubes test dimensional accuracy.",
-        "Stringing comes from heat or retraction settings.",
-        "Warping happens from uneven cooling.",
-        "Failed prints can be shredded into reusable material."
     ];
 
     const type = shapes[Math.floor(Math.random()*shapes.length)];
@@ -676,7 +615,7 @@ function feedBag() {
 
             output.innerHTML = `
                 <p>♻️ Recycled successfully!</p>
-                <p>${facts[Math.floor(Math.random()*facts.length)]}</p>
+                <p>${getRandomFact()}</p>
             `;
 
             obj.remove();
