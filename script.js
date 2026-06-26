@@ -625,42 +625,64 @@ function feedBag() {
     const startX = bagRect.left + bagRect.width / 2;
     const startY = bagRect.top + bagRect.height / 2;
 
-    obj.style.left = startX + "px";
-    obj.style.top = startY + "px";
+    // Start at the TOP of the bag
+const x0 = bagRect.left + bagRect.width * 0.45;
+const y0 = bagRect.top + 20;
 
-    // small delay so browser registers start position
-    requestAnimationFrame(() => {
+// End at the shredder opening
+const x2 = rect.left + rect.width * 0.82;
+const y2 = rect.top + rect.height * 0.18;
 
-        // STEP 1: “pop out of bag”
-        obj.style.left = startX + 40 + "px";
-        obj.style.top = startY - 60 + "px";
-        obj.style.transform = "scale(1.2)";
-    });
+// Control point (this determines the arc)
+const x1 = (x0 + x2) / 2;
+const y1 = Math.min(y0, y2) - 220;
 
-    // STEP 2: arc into shredder
-    setTimeout(() => {
+obj.style.left = x0 + "px";
+obj.style.top = y0 + "px";
 
-        const targetX = rect.right - rect.width * 0.25;
-        const targetY = rect.top + rect.height * 0.25;
+const duration = 1900;
+const start = performance.now();
 
-        obj.style.left = targetX + "px";
-        obj.style.top = targetY + "px";
-        obj.style.transform = "scale(0.2)";
+function animate(now){
+
+    let t = (now - start) / duration;
+    if(t > 1) t = 1;
+
+    // Smooth easing
+    const e = 1 - Math.pow(1 - t, 3);
+
+    // Quadratic Bézier
+    const x =
+        (1-e)*(1-e)*x0 +
+        2*(1-e)*e*x1 +
+        e*e*x2;
+
+    const y =
+        (1-e)*(1-e)*y0 +
+        2*(1-e)*e*y1 +
+        e*e*y2;
+
+    obj.style.left = x + "px";
+    obj.style.top = y + "px";
+
+    // Make it slowly shrink as it approaches
+    const scale = 1 - e * 0.65;
+    obj.style.transform = `translate(-50%,-50%) scale(${scale})`;
+
+    if(t < 1){
+        requestAnimationFrame(animate);
+    } else {
         obj.style.opacity = "0";
+    }
+}
 
-    }, 350);
+requestAnimationFrame(animate);
 
     // shredder bounce
     const shredderImg = document.getElementById("shredder-img");
     shredderImg.classList.remove("pop");
     void shredderImg.offsetWidth;
     shredderImg.classList.add("pop");
-
-    // confetti (keep your fixed version)
-    createConfetti(
-        rect.right - 20,
-        rect.bottom - rect.height * 0.2
-    );
 
     // facts (reuse your system)
     const facts = {
@@ -672,6 +694,11 @@ function feedBag() {
     const output = document.getElementById("shredder-output");
 
     setTimeout(() => {
+            // confetti (keep your fixed version)
+        createConfetti(
+            rect.right - 20,
+            rect.bottom - rect.height * 0.2
+        );
         output.innerHTML = `
             <p>♻️ Recycled successfully!</p>
             <p>${facts[type]}</p>
