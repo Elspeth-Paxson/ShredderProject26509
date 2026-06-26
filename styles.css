@@ -572,18 +572,21 @@ h3 {
 }
 
 /* status line */
-.status {
-    margin-bottom: 12px;
+.status .value {
     font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 999px;
+    display: inline-block;
 }
 
-.status .label {
-    color: #0C234B;
+.status .value.ready {
+    background: #0C234B;
+    color: white;
 }
 
-.status .value.success {
-    color: #228B22;
-    margin-left: 6px;
+.status .value.shredding {
+    background: #B58500;
+    color: white;
 }
 
 /* fact box */
