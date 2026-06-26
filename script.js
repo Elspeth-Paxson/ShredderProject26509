@@ -541,7 +541,12 @@ function react(type) {
 
     // confetti at center of shredder (not cursor-based)
     const rect = img.getBoundingClientRect();
-    createConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    
+    // push origin to RIGHT side of shredder
+    createConfetti(
+        rect.right + 10,
+        rect.top + rect.height * 0.4
+    );
 
     const facts = {
         cube: "Calibration cubes help verify printer accuracy and tuning.",
