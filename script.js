@@ -564,12 +564,18 @@ function feedBag() {
     const bar = document.querySelector(".progress-fill");
 
     if (status) {
-        status.textContent = "SHREDDING...";
+        status.textContent = "SHREDDING";
         status.classList.remove("ready");
         status.classList.add("shredding");
     }
 
-    if (bar) bar.style.width = "0%";
+    // ✅ SAFE BAR RESET
+    if (bar) {
+        bar.style.transition = "none";
+        bar.style.width = "0%";
+        bar.offsetHeight; // force reflow
+        bar.style.transition = "width 0.08s linear";
+    }
 
     // Start at top of bag
     const x0 = bagRect.left + bagRect.width * 0.45;
@@ -641,7 +647,13 @@ function feedBag() {
                     status.classList.add("ready");
                 }
 
-                if (bar) bar.style.width = "0%";
+                if (bar) {
+                    bar.style.transition = "none";
+                    bar.style.width = "0%";
+                    bar.offsetHeight;
+                    bar.style.transition = "width 0.08s linear";
+                }
+
             }, 400);
 
             obj.remove();
