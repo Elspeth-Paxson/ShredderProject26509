@@ -607,8 +607,13 @@ h3 {
 .status {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    align-items: flex-start;
+    gap: 4px;
+}
+
+.status .label {
+    font-size: 12px;
+    opacity: 0.7;
+    letter-spacing: 0.5px;
 }
 
 .progress-bar {
