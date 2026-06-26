@@ -597,117 +597,91 @@ function react(type) {
 }
 
 function feedBag() {
+
     const img = document.getElementById("shredder-img");
     const bag = document.getElementById("feed-bag");
+    const output = document.getElementById("shredder-output");
 
     const rect = img.getBoundingClientRect();
     const bagRect = bag.getBoundingClientRect();
 
-    // random failed print types
-    const prints = ["cube", "string", "warp"];
+    const shapes = [
+        "square",
+        "triangle",
+        "circle",
+        "hexagon"
+    ];
 
-const shapes = [
-    "square",
-    "triangle",
-    "circle",
-    "hexagon"
-];
+    const facts = [
+        "Calibration cubes test dimensional accuracy.",
+        "Stringing comes from heat or retraction settings.",
+        "Warping happens from uneven cooling.",
+        "Failed prints can be shredded into reusable material."
+    ];
 
-const type = shapes[Math.floor(Math.random()*shapes.length)];
+    const type = shapes[Math.floor(Math.random()*shapes.length)];
 
-const obj = document.createElement("div");
-obj.className = `floating-print ${type}`;
-
-    const type = prints[Math.floor(Math.random() * prints.length)];
-
-    // create object that pops OUT of bag
     const obj = document.createElement("div");
-    obj.className = "floating-print";
-    obj.innerText = icons[type];
-
+    obj.className = `floating-print ${type}`;
     document.body.appendChild(obj);
 
-    // start at bag position
-    const startX = bagRect.left + bagRect.width / 2;
-    const startY = bagRect.top + bagRect.height / 2;
+    // Start at top of bag
+    const x0 = bagRect.left + bagRect.width * 0.45;
+    const y0 = bagRect.top + 20;
 
-    // Start at the TOP of the bag
-const x0 = bagRect.left + bagRect.width * 0.45;
-const y0 = bagRect.top + 20;
+    // End at shredder opening
+    const x2 = rect.left + rect.width * 0.82;
+    const y2 = rect.top + rect.height * 0.18;
 
-// End at the shredder opening
-const x2 = rect.left + rect.width * 0.82;
-const y2 = rect.top + rect.height * 0.18;
+    // Arc control point
+    const x1 = (x0 + x2) / 2;
+    const y1 = Math.min(y0, y2) - 220;
 
-// Control point (this determines the arc)
-const x1 = (x0 + x2) / 2;
-const y1 = Math.min(y0, y2) - 220;
+    const start = performance.now();
+    const duration = 1800;
 
-obj.style.left = x0 + "px";
-obj.style.top = y0 + "px";
+    function animate(now){
 
-const duration = 1900;
-const start = performance.now();
+        let t = (now - start)/duration;
+        if(t>1) t=1;
 
-function animate(now){
+        const e = 1-Math.pow(1-t,3);
 
-    let t = (now - start) / duration;
-    if(t > 1) t = 1;
+        const x =
+            (1-e)*(1-e)*x0 +
+            2*(1-e)*e*x1 +
+            e*e*x2;
 
-    // Smooth easing
-    const e = 1 - Math.pow(1 - t, 3);
+        const y =
+            (1-e)*(1-e)*y0 +
+            2*(1-e)*e*y1 +
+            e*e*y2;
 
-    // Quadratic Bézier
-    const x =
-        (1-e)*(1-e)*x0 +
-        2*(1-e)*e*x1 +
-        e*e*x2;
+        obj.style.left = x + "px";
+        obj.style.top = y + "px";
+        obj.style.transform = "translate(-50%,-50%)";
 
-    const y =
-        (1-e)*(1-e)*y0 +
-        2*(1-e)*e*y1 +
-        e*e*y2;
+        if(t<1){
+            requestAnimationFrame(animate);
+        }else{
 
-    obj.style.left = x + "px";
-    obj.style.top = y + "px";
+            img.classList.remove("pop");
+            void img.offsetWidth;
+            img.classList.add("pop");
 
-    obj.style.transform =
-    "translate(-50%,-50%)";
+            createConfetti(
+                rect.right-20,
+                rect.bottom-rect.height*0.2
+            );
 
-    if(t < 1){
-        requestAnimationFrame(animate);
-    } else {
-        obj.style.opacity = "0";
+            output.innerHTML = `
+                <p>♻️ Recycled successfully!</p>
+                <p>${facts[Math.floor(Math.random()*facts.length)]}</p>
+            `;
+
+            obj.remove();
+        }
     }
-}
 
-requestAnimationFrame(animate);
-
-    // shredder bounce
-    const shredderImg = document.getElementById("shredder-img");
-    shredderImg.classList.remove("pop");
-    void shredderImg.offsetWidth;
-    shredderImg.classList.add("pop");
-
-    // facts (reuse your system)
-    const facts = {
-        cube: "Calibration cubes test dimensional accuracy.",
-        string: "Stringing comes from heat or retraction settings.",
-        warp: "Warping happens from uneven cooling shrinkage."
-    };
-
-    const output = document.getElementById("shredder-output");
-
-    setTimeout(() => {
-            // confetti (keep your fixed version)
-        createConfetti(
-            rect.right - 20,
-            rect.bottom - rect.height * 0.2
-        );
-        output.innerHTML = `
-            <p>♻️ Recycled successfully!</p>
-            <p>${facts[type]}</p>
-        `;
-        obj.remove();
-    }, 900);
+    requestAnimationFrame(animate);
 }
