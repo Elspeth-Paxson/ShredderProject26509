@@ -584,9 +584,24 @@ h3 {
 }
 
 /* SHREDDING state */
+@keyframes shreddingPulse {
+    0% {
+        text-shadow: 0 0 4px rgba(171, 5, 32, 0.2);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 12px rgba(171, 5, 32, 0.6);
+        transform: scale(1.03);
+    }
+    100% {
+        text-shadow: 0 0 4px rgba(171, 5, 32, 0.2);
+        transform: scale(1);
+    }
+}
+
 .status .value.shredding {
-    color: #AB0520; /* Arizona red */
-    text-shadow: 0 2px 8px rgba(171, 5, 32, 0.35);
+    color: #AB0520;
+    animation: shreddingPulse 1.2s infinite ease-in-out;
 }
 
 /* fact box */
