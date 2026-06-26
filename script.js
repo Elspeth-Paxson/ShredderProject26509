@@ -559,6 +559,14 @@ function feedBag() {
     obj.className = `floating-print ${type}`;
     document.body.appendChild(obj);
 
+    // ✅ STATUS → SHREDDING (START)
+    const status = document.querySelector(".status .value");
+    if (status) {
+        status.textContent = "SHREDDING...";
+        status.classList.remove("ready");
+        status.classList.add("shredding");
+    }
+
     // Start at top of bag
     const x0 = bagRect.left + bagRect.width * 0.45;
     const y0 = bagRect.top + 20;
@@ -610,24 +618,21 @@ function feedBag() {
                 rect.bottom - rect.height * 0.2
             );
 
-            // ⭐ DASHBOARD UPDATE (THIS IS THE NEW PART)
             recycleCount++;
 
             const counter = document.getElementById("recycle-count");
             const factBox = document.getElementById("fact-text");
-            const status = document.querySelector(".status .value");
 
             if (counter) counter.textContent = recycleCount;
             if (factBox) factBox.textContent = getRandomFact();
 
+            // ✅ STATUS → READY (END)
             if (status) {
-                status.textContent = "PROCESSING";
-                status.style.color = "#FFD200";
-
                 setTimeout(() => {
                     status.textContent = "READY";
-                    status.style.color = "#228B22";
-                }, 600);
+                    status.classList.remove("shredding");
+                    status.classList.add("ready");
+                }, 400);
             }
 
             obj.remove();
