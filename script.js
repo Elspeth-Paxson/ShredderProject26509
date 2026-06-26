@@ -559,13 +559,17 @@ function feedBag() {
     obj.className = `floating-print ${type}`;
     document.body.appendChild(obj);
 
-    // ✅ STATUS → SHREDDING (START)
+    // ✅ STATUS + BAR
     const status = document.querySelector(".status .value");
+    const bar = document.querySelector(".progress-fill");
+
     if (status) {
         status.textContent = "SHREDDING...";
         status.classList.remove("ready");
         status.classList.add("shredding");
     }
+
+    if (bar) bar.style.width = "0%";
 
     // Start at top of bag
     const x0 = bagRect.left + bagRect.width * 0.45;
@@ -575,7 +579,6 @@ function feedBag() {
     const x2 = rect.left + rect.width * 0.82;
     const y2 = rect.top + rect.height * 0.18;
 
-    // Arc control point
     const x1 = (x0 + x2) / 2;
     const y1 = Math.min(y0, y2) - 220;
 
@@ -588,6 +591,8 @@ function feedBag() {
         if (t > 1) t = 1;
 
         const e = 1 - Math.pow(1 - t, 3);
+
+        if (bar) bar.style.width = (t * 100) + "%";
 
         const x =
             (1 - e) * (1 - e) * x0 +
@@ -606,6 +611,8 @@ function feedBag() {
         if (t < 1) {
             requestAnimationFrame(animate);
         } else {
+
+            if (bar) bar.style.width = "100%";
 
             // bounce shredder
             img.classList.remove("pop");
@@ -626,14 +633,16 @@ function feedBag() {
             if (counter) counter.textContent = recycleCount;
             if (factBox) factBox.textContent = getRandomFact();
 
-            // ✅ STATUS → READY (END)
-            if (status) {
-                setTimeout(() => {
+            // ✅ RESET STATUS + BAR
+            setTimeout(() => {
+                if (status) {
                     status.textContent = "READY";
                     status.classList.remove("shredding");
                     status.classList.add("ready");
-                }, 400);
-            }
+                }
+
+                if (bar) bar.style.width = "0%";
+            }, 400);
 
             obj.remove();
         }
