@@ -1,3 +1,5 @@
+let recycleCount = 0;
+
 function sayHello(event) {
     alert("Welcome to the Plastic Shredder Project! 🚀");
 
@@ -546,19 +548,12 @@ function feedBag() {
 
     const img = document.getElementById("shredder-img");
     const bag = document.getElementById("feed-bag");
-    const output = document.getElementById("shredder-output");
 
     const rect = img.getBoundingClientRect();
     const bagRect = bag.getBoundingClientRect();
 
-    const shapes = [
-        "square",
-        "triangle",
-        "circle",
-        "hexagon"
-    ];
-
-    const type = shapes[Math.floor(Math.random()*shapes.length)];
+    const shapes = ["square", "triangle", "circle", "hexagon"];
+    const type = shapes[Math.floor(Math.random() * shapes.length)];
 
     const obj = document.createElement("div");
     obj.className = `floating-print ${type}`;
@@ -579,44 +574,61 @@ function feedBag() {
     const start = performance.now();
     const duration = 1800;
 
-    function animate(now){
+    function animate(now) {
 
-        let t = (now - start)/duration;
-        if(t>1) t=1;
+        let t = (now - start) / duration;
+        if (t > 1) t = 1;
 
-        const e = 1-Math.pow(1-t,3);
+        const e = 1 - Math.pow(1 - t, 3);
 
         const x =
-            (1-e)*(1-e)*x0 +
-            2*(1-e)*e*x1 +
-            e*e*x2;
+            (1 - e) * (1 - e) * x0 +
+            2 * (1 - e) * e * x1 +
+            e * e * x2;
 
         const y =
-            (1-e)*(1-e)*y0 +
-            2*(1-e)*e*y1 +
-            e*e*y2;
+            (1 - e) * (1 - e) * y0 +
+            2 * (1 - e) * e * y1 +
+            e * e * y2;
 
         obj.style.left = x + "px";
         obj.style.top = y + "px";
-        obj.style.transform = "translate(-50%,-50%)";
+        obj.style.transform = "translate(-50%, -50%)";
 
-        if(t<1){
+        if (t < 1) {
             requestAnimationFrame(animate);
-        }else{
+        } else {
 
+            // bounce shredder
             img.classList.remove("pop");
             void img.offsetWidth;
             img.classList.add("pop");
 
+            // confetti burst
             createConfetti(
-                rect.right-20,
-                rect.bottom-rect.height*0.2
+                rect.right - 20,
+                rect.bottom - rect.height * 0.2
             );
 
-            output.innerHTML = `
-                <p>♻️ Recycled successfully!</p>
-                <p>${getRandomFact()}</p>
-            `;
+            // ⭐ DASHBOARD UPDATE (THIS IS THE NEW PART)
+            recycleCount++;
+
+            const counter = document.getElementById("recycle-count");
+            const factBox = document.getElementById("fact-text");
+            const status = document.querySelector(".status .value");
+
+            if (counter) counter.textContent = recycleCount;
+            if (factBox) factBox.textContent = getRandomFact();
+
+            if (status) {
+                status.textContent = "PROCESSING";
+                status.style.color = "#FFD200";
+
+                setTimeout(() => {
+                    status.textContent = "READY";
+                    status.style.color = "#228B22";
+                }, 600);
+            }
 
             obj.remove();
         }
