@@ -532,26 +532,48 @@ function react(type) {
     const img = document.getElementById("shredder-img");
     const output = document.getElementById("shredder-output");
 
-    if (!img || !output) return;
+    const rect = img.getBoundingClientRect();
 
-    // pop animation
+    // create falling object
+    const obj = document.createElement("div");
+    obj.className = "falling-shape";
+
+    const icons = {
+        cube: "⬛",
+        string: "🧵",
+        warp: "🫠"
+    };
+
+    obj.innerText = icons[type];
+    document.body.appendChild(obj);
+
+    // start position (above screen center)
+    obj.style.left = window.innerWidth / 2 + "px";
+    obj.style.top = "80px";
+
+    // animate into shredder
+    setTimeout(() => {
+        obj.style.left = rect.right + "px";
+        obj.style.top = rect.top + rect.height / 2 + "px";
+        obj.style.transform = "scale(0.2)";
+        obj.style.opacity = "0";
+    }, 50);
+
+    // shredder bounce
     img.classList.remove("pop");
     void img.offsetWidth;
     img.classList.add("pop");
 
-    // confetti at center of shredder (not cursor-based)
-    const rect = img.getBoundingClientRect();
-    
-    // push origin to RIGHT side of shredder
+    // RIGHT-SIDE CONFETTI (unchanged function)
     createConfetti(
         rect.right + 10,
         rect.top + rect.height * 0.4
     );
 
     const facts = {
-        cube: "Calibration cubes help verify printer accuracy and tuning.",
-        string: "Stringing usually comes from temperature or retraction settings.",
-        warp: "Warping happens when plastic cools unevenly and shrinks."
+        cube: "Calibration cubes test dimensional accuracy.",
+        string: "Stringing is caused by temperature or retraction settings.",
+        warp: "Warping comes from uneven cooling shrinkage."
     };
 
     setTimeout(() => {
@@ -559,5 +581,6 @@ function react(type) {
             <p>♻️ Recycled successfully!</p>
             <p>${facts[type]}</p>
         `;
-    }, 300);
+        obj.remove();
+    }, 700);
 }
