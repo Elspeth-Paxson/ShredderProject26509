@@ -39,6 +39,7 @@
     <button class="tab" onclick="showTab('team', event)">Team 26509</button>
     <button class="tab" onclick="showTab('gallery', event)">Gallery</button>
     <button class="tab" onclick="showTab('design', event)">Design</button>
+    <button class="tab" onclick="showTab('lab', event)">Recycling Lab</button>
 </nav>
 
 <!-- HOME -->
@@ -275,6 +276,32 @@
     </div>
 
 </section>
+
+    <!-- RECYCLING LAB -->
+<section id="lab" class="tab-content" style="display:none;">
+
+    <h2>Recycling Lab</h2>
+
+    <p>Click a failed print to recycle it!</p>
+
+    <div class="print-options">
+
+        <div class="print" onclick="react('cube')">⬛ Cube Fail</div>
+        <div class="print" onclick="react('string')">🧵 Stringing</div>
+        <div class="print" onclick="react('warp')">🫠 Warped Print</div>
+
+    </div>
+
+    <div class="machine">
+        <img src="images/shredder.png" alt="Shredder" id="shredder-img">
+    </div>
+
+    <div id="shredder-output"></div>
+
+</section>
+
+<!-- needed for confetti -->
+<div id="confetti-container"></div>
 
 <footer>
     <p>Senior Design Project 2026</p>
