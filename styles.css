@@ -438,12 +438,6 @@ h3 {
     pointer-events: none;
 }
 
-/*.confetti {
-    position: absolute;
-    opacity: 1;
-    will-change: transform;
-}*/
-
 .shape-field {
     display: flex;
     justify-content: center;
@@ -464,23 +458,6 @@ h3 {
     border-radius: 6px;
 }
 
-/* circle */
-.string {
-    width: 45px;
-    height: 45px;
-    background: #AB0520;
-    border-radius: 50%;
-}
-
-/* triangle */
-.warp {
-    width: 0;
-    height: 0;
-    border-left: 23px solid transparent;
-    border-right: 23px solid transparent;
-    border-bottom: 45px solid #FFD200;
-}
-
 .shape:hover {
     transform: scale(1.2);
     filter: drop-shadow(0 0 10px rgba(0,255,150,0.5));
@@ -494,21 +471,41 @@ h3 {
     z-index: 9999;
 }
 
-#feed-bag {
-    width: 180px;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-#feed-bag:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 12px rgba(171, 5, 32, 0.4));
-}
-
 .floating-print {
     position: fixed;
     font-size: 28px;
     pointer-events: none;
     transition: all 0.8s cubic-bezier(.2,.8,.2,1);
     z-index: 9999;
+}
+
+.recycling-area{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:80px;
+    margin:40px 0;
+}
+
+.shredder-side{
+    flex:0 0 auto;
+}
+
+.bag-side{
+    flex:0 0 auto;
+}
+
+#shredder-img{
+    width:350px;
+}
+
+#feed-bag{
+    width:170px;
+    cursor:pointer;
+    transition:0.25s;
+}
+
+#feed-bag:hover{
+    transform:scale(1.06);
+    filter:drop-shadow(0 0 12px rgba(255,210,0,.6));
 }
