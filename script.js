@@ -606,11 +606,17 @@ function feedBag() {
     // random failed print types
     const prints = ["cube", "string", "warp"];
 
-    const icons = {
-        cube: "⬛",
-        string: "🧵",
-        warp: "🫠"
-    };
+const shapes = [
+    "square",
+    "triangle",
+    "circle",
+    "hexagon"
+];
+
+const type = shapes[Math.floor(Math.random()*shapes.length)];
+
+const obj = document.createElement("div");
+obj.className = `floating-print ${type}`;
 
     const type = prints[Math.floor(Math.random() * prints.length)];
 
@@ -665,9 +671,8 @@ function animate(now){
     obj.style.left = x + "px";
     obj.style.top = y + "px";
 
-    // Make it slowly shrink as it approaches
-    const scale = 1 - e * 0.65;
-    obj.style.transform = `translate(-50%,-50%) scale(${scale})`;
+    obj.style.transform =
+    "translate(-50%,-50%)";
 
     if(t < 1){
         requestAnimationFrame(animate);
