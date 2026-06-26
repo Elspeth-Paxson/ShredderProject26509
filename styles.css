@@ -623,9 +623,9 @@ h3 {
 .progress-fill {
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, #AB0520, #FF3B30);
+    background: linear-gradient(90deg, #228B22, #32CD32);
     border-radius: 999px;
-    transition: width 0.2s linear;
+    transition: width 0.08s linear;
 }
 
 /* fact box */
