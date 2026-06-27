@@ -1,48 +1,5 @@
 let recycleCount = 0;
 
-function createBinaryPulse(x, y) {
-
-    const pulse = document.createElement("div");
-
-    pulse.style.position = "absolute";
-    pulse.style.left = x + "px";
-    pulse.style.top = y + "px";
-
-    pulse.style.width = "10px";
-    pulse.style.height = "10px";
-    pulse.style.borderRadius = "50%";
-
-    pulse.style.background = "#39FF14";
-    pulse.style.boxShadow =
-        "0 0 12px #39FF14, 0 0 25px #39FF14, 0 0 40px rgba(57,255,20,0.6)";
-
-    pulse.style.transform = "translate(-50%, -50%)";
-    pulse.style.pointerEvents = "none";
-    pulse.style.opacity = "0.9";
-
-    document.getElementById("confetti-container").appendChild(pulse);
-
-    let size = 10;
-    let opacity = 0.9;
-
-    function animate() {
-        size += 10;
-        opacity *= 0.88;
-
-        pulse.style.width = size + "px";
-        pulse.style.height = size + "px";
-        pulse.style.opacity = opacity;
-
-        if (opacity > 0.05) {
-            requestAnimationFrame(animate);
-        } else {
-            pulse.remove();
-        }
-    }
-
-    animate();
-}
-
 function createBinaryRain(x, y) {
 
     const container = document.getElementById("confetti-container");
@@ -176,8 +133,6 @@ function teamEffect(type, name = "", event) {
 
     // Only Elspeth gets the binary effect
     if (name === "Elspeth") {
-        // 🔥 NEW: energy pulse synced with lightning
-        //createBinaryPulse(x, y);
         setTimeout(() => {
             createBinaryRain(x, y);
         }, 350);
