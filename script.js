@@ -6,34 +6,42 @@ function createBinaryRain(x, y) {
 
     const streams = 4;
 
+    // wider spacing zone around click
+    const laneSpread = 70; 
+
     for (let i = 0; i < streams; i++) {
 
         setTimeout(() => {
 
             const stream = document.createElement("div");
 
+            // 👉 FIX: assign each stream a "lane"
+            const laneOffset = (i - (streams - 1) / 2) * (laneSpread / streams);
+            const jitter = (Math.random() - 0.5) * 8; // tiny natural noise
+
             stream.style.position = "absolute";
-            stream.style.left = (x + (Math.random() * 40 - 20)) + "px";
+            stream.style.left = (x + laneOffset + jitter) + "px";
             stream.style.top = (y - 5) + "px";
-            stream.style.opacity = "0.75";
 
             stream.style.color = "#39FF14";
             stream.style.fontFamily = "Consolas, monospace";
             stream.style.fontSize = "13px";
             stream.style.lineHeight = "13px";
             stream.style.textAlign = "center";
-            stream.style.textShadow = "0 0 3px #39FF14";
+            stream.style.textShadow = "0 0 4px #39FF14";
             stream.style.pointerEvents = "none";
             stream.style.whiteSpace = "pre";
+
+            // slight depth variation so they don’t visually stack
+            stream.style.zIndex = 10 + i;
 
             container.appendChild(stream);
 
             let digits = "";
             let count = 0;
             let fall = 0;
-            let opacity = 1;
+            let opacity = 0.85;
 
-            // Add one digit every 70ms
             const writer = setInterval(() => {
 
                 digits += (Math.random() < 0.5 ? "0" : "1") + "\n";
@@ -49,8 +57,8 @@ function createBinaryRain(x, y) {
 
             function animate() {
 
-                fall += 0.45;      // gentle downward drift
-                opacity -= 0.008;  // slow fade
+                fall += 0.45;
+                opacity -= 0.008;
 
                 stream.style.transform = `translateY(${fall}px)`;
                 stream.style.opacity = opacity;
@@ -64,7 +72,7 @@ function createBinaryRain(x, y) {
 
             requestAnimationFrame(animate);
 
-        }, i * 130);   // stagger each stream
+        }, i * 120);
 
     }
 }
