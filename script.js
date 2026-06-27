@@ -63,12 +63,10 @@ function createBinaryRain(x, y) {
             stream.style.left = (x + laneOffset + jitter) + "px";
             stream.style.top = (y - 5) + "px";
 
-            stream.style.color = "#39FF14";
             stream.style.fontFamily = "Consolas, monospace";
             stream.style.fontSize = "13px";
             stream.style.lineHeight = "13px";
             stream.style.textAlign = "center";
-            stream.style.textShadow = "0 0 4px #39FF14";
             stream.style.pointerEvents = "none";
             stream.style.whiteSpace = "pre";
 
@@ -80,16 +78,25 @@ function createBinaryRain(x, y) {
             let count = 0;
             let maxLines = 8 + Math.floor(Math.random() * 3);
 
-            // ✅ FIX: properly defined
             let fall = 0;
-            let opacity = 0.9;
 
             const writer = setInterval(() => {
 
-                digits += (Math.random() < 0.5 ? "0" : "1") + "\n";
+                const bit = Math.random() < 0.5 ? "0" : "1";
+
+                digits += bit + "\n";
                 stream.textContent = digits;
 
                 count++;
+
+                // 🌟 EARLY DIGITS = BRIGHTER ENERGY
+                if (count <= 2) {
+                    stream.style.color = "#7CFF9A";
+                    stream.style.textShadow = "0 0 10px #39FF14";
+                } else {
+                    stream.style.color = "#39FF14";
+                    stream.style.textShadow = "0 0 4px #39FF14";
+                }
 
                 if (count >= maxLines) {
                     clearInterval(writer);
@@ -100,12 +107,14 @@ function createBinaryRain(x, y) {
             function animate() {
 
                 fall += 0.28;
-                opacity -= 0.0055;
+
+                // 🌙 fade gets stronger as it falls
+                const fade = 1 - (fall / 80);
 
                 stream.style.transform = `translateY(${fall}px)`;
-                stream.style.opacity = opacity;
+                stream.style.opacity = fade;
 
-                if (opacity > 0) {
+                if (fade > 0) {
                     requestAnimationFrame(animate);
                 } else {
                     stream.remove();
