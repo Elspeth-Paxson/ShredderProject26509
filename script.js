@@ -4,68 +4,67 @@ function createBinaryRain(x, y) {
 
     const container = document.getElementById("confetti-container");
 
-    // Number of little streams
-    const streams = 5;
+    const streams = 4;
 
     for (let i = 0; i < streams; i++) {
 
-        const stream = document.createElement("div");
-
-        // Build a random binary string
-        let text = "";
-
-        const length = Math.floor(Math.random() * 6) + 6; // 6-11 digits
-
-        for (let j = 0; j < length; j++) {
-            text += (Math.random() < 0.5 ? "0" : "1") + "<br>";
-        }
-
-        stream.innerHTML = text;
-
-        stream.style.position = "absolute";
-
-        stream.style.left =
-            (x + (Math.random() * 100 - 50)) + "px";
-
-        stream.style.top =
-            (y + (Math.random() * 30 - 15)) + "px";
-
-        stream.style.color = "#39FF14";
-        stream.style.fontFamily = "Consolas, monospace";
-        stream.style.fontSize = "13px";
-        stream.style.lineHeight = "13px";
-        stream.style.textAlign = "center";
-
-        stream.style.textShadow =
-            "0 0 8px #39FF14";
-
-        stream.style.pointerEvents = "none";
-
-        stream.style.opacity = "0";
-
-        container.appendChild(stream);
-
-        requestAnimationFrame(() => {
-
-            stream.style.transition =
-                "transform 1.6s linear, opacity 1.6s ease-out";
-
-            stream.style.opacity = "0.9";
-
-            // Drift downward
-            stream.style.transform =
-                `translateY(${50 + Math.random() * 40}px)`;
-        });
-
-        // Fade out
         setTimeout(() => {
-            stream.style.opacity = "0";
-        }, 900);
 
-        // Remove
-        setTimeout(() => {
-            stream.remove();
-        }, 1700);
+            const stream = document.createElement("div");
+
+            stream.style.position = "absolute";
+            stream.style.left = (x + (Math.random() * 40 - 20)) + "px";
+            stream.style.top = (y - 5) + "px";
+
+            stream.style.color = "#39FF14";
+            stream.style.fontFamily = "Consolas, monospace";
+            stream.style.fontSize = "13px";
+            stream.style.lineHeight = "13px";
+            stream.style.textAlign = "center";
+            stream.style.textShadow = "0 0 6px #39FF14";
+            stream.style.pointerEvents = "none";
+            stream.style.whiteSpace = "pre";
+
+            container.appendChild(stream);
+
+            let digits = "";
+            let count = 0;
+            let fall = 0;
+            let opacity = 1;
+
+            // Add one digit every 70ms
+            const writer = setInterval(() => {
+
+                digits += (Math.random() < 0.5 ? "0" : "1") + "\n";
+                stream.textContent = digits;
+
+                count++;
+
+                if (count >= 8) {
+                    clearInterval(writer);
+                }
+
+            }, 70);
+
+            function animate() {
+
+                fall += 0.45;      // gentle downward drift
+                opacity -= 0.008;  // slow fade
+
+                stream.style.transform = `translateY(${fall}px)`;
+                stream.style.opacity = opacity;
+
+                if (opacity > 0) {
+                    requestAnimationFrame(animate);
+                } else {
+                    stream.remove();
+                }
+            }
+
+            requestAnimationFrame(animate);
+
+        }, i * 130);   // stagger each stream
+
     }
 }
 
