@@ -1,155 +1,72 @@
 let recycleCount = 0;
 
-const TERMINAL_MESSAGES = [
-    [
-        "> compiling...",
-        "✔ success"
-    ],
-    [
-        "> initializing systems...",
-        "✔ online"
-    ],
-    [
-        "> powering shredder...",
-        "✔ ready"
-    ],
-    [
-        "> flashing firmware...",
-        "✔ complete"
-    ],
-    [
-        "> checking bugs...",
-        "✔ none found"
-    ],
-    [
-        "> git commit",
-        '"works on my machine"'
-    ]
-];
-
-const CODE_SNIPPETS = [
-    "// It works. Don't touch it.",
-    "digitalWrite(HIGH);",
-    'printf("Hello, World!");',
-    "return 0;",
-    "pinMode(LED_BUILTIN, OUTPUT);",
-    "// TODO: fix this later"
-];
-
-function createCodeSnippets(x, y) {
+function createBinaryRain(x, y) {
 
     const container = document.getElementById("confetti-container");
 
-    const snippets = [...CODE_SNIPPETS]
-        .sort(() => Math.random() - 0.5)
-        .slice(0,3);
+    // Number of little streams
+    const streams = 5;
 
-    snippets.forEach((text, index)=>{
+    for (let i = 0; i < streams; i++) {
 
-        const code = document.createElement("div");
+        const stream = document.createElement("div");
 
-        code.textContent = text;
+        // Build a random binary string
+        let text = "";
 
-        code.style.position = "absolute";
-        code.style.left = (x + (Math.random()*120-60)) + "px";
-        code.style.top = (y + (Math.random()*80-40)) + "px";
+        const length = Math.floor(Math.random() * 6) + 6; // 6-11 digits
 
-        code.style.fontFamily = "Consolas, monospace";
-        code.style.fontSize = "14px";
-        code.style.color = "#8CF8FF";
-        code.style.opacity = "0";
-
-        code.style.textShadow = "0 0 8px cyan";
-
-        code.style.pointerEvents = "none";
-
-        container.appendChild(code);
-
-        requestAnimationFrame(()=>{
-            code.style.transition =
-                "transform 2s ease-out, opacity 2s";
-
-            code.style.opacity = "1";
-            code.style.transform = "translateY(-40px)";
-        });
-
-        setTimeout(()=>{
-            code.style.opacity = "0";
-        },1400);
-
-        setTimeout(()=>{
-            code.remove();
-        },2200);
-
-    });
-
-}
-
-function createTerminal(x, y){
-
-    const container = document.getElementById("confetti-container");
-
-    const terminal = document.createElement("div");
-
-    terminal.style.position = "absolute";
-    terminal.style.left = (x+35) + "px";
-    terminal.style.top = (y-20) + "px";
-
-    terminal.style.background = "#111";
-    terminal.style.border = "1px solid #00E5FF";
-    terminal.style.borderRadius = "8px";
-
-    terminal.style.padding = "10px";
-
-    terminal.style.fontFamily = "Consolas, monospace";
-    terminal.style.fontSize = "13px";
-
-    terminal.style.color = "#7CFF8B";
-
-    terminal.style.boxShadow =
-        "0 0 18px rgba(0,229,255,.5)";
-
-    terminal.style.pointerEvents = "none";
-
-    terminal.style.whiteSpace = "pre";
-
-    container.appendChild(terminal);
-
-    const message =
-        TERMINAL_MESSAGES[
-            Math.floor(Math.random()*TERMINAL_MESSAGES.length)
-        ];
-
-    let line = 0;
-
-    function nextLine(){
-
-        if(line < message.length){
-
-            terminal.innerHTML += message[line] + "<br>";
-
-            line++;
-
-            setTimeout(nextLine,350);
-
-        } else {
-
-            setTimeout(()=>{
-                terminal.style.transition="opacity .6s";
-                terminal.style.opacity="0";
-
-                setTimeout(()=>{
-                    terminal.remove();
-                },600);
-
-            },800);
-
+        for (let j = 0; j < length; j++) {
+            text += (Math.random() < 0.5 ? "0" : "1") + "<br>";
         }
 
+        stream.innerHTML = text;
+
+        stream.style.position = "absolute";
+
+        stream.style.left =
+            (x + (Math.random() * 100 - 50)) + "px";
+
+        stream.style.top =
+            (y + (Math.random() * 30 - 15)) + "px";
+
+        stream.style.color = "#39FF14";
+        stream.style.fontFamily = "Consolas, monospace";
+        stream.style.fontSize = "13px";
+        stream.style.lineHeight = "13px";
+        stream.style.textAlign = "center";
+
+        stream.style.textShadow =
+            "0 0 8px #39FF14";
+
+        stream.style.pointerEvents = "none";
+
+        stream.style.opacity = "0";
+
+        container.appendChild(stream);
+
+        requestAnimationFrame(() => {
+
+            stream.style.transition =
+                "transform 1.6s linear, opacity 1.6s ease-out";
+
+            stream.style.opacity = "0.9";
+
+            // Drift downward
+            stream.style.transform =
+                `translateY(${50 + Math.random() * 40}px)`;
+        });
+
+        // Fade out
+        setTimeout(() => {
+            stream.style.opacity = "0";
+        }, 900);
+
+        // Remove
+        setTimeout(() => {
+            stream.remove();
+        }, 1700);
     }
-
-    nextLine();
-
 }
 
 function sayHello(event) {
@@ -199,10 +116,12 @@ function teamEffect(type, name = "", event) {
         );
     }, 180);
 
-    setTimeout(() => {
-        createTerminal(x, y);
-        createCodeSnippets(x, y);
-    }, 250);
+    // Only Elspeth gets the binary effect
+    if (name === "Elspeth") {
+        setTimeout(() => {
+            createBinaryRain(x, y);
+        }, 350);
+    }
 }
 
     if (type === "mechanical") {
