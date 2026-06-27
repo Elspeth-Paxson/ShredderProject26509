@@ -1,5 +1,157 @@
 let recycleCount = 0;
 
+const TERMINAL_MESSAGES = [
+    [
+        "> compiling...",
+        "✔ success"
+    ],
+    [
+        "> initializing systems...",
+        "✔ online"
+    ],
+    [
+        "> powering shredder...",
+        "✔ ready"
+    ],
+    [
+        "> flashing firmware...",
+        "✔ complete"
+    ],
+    [
+        "> checking bugs...",
+        "✔ none found"
+    ],
+    [
+        "> git commit",
+        '"works on my machine"'
+    ]
+];
+
+const CODE_SNIPPETS = [
+    "// It works. Don't touch it.",
+    "digitalWrite(HIGH);",
+    'printf("Hello, World!");',
+    "return 0;",
+    "pinMode(LED_BUILTIN, OUTPUT);",
+    "// TODO: fix this later"
+];
+
+function createCodeSnippets(x, y) {
+
+    const container = document.getElementById("confetti-container");
+
+    const snippets = [...CODE_SNIPPETS]
+        .sort(() => Math.random() - 0.5)
+        .slice(0,3);
+
+    snippets.forEach((text, index)=>{
+
+        const code = document.createElement("div");
+
+        code.textContent = text;
+
+        code.style.position = "absolute";
+        code.style.left = (x + (Math.random()*120-60)) + "px";
+        code.style.top = (y + (Math.random()*80-40)) + "px";
+
+        code.style.fontFamily = "Consolas, monospace";
+        code.style.fontSize = "14px";
+        code.style.color = "#8CF8FF";
+        code.style.opacity = "0";
+
+        code.style.textShadow = "0 0 8px cyan";
+
+        code.style.pointerEvents = "none";
+
+        container.appendChild(code);
+
+        requestAnimationFrame(()=>{
+            code.style.transition =
+                "transform 2s ease-out, opacity 2s";
+
+            code.style.opacity = "1";
+            code.style.transform = "translateY(-40px)";
+        });
+
+        setTimeout(()=>{
+            code.style.opacity = "0";
+        },1400);
+
+        setTimeout(()=>{
+            code.remove();
+        },2200);
+
+    });
+
+}
+
+function createTerminal(x, y){
+
+    const container = document.getElementById("confetti-container");
+
+    const terminal = document.createElement("div");
+
+    terminal.style.position = "absolute";
+    terminal.style.left = (x+35) + "px";
+    terminal.style.top = (y-20) + "px";
+
+    terminal.style.background = "#111";
+    terminal.style.border = "1px solid #00E5FF";
+    terminal.style.borderRadius = "8px";
+
+    terminal.style.padding = "10px";
+
+    terminal.style.fontFamily = "Consolas, monospace";
+    terminal.style.fontSize = "13px";
+
+    terminal.style.color = "#7CFF8B";
+
+    terminal.style.boxShadow =
+        "0 0 18px rgba(0,229,255,.5)";
+
+    terminal.style.pointerEvents = "none";
+
+    terminal.style.whiteSpace = "pre";
+
+    container.appendChild(terminal);
+
+    const message =
+        TERMINAL_MESSAGES[
+            Math.floor(Math.random()*TERMINAL_MESSAGES.length)
+        ];
+
+    let line = 0;
+
+    function nextLine(){
+
+        if(line < message.length){
+
+            terminal.innerHTML += message[line] + "<br>";
+
+            line++;
+
+            setTimeout(nextLine,350);
+
+        } else {
+
+            setTimeout(()=>{
+                terminal.style.transition="opacity .6s";
+                terminal.style.opacity="0";
+
+                setTimeout(()=>{
+                    terminal.remove();
+                },600);
+
+            },800);
+
+        }
+
+    }
+
+    nextLine();
+
+}
+
 function sayHello(event) {
     alert("Welcome to the Plastic Shredder Project! 🚀");
 
@@ -24,7 +176,7 @@ function teamEffect(type, name = "", event) {
     const x = event.clientX;
     const y = event.clientY;
 
-    if (type === "electrical") {
+    /*if (type === "electrical") {
         createRipple(x, y);
         createLightning(x, y);
 
@@ -34,7 +186,24 @@ function teamEffect(type, name = "", event) {
                 y + (Math.random() - 0.5) * 25
             );
         }, 180);
-    }
+    } */
+
+    if (type === "electrical") {
+    createRipple(x, y);
+    createLightning(x, y);
+
+    setTimeout(() => {
+        createLightningShort(
+            x + (Math.random() - 0.5) * 25,
+            y + (Math.random() - 0.5) * 25
+        );
+    }, 180);
+
+    setTimeout(() => {
+        createTerminal(x, y);
+        createCodeSnippets(x, y);
+    }, 250);
+}
 
     if (type === "mechanical") {
         createGears(x, y);
