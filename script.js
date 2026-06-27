@@ -15,13 +15,14 @@ function createBinaryRain(x, y) {
             stream.style.position = "absolute";
             stream.style.left = (x + (Math.random() * 40 - 20)) + "px";
             stream.style.top = (y - 5) + "px";
+            stream.style.opacity = "0.75";
 
             stream.style.color = "#39FF14";
             stream.style.fontFamily = "Consolas, monospace";
             stream.style.fontSize = "13px";
             stream.style.lineHeight = "13px";
             stream.style.textAlign = "center";
-            stream.style.textShadow = "0 0 6px #39FF14";
+            stream.style.textShadow = "0 0 3px #39FF14";
             stream.style.pointerEvents = "none";
             stream.style.whiteSpace = "pre";
 
