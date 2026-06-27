@@ -177,7 +177,7 @@ function teamEffect(type, name = "", event) {
     // Only Elspeth gets the binary effect
     if (name === "Elspeth") {
         // 🔥 NEW: energy pulse synced with lightning
-        createBinaryPulse(x, y);
+        //createBinaryPulse(x, y);
         setTimeout(() => {
             createBinaryRain(x, y);
         }, 350);
