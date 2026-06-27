@@ -48,9 +48,7 @@ function createBinaryRain(x, y) {
     const container = document.getElementById("confetti-container");
 
     const streams = 4;
-
-    // wider spacing zone around click
-    const laneSpread = 70; 
+    const laneSpread = 70;
 
     for (let i = 0; i < streams; i++) {
 
@@ -58,9 +56,8 @@ function createBinaryRain(x, y) {
 
             const stream = document.createElement("div");
 
-            // 👉 FIX: assign each stream a "lane"
             const laneOffset = (i - (streams - 1) / 2) * (laneSpread / streams);
-            const jitter = (Math.random() - 0.5) * 8; // tiny natural noise
+            const jitter = (Math.random() - 0.5) * 8;
 
             stream.style.position = "absolute";
             stream.style.left = (x + laneOffset + jitter) + "px";
@@ -75,15 +72,17 @@ function createBinaryRain(x, y) {
             stream.style.pointerEvents = "none";
             stream.style.whiteSpace = "pre";
 
-            // slight depth variation so they don’t visually stack
             stream.style.zIndex = 10 + i;
 
             container.appendChild(stream);
 
             let digits = "";
             let count = 0;
-            fall += 0.28 + (count * 0.01);
-            opacity -= 0.0055;
+            let maxLines = 8 + Math.floor(Math.random() * 3);
+
+            // ✅ FIX: properly defined
+            let fall = 0;
+            let opacity = 0.9;
 
             const writer = setInterval(() => {
 
@@ -92,7 +91,7 @@ function createBinaryRain(x, y) {
 
                 count++;
 
-                if (count >= 8) {
+                if (count >= maxLines) {
                     clearInterval(writer);
                 }
 
@@ -100,8 +99,8 @@ function createBinaryRain(x, y) {
 
             function animate() {
 
-                fall += 0.45;
-                opacity -= 0.008;
+                fall += 0.28;
+                opacity -= 0.0055;
 
                 stream.style.transform = `translateY(${fall}px)`;
                 stream.style.opacity = opacity;
@@ -116,7 +115,6 @@ function createBinaryRain(x, y) {
             requestAnimationFrame(animate);
 
         }, i * 120);
-
     }
 }
 
