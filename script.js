@@ -91,15 +91,24 @@ function sayHello(event) {
 }
 
 function showTab(tabId, event) {
-  const sections = document.querySelectorAll(".tab-content");
-  sections.forEach(section => section.style.display = "none");
+    // Hide all sections
+    const sections = document.querySelectorAll(".tab-content");
+    sections.forEach(section => section.style.display = "none");
 
-  const buttons = document.querySelectorAll(".tab");
-  buttons.forEach(btn => btn.classList.remove("active"));
+    // Remove active tab styling
+    const buttons = document.querySelectorAll(".tab");
+    buttons.forEach(btn => btn.classList.remove("active"));
 
-  document.getElementById(tabId).style.display = "block";
+    // Show the selected tab
+    document.getElementById(tabId).style.display = "block";
 
-  event.currentTarget.classList.add("active");
+    // Highlight the selected button
+    event.currentTarget.classList.add("active");
+
+    // Load the 3D model only when the Design tab is opened
+    if (tabId === "design") {
+        loadModel();
+    }
 }
 
 function teamEffect(type, name = "", event) {
@@ -764,4 +773,27 @@ function feedBag() {
     }
 
     requestAnimationFrame(animate);
+}
+
+let modelLoaded = false;
+
+function loadModel() {
+
+    if (modelLoaded) return;
+
+    const container = document.getElementById("model-container");
+
+    container.innerHTML = `
+        <model-viewer
+            src="models/MainAssembly_draco.glb"
+            alt="3D Plastic Shredder Model"
+            camera-controls
+            auto-rotate
+            shadow-intensity="1"
+            orientation="0deg 270deg 180deg"
+            style="width:100%; height:600px; background:#f5f5f5; border-radius:10px;">
+        </model-viewer>
+    `;
+
+    modelLoaded = true;
 }
