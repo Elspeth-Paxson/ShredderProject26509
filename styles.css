@@ -650,82 +650,88 @@ h3 {
     color: #AB0520;
 }
 
-/* =========================
+/* ==============================
    DESIGN RESOURCE BUTTONS
-   ========================= */
+   ============================== */
 
 .design-links {
     display: flex;
     justify-content: center;
-    align-items: stretch;
+    align-items: center;
     gap: 15px;
-    margin: 25px auto 10px auto;
+    margin: 30px auto 10px auto;
     flex-wrap: wrap;
 }
 
-.design-button {
-    display: flex;
+.design-links a.design-button {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    background: #0C234B;
+    box-sizing: border-box;
+
+    background-color: #0C234B;
     color: white;
 
-    padding: 14px 20px;
-    min-width: 200px;
+    padding: 14px 22px;
 
-    border-radius: 10px;
+    min-width: 210px;
+
     border: 2px solid #0C234B;
+    border-radius: 10px;
 
+    font-family: Arial, sans-serif;
     font-size: 16px;
     font-weight: bold;
+
     text-decoration: none;
 
     cursor: pointer;
 
     transition:
-        transform 0.2s ease,
         background-color 0.2s ease,
-        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
         box-shadow 0.2s ease;
 }
 
-/* Hover effect */
-.design-button:hover {
-    background: #AB0520;
+/* Hover */
+.design-links a.design-button:hover {
+    background-color: #AB0520;
     border-color: #AB0520;
     color: white;
 
+    text-decoration: none;
+
     transform: translateY(-4px);
 
-    box-shadow:
-        0 6px 15px rgba(171, 5, 32, 0.3),
-        0 0 12px rgba(171, 5, 32, 0.2);
+    box-shadow: 0 6px 15px rgba(171, 5, 32, 0.35);
 }
 
-/* Click effect */
-.design-button:active {
-    transform: translateY(-1px) scale(0.98);
+/* Click */
+.design-links a.design-button:active {
+    transform: translateY(-1px);
 }
 
-/* Keyboard accessibility */
-.design-button:focus-visible {
+/* Keyboard focus */
+.design-links a.design-button:focus-visible {
     outline: 3px solid #FFD200;
     outline-offset: 3px;
 }
 
-/* Mobile layout */
+/* Mobile */
 @media (max-width: 700px) {
 
     .design-links {
         flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
+        width: 100%;
     }
 
-    .design-button {
-        width: auto;
+    .design-links a.design-button {
+        width: 100%;
         min-width: 0;
     }
 }
+
+
 
