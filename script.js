@@ -112,54 +112,58 @@ function sayHello(event) {
 //}
 
 function showTab(tabId, event) {
-
-    // Prevent the button click from doing anything weird
+    // Stop the click from bubbling into the dropdown
     if (event) {
         event.preventDefault();
         event.stopPropagation();
     }
 
-    // Hide every content section
-    const sections = document.querySelectorAll(".tab-content");
-
-    sections.forEach(section => {
+    // Hide all tab content
+    document.querySelectorAll(".tab-content").forEach(section => {
         section.style.display = "none";
     });
 
-    // Remove active state from ALL navigation buttons
-    const buttons = document.querySelectorAll(".tabs .tab");
-
-    buttons.forEach(button => {
+    // Remove active styling from navigation buttons
+    document.querySelectorAll(".tabs .tab").forEach(button => {
         button.classList.remove("active");
     });
 
-    // Find requested section
-    const selectedSection = document.getElementById(tabId);
+    // Find the requested section
+    const section = document.getElementById(tabId);
 
-    if (!selectedSection) {
-        console.error("Could not find tab section:", tabId);
+    if (!section) {
+        console.error("Tab section not found:", tabId);
         return;
     }
 
-    // Show requested section
-    selectedSection.style.display = "block";
+    // Show it
+    section.style.display = "block";
 
+    // Which button should be highlighted?
+    if (tabId === "mechanical" || tabId === "electrical") {
+        // These are Design submenu pages
+        const designButton = document.querySelector(".dropdown > .tab");
 
-    // ==========================================
-    // MAIN TABS
-    // ==========================================
+        if (designButton) {
+            designButton.classList.add("active");
+        }
 
-    if (
-        tabId === "home" ||
-        tabId === "about" ||
-        tabId === "team" ||
-        tabId === "gallery" ||
-        tabId === "lab"
-    ) {
+        // Highlight the submenu button too
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add("active");
+        }
+    } else {
+        // Normal top-level tab
         if (event && event.currentTarget) {
             event.currentTarget.classList.add("active");
         }
     }
+
+    // Only attempt the 3D model when Design is opened
+    if (tabId === "design") {
+        loadModel();
+    }
+}
 
 
     // ==========================================
