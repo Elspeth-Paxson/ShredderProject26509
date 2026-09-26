@@ -742,12 +742,12 @@ h3 {
     display: inline-block;
 }
 
-/* The hidden submenu */
+/* Hidden until Design is hovered */
 .dropdown-menu {
     display: none;
 
     position: absolute;
-    top: calc(100% + 8px);
+    top: 100%;
     left: 50%;
     transform: translateX(-50%);
 
@@ -759,7 +759,7 @@ h3 {
     width: max-content;
 }
 
-/* ONLY show the submenu when hovering over Design */
+/* Show when hovering anywhere over the dropdown */
 .dropdown:hover .dropdown-menu {
     display: flex;
 }
@@ -768,11 +768,7 @@ h3 {
 .dropdown-menu .tab {
     width: 220px;
     box-sizing: border-box;
-
     padding: 18px 20px;
-
     white-space: nowrap;
 }
-
-
 
