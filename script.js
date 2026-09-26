@@ -90,6 +90,27 @@ function sayHello(event) {
     createConfetti(event.clientX, event.clientY);
 }
 
+//function showTab(tabId, event) {
+    // Hide all sections
+//    const sections = document.querySelectorAll(".tab-content");
+//    sections.forEach(section => section.style.display = "none");
+
+//    // Remove active tab styling
+//    const buttons = document.querySelectorAll(".tab");
+//    buttons.forEach(btn => btn.classList.remove("active"));
+//
+    // Show the selected tab
+//    document.getElementById(tabId).style.display = "block";
+
+    // Highlight the selected button
+//    event.currentTarget.classList.add("active");
+
+    // Load the 3D model only when the Design tab is opened
+//    if (tabId === "design") {
+//        loadModel();
+//    }
+//}
+
 function showTab(tabId, event) {
     // Hide all sections
     const sections = document.querySelectorAll(".tab-content");
@@ -99,17 +120,22 @@ function showTab(tabId, event) {
     const buttons = document.querySelectorAll(".tab");
     buttons.forEach(btn => btn.classList.remove("active"));
 
-    // Show the selected tab
+    // Show selected section
     document.getElementById(tabId).style.display = "block";
 
-    // Highlight the selected button
-    event.currentTarget.classList.add("active");
+    // Keep Design active for its dropdown pages
+    if (tabId === "mechanical" || tabId === "electrical") {
+        document.querySelector(".dropdown > .tab").classList.add("active");
+    } else {
+        event.currentTarget.classList.add("active");
+    }
 
-    // Load the 3D model only when the Design tab is opened
+    // Load 3D model when Design is opened
     if (tabId === "design") {
         loadModel();
     }
 }
+
 
 function teamEffect(type, name = "", event) {
     if (!event) return; // prevents crashes
