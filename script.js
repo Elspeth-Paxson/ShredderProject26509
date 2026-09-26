@@ -113,50 +113,88 @@ function sayHello(event) {
 
 function showTab(tabId, event) {
 
-    // Hide every page section
+    // Prevent the button click from doing anything weird
+    if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    // Hide every content section
     const sections = document.querySelectorAll(".tab-content");
 
     sections.forEach(section => {
         section.style.display = "none";
     });
 
-    // Remove active styling from every navigation button
-    const buttons = document.querySelectorAll(".tabs > .tab, .dropdown > .tab");
+    // Remove active state from ALL navigation buttons
+    const buttons = document.querySelectorAll(".tabs .tab");
 
     buttons.forEach(button => {
         button.classList.remove("active");
     });
 
-    // Find the section we are trying to open
+    // Find requested section
     const selectedSection = document.getElementById(tabId);
 
-    // Safety check
     if (!selectedSection) {
         console.error("Could not find tab section:", tabId);
         return;
     }
 
-    // Show selected section
+    // Show requested section
     selectedSection.style.display = "block";
 
-    // Mechanical and Electrical belong under Design
-    if (tabId === "mechanical" || tabId === "electrical") {
 
-        const designButton = document.querySelector(".dropdown > .tab");
+    // ==========================================
+    // MAIN TABS
+    // ==========================================
 
-        if (designButton) {
-            designButton.classList.add("active");
-        }
-
-    } else {
-
-        // Highlight the button that was clicked
+    if (
+        tabId === "home" ||
+        tabId === "about" ||
+        tabId === "team" ||
+        tabId === "gallery" ||
+        tabId === "lab"
+    ) {
         if (event && event.currentTarget) {
             event.currentTarget.classList.add("active");
         }
     }
 
-    // Only try to load the CAD model on Design
+
+    // ==========================================
+    // DESIGN + DESIGN SUBSECTIONS
+    // ==========================================
+
+    if (
+        tabId === "design" ||
+        tabId === "mechanical" ||
+        tabId === "electrical"
+    ) {
+
+        // Keep Design highlighted
+        const designButton =
+            document.querySelector(".dropdown > .tab");
+
+        if (designButton) {
+            designButton.classList.add("active");
+        }
+
+        // Highlight Mechanical/Electrical when selected
+        if (
+            (tabId === "mechanical" || tabId === "electrical") &&
+            event &&
+            event.currentTarget
+        ) {
+            event.currentTarget.classList.add("active");
+        }
+    }
+
+
+    // ==========================================
+    // LOAD CAD MODEL ONLY FOR DESIGN
+    // ==========================================
+
     if (tabId === "design") {
         loadModel();
     }
