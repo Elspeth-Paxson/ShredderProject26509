@@ -742,33 +742,89 @@ h3 {
     display: inline-block;
 }
 
-/* Hidden until Design is hovered */
+/* The Design button stays exactly like the other main tabs */
+.dropdown > .tab {
+    display: block;
+}
+
+/* Hidden until the mouse enters the entire Design area */
 .dropdown-menu {
     display: none;
 
     position: absolute;
-    top: 100%;
+    top: calc(100% - 2px);
     left: 50%;
     transform: translateX(-50%);
 
-    z-index: 1000;
+    width: 220px;
 
-    flex-direction: column;
-    gap: 8px;
+    padding-top: 8px;
 
-    width: max-content;
+    z-index: 10000;
 }
 
-/* Show when hovering anywhere over the dropdown */
+/*
+   IMPORTANT:
+   The transparent dropdown wrapper keeps the hover area connected
+   between Design and the submenu.
+*/
+.dropdown-menu::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+}
+
+/* Show dropdown while hovering anywhere inside .dropdown */
 .dropdown:hover .dropdown-menu {
     display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-/* Dropdown buttons */
+/* Submenu buttons */
 .dropdown-menu .tab {
+    display: block;
     width: 220px;
     box-sizing: border-box;
-    padding: 18px 20px;
-    white-space: nowrap;
+
+    padding: 16px 20px;
+
+    background: #0C234B;
+    color: white;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    text-align: center;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
+/* Submenu hover */
+.dropdown-menu .tab:hover {
+    background: #AB0520;
+    color: white;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 15px rgba(171, 5, 32, 0.35);
+
+    opacity: 1;
+}
+
+/* Active submenu */
+.dropdown-menu .tab.active {
+    background: #AB0520;
+    color: white;
+}
