@@ -113,28 +113,33 @@ function sayHello(event) {
 
 function showTab(tabId, event) {
 
-    // Hide all sections
+    // Hide every page section
     const sections = document.querySelectorAll(".tab-content");
 
     sections.forEach(section => {
         section.style.display = "none";
     });
 
-    // Remove active styling from all navigation buttons
-    const buttons = document.querySelectorAll(".tab");
+    // Remove active styling from every navigation button
+    const buttons = document.querySelectorAll(".tabs > .tab, .dropdown > .tab");
 
-    buttons.forEach(btn => {
-        btn.classList.remove("active");
+    buttons.forEach(button => {
+        button.classList.remove("active");
     });
 
-    // Show selected section
+    // Find the section we are trying to open
     const selectedSection = document.getElementById(tabId);
 
-    if (selectedSection) {
-        selectedSection.style.display = "block";
+    // Safety check
+    if (!selectedSection) {
+        console.error("Could not find tab section:", tabId);
+        return;
     }
 
-    // Keep Design highlighted when using its dropdown
+    // Show selected section
+    selectedSection.style.display = "block";
+
+    // Mechanical and Electrical belong under Design
     if (tabId === "mechanical" || tabId === "electrical") {
 
         const designButton = document.querySelector(".dropdown > .tab");
@@ -145,15 +150,17 @@ function showTab(tabId, event) {
 
     } else {
 
-        event.currentTarget.classList.add("active");
+        // Highlight the button that was clicked
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add("active");
+        }
     }
 
-    // Load 3D model when Design is opened
+    // Only try to load the CAD model on Design
     if (tabId === "design") {
         loadModel();
     }
 }
-
 
 
 function teamEffect(type, name = "", event) {
@@ -828,6 +835,12 @@ function loadModel() {
 
     const container = document.getElementById("model-container");
 
+    // Stop if the model container doesn't exist
+    if (!container) {
+        console.log("3D model container not found.");
+        return;
+    }
+
     container.innerHTML = `
         <model-viewer
             src="models/MainAssembly_draco.glb"
@@ -842,6 +855,7 @@ function loadModel() {
 
     modelLoaded = true;
 }
+
 
 /* ==============================
    DESIGN DROPDOWN MENU
