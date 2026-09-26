@@ -112,93 +112,51 @@ function sayHello(event) {
 //}
 
 function showTab(tabId, event) {
-    // Stop the click from bubbling into the dropdown
-    if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
 
-    // Hide all tab content
-    document.querySelectorAll(".tab-content").forEach(section => {
+    // Hide every page section
+    const sections = document.querySelectorAll(".tab-content");
+
+    sections.forEach(section => {
         section.style.display = "none";
     });
 
-    // Remove active styling from navigation buttons
-    document.querySelectorAll(".tabs .tab").forEach(button => {
+    // Remove active styling from every navigation button
+    const buttons = document.querySelectorAll(".tabs > .tab, .dropdown > .tab");
+
+    buttons.forEach(button => {
         button.classList.remove("active");
     });
 
-    // Find the requested section
-    const section = document.getElementById(tabId);
+    // Find the section we are trying to open
+    const selectedSection = document.getElementById(tabId);
 
-    if (!section) {
-        console.error("Tab section not found:", tabId);
+    // Safety check
+    if (!selectedSection) {
+        console.error("Could not find tab section:", tabId);
         return;
     }
 
-    // Show it
-    section.style.display = "block";
+    // Show selected section
+    selectedSection.style.display = "block";
 
-    // Which button should be highlighted?
+    // Mechanical and Electrical belong under Design
     if (tabId === "mechanical" || tabId === "electrical") {
-        // These are Design submenu pages
+
         const designButton = document.querySelector(".dropdown > .tab");
 
         if (designButton) {
             designButton.classList.add("active");
         }
 
-        // Highlight the submenu button too
-        if (event && event.currentTarget) {
-            event.currentTarget.classList.add("active");
-        }
     } else {
-        // Normal top-level tab
+
+        // Highlight the button that was clicked
         if (event && event.currentTarget) {
             event.currentTarget.classList.add("active");
         }
     }
 
-    // Only attempt the 3D model when Design is opened
-    if (tabId === "design") {
-        loadModel();
-    }
-}
-
-
-    // ==========================================
-    // DESIGN + DESIGN SUBSECTIONS
-    // ==========================================
-
-    if (
-        tabId === "design" ||
-        tabId === "mechanical" ||
-        tabId === "electrical"
-    ) {
-
-        // Keep Design highlighted
-        const designButton =
-            document.querySelector(".dropdown > .tab");
-
-        if (designButton) {
-            designButton.classList.add("active");
-        }
-
-        // Highlight Mechanical/Electrical when selected
-        if (
-            (tabId === "mechanical" || tabId === "electrical") &&
-            event &&
-            event.currentTarget
-        ) {
-            event.currentTarget.classList.add("active");
-        }
-    }
-
-
-    // ==========================================
-    // LOAD CAD MODEL ONLY FOR DESIGN
-    // ==========================================
-
+    // Only try to load the CAD model on Design
     if (tabId === "design") {
         loadModel();
     }
@@ -899,16 +857,16 @@ function loadModel() {
 }
 
 
-/* =========================================
-   DESIGN DROPDOWN
-   ========================================= */
+/* ==============================
+   DESIGN DROPDOWN MENU
+   ============================== */
 
 .dropdown {
     position: relative;
     display: inline-block;
 }
 
-/* Design button */
+/* Keep the Design button looking exactly like the other tabs */
 .dropdown > .tab {
     display: block;
 }
@@ -916,68 +874,34 @@ function loadModel() {
 /* Hidden by default */
 .dropdown-menu {
     display: none;
-
     position: absolute;
-
     top: 100%;
-    left: 50%;
+    left: 0;
 
-    transform: translateX(-50%);
+    min-width: 100%;
 
-    width: 220px;
+    padding-top: 8px;
 
-    padding-top: 10px;
-
-    z-index: 10000;
+    z-index: 1000;
 }
 
-/* Show when hovering Design */
+/* Show menu when hovering over Design */
 .dropdown:hover .dropdown-menu {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-/* Submenu buttons */
+/* Make the dropdown buttons look like your normal tabs */
 .dropdown-menu .tab {
-    width: 220px;
+    width: 100%;
+    min-width: 220px;
+    white-space: nowrap;
 
-    box-sizing: border-box;
-
-    padding: 16px 20px;
-
-    background: #0C234B;
-    color: white;
-
-    border: none;
-    border-radius: 10px;
-
-    font-size: 16px;
-    font-weight: bold;
-
-    cursor: pointer;
-
-    text-align: center;
-
-    margin: 0;
+    padding: 18px 30px;
 }
 
-/* Submenu hover */
+/* Don't let the submenu push the other tabs around */
 .dropdown-menu .tab:hover {
-    background: #AB0520;
-    color: white;
-
-    transform: translateY(-2px);
-
-    opacity: 1;
-}
-
-/* Active Design */
-.dropdown > .tab.active {
-    background: #AB0520;
-}
-
-/* Active submenu */
-.dropdown-menu .tab.active {
-    background: #AB0520;
+    transform: scale(1.03);
 }
