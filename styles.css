@@ -1,861 +1,737 @@
-let recycleCount = 0;
-
-function createBinaryRain(x, y) {
-
-    const container = document.getElementById("confetti-container");
-
-    const streams = 4;
-    const laneSpread = 70;
-
-    for (let i = 0; i < streams; i++) {
-
-        setTimeout(() => {
-
-            const stream = document.createElement("div");
-
-            const laneOffset = (i - (streams - 1) / 2) * (laneSpread / streams);
-            const jitter = (Math.random() - 0.5) * 8;
-
-            stream.style.position = "absolute";
-            stream.style.left = (x + laneOffset + jitter) + "px";
-            stream.style.top = (y - 5) + "px";
-
-            stream.style.fontFamily = "Consolas, monospace";
-            stream.style.fontSize = "13px";
-            stream.style.lineHeight = "13px";
-            stream.style.textAlign = "center";
-            stream.style.pointerEvents = "none";
-            stream.style.whiteSpace = "pre";
-
-            stream.style.zIndex = 10 + i;
-
-            container.appendChild(stream);
-
-            let digits = "";
-            let count = 0;
-            let maxLines = 8 + Math.floor(Math.random() * 3);
-
-            let fall = 0;
-
-            const writer = setInterval(() => {
-
-                const bit = Math.random() < 0.5 ? "0" : "1";
-
-                digits += bit + "\n";
-                stream.textContent = digits;
-
-                count++;
-
-                // 🌟 EARLY DIGITS = BRIGHTER ENERGY
-                if (count <= 2) {
-                    stream.style.color = "#7CFF9A";
-                    stream.style.textShadow = "0 0 10px #39FF14";
-                } else {
-                    stream.style.color = "#39FF14";
-                    stream.style.textShadow = "0 0 4px #39FF14";
-                }
-
-                if (count >= maxLines) {
-                    clearInterval(writer);
-                }
-
-            }, 70);
-
-            function animate() {
-
-                fall += 0.28;
-
-                // 🌙 fade gets stronger as it falls
-                const fade = 1 - (fall / 80);
-
-                stream.style.transform = `translateY(${fall}px)`;
-                stream.style.opacity = fade;
-
-                if (fade > 0) {
-                    requestAnimationFrame(animate);
-                } else {
-                    stream.remove();
-                }
-            }
-
-            requestAnimationFrame(animate);
-
-        }, i * 120);
-    }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f5f5f5;
+    color: #333;
 }
 
-function sayHello(event) {
-    alert("Welcome to the Plastic Shredder Project! 🚀");
-
-    createConfetti(event.clientX, event.clientY);
+header {
+    background: linear-gradient(135deg, #C8102E, #AB0520);
+    text-align: center;
+    padding: 40px 20px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
-//function showTab(tabId, event) {
-    // Hide all sections
-//    const sections = document.querySelectorAll(".tab-content");
-//    sections.forEach(section => section.style.display = "none");
+header h1,
+header h2 {
+    color: #0C234B;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.15);
+}
 
-//    // Remove active tab styling
-//    const buttons = document.querySelectorAll(".tab");
-//    buttons.forEach(btn => btn.classList.remove("active"));
-//
-    // Show the selected tab
-//    document.getElementById(tabId).style.display = "block";
+header p {
+    color: #0C234B;
+    opacity: 0.9;
+}
 
-    // Highlight the selected button
-//    event.currentTarget.classList.add("active");
+.logo {
+    width: 350px;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px auto;
 
-    // Load the 3D model only when the Design tab is opened
-//    if (tabId === "design") {
-//        loadModel();
-//    }
-//}
-
-function showTab(tabId, event) {
-
-    // Hide every page section
-    const sections = document.querySelectorAll(".tab-content");
-
-    sections.forEach(section => {
-        section.style.display = "none";
-    });
-
-    // Remove active styling from every navigation button
-    const buttons = document.querySelectorAll(".tabs > .tab, .dropdown > .tab");
-
-    buttons.forEach(button => {
-        button.classList.remove("active");
-    });
-
-    // Find the section we are trying to open
-    const selectedSection = document.getElementById(tabId);
-
-    // Safety check
-    if (!selectedSection) {
-        console.error("Could not find tab section:", tabId);
-        return;
-    }
-
-    // Show selected section
-    selectedSection.style.display = "block";
-
-    // Mechanical and Electrical belong under Design
-    if (tabId === "mechanical" || tabId === "electrical") {
-
-        const designButton = document.querySelector(".dropdown > .tab");
-
-        if (designButton) {
-            designButton.classList.add("active");
-        }
-
-    } else {
-
-        // Highlight the button that was clicked
-        if (event && event.currentTarget) {
-            event.currentTarget.classList.add("active");
-        }
-    }
-
-    // Only try to load the CAD model on Design
-    if (tabId === "design") {
-        loadModel();
-    }
+    filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.3));
 }
 
 
-function teamEffect(type, name = "", event) {
-    if (!event) return; // prevents crashes
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(171, 5, 32, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(171, 5, 32, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(171, 5, 32, 0.3);
+    }
+}
+.team-roster span {
+    background: #0C234B;   /* Arizona blue */
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: default;
+}
 
-    const x = event.clientX;
-    const y = event.clientY;
+.team-roster span:hover {
+    background: #FFD200;   /* gold highlight */
+    color: #0C234B;        /* blue text for contrast */
+    transform: translateY(-3px) scale(1.06);
+    box-shadow: 0 0 12px rgba(255, 210, 0, 0.6);
+}
 
-    /*if (type === "electrical") {
-        createRipple(x, y);
-        createLightning(x, y);
+/* ⚙️ Gears */
+.gear {
+    position: absolute;
+    font-size: 18px;
+    pointer-events: none;
+    will-change: transform;
+}
 
-        setTimeout(() => {
-            createLightningShort(
-                x + (Math.random() - 0.5) * 25,
-                y + (Math.random() - 0.5) * 25
-            );
-        }, 180);
-    } */
+section {
+    background-color: white;
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 900px;
+    border-radius: 10px;
+}
 
-    if (type === "electrical") {
-    createRipple(x, y);
-    createLightning(x, y);
+h2 {
+    color: #003366;
+}
 
-    setTimeout(() => {
-        createLightningShort(
-            x + (Math.random() - 0.5) * 25,
-            y + (Math.random() - 0.5) * 25
-        );
-    }, 180);
+footer {
+    text-align: center;
+    padding: 20px;
+}
 
-    // Only Elspeth gets the binary effect
-    if (name === "Elspeth") {
-        setTimeout(() => {
-            createBinaryRain(x, y);
-        }, 350);
+img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.tagline {
+    font-size: 1.2rem;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #0C234B;
+    font-size: 2rem;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.tab {
+    padding: 18px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    background: #0C234B;   /* Arizona blue */
+    color: white;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.tab:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* ACTIVE TAB */
+.tab.active {
+    background: #AB0520;   /* Arizona red */
+    color: white;
+}
+
+.tab-content {
+  padding: 10px;
+}
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.photo-card {
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.photo-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+}
+
+/* hover effect */
+.photo-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.photo-card:hover img {
+    transform: scale(1.08);
+}
+
+.photo-card p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #0C234B !important;
+    transition: color 0.25s ease;
+}
+
+.photo-card:hover p {
+    color: #AB0520 !important;
+    font-weight: bold;
+}
+
+.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 260px;
+    background: #e0e0e0;
+    color: #666;
+    font-style: italic;
+}
+
+.card {
+    background: #f5f5f5;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.slideshow {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+}
+
+.slide {
+    display: none;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.slide.active {
+    display: block;
+}
+
+.comparison {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 30px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.comparison-card {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.comparison-card img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.arrow-container {
+    font-size: 100px;
+    font-weight: bold;
+    animation:
+        arrowMove 1.5s infinite ease-in-out,
+        uaColors 3s infinite ease-in-out;
+}
+
+@keyframes arrowMove {
+    0%   { transform: translateX(0); }
+    50%  { transform: translateX(15px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes uaColors {
+    0% {
+        color: #AB0520;
+        text-shadow: 0 0 8px rgba(171, 5, 32, 0.5);
+    }
+
+    50% {
+        color: #0C234B;
+        text-shadow: 0 0 8px rgba(12, 35, 75, 0.5);
+    }
+
+    100% {
+        color: #AB0520;
+        text-shadow: 0 0 8px rgba(171, 5, 32, 0.5);
     }
 }
 
-    if (type === "mechanical") {
-        createGears(x, y);
+#confetti-container {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+}
 
-        if (name === "Marcus") {
-            setTimeout(() => {
-                createSpecialMarcusRocketLoop(x, y);
-            }, 200);
-        }
+.confetti {
+    position: absolute;
+    width: 8px;
+    height: 14px;
+    opacity: 1;
+    animation: explode 1.2s ease-out forwards;
+}
+
+@keyframes explode {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
     }
 
-    if (type === "management") {
-        createConfetti(x, y);
+    100% {
+        transform: translate(var(--x), var(--y)) rotate(720deg) scale(0.3);
+        opacity: 0;
+    }
+}
+.design-section {
+    margin-top: 30px;
+}
+
+.design-section h3 {
+    color: #0C234B;
+    font-size: 1.5rem;
+}
+
+.rocket {
+    position: absolute;
+    width: 18px;
+    height: 40px;
+    pointer-events: none;
+
+    transform: translate(-50%, -50%);
+    will-change: left, top;
+}
+
+/* 🚀 body */
+.rocket-body {
+    position: absolute;
+    width: 10px;
+    height: 26px;
+    left: 4px;
+    top: 6px;
+    background: linear-gradient(#e6e6e6, #9aa0a6);
+    border-radius: 6px;
+}
+
+/* 🔺 nose cone */
+.rocket-nose {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    left: 4px;
+    top: -2px;
+    background: #cfd8dc;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* 🔧 fins */
+.rocket-fin {
+    position: absolute;
+    width: 6px;
+    height: 10px;
+    bottom: 4px;
+    background: #607d8b;
+}
+
+.rocket-fin.left {
+    left: 0px;
+    clip-path: polygon(100% 0%, 0% 50%, 100% 100%);
+}
+
+.rocket-fin.right {
+    right: 0px;
+    clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
+}
+
+.rocket-flame {
+    position: absolute;
+    width: 8px;
+    height: 14px;
+    left: 5px;
+    bottom: -10px;
+
+    background: radial-gradient(circle, #00e5ff, #1e90ff, transparent);
+    filter: blur(1px);
+    opacity: 0.9;
+
+    transform-origin: top center;
+
+    animation: flameFlicker 0.08s infinite alternate;
+    transition: height 300ms ease, transform 300ms ease, opacity 300ms ease;
+}
+
+@keyframes flameFlicker {
+    0% { opacity: 0.9; filter: brightness(1.2); }
+    100% { opacity: 0.6; filter: brightness(0.8); }
+}
+
+/* 🚀 ignition boost state */
+.rocket.ignite .rocket-flame {
+    height: 28px;
+    transform: scaleY(1.6);
+    opacity: 1;
+}
+
+.print-options {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.print {
+    background: #eee;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+/* glow + hover pop */
+.print:hover {
+    background: #eafff3;
+    transform: scale(1.06);
+    box-shadow:
+        0 0 10px rgba(0, 255, 150, 0.35),
+        0 0 20px rgba(0, 255, 150, 0.2);
+}
+
+/* shredder image */
+#shredder-img {
+    width: 300px;
+    max-width: 100%;
+    transition: transform 0.2s ease;
+}
+
+/* cute bounce */
+.pop {
+    animation: pop 0.35s ease;
+}
+
+@keyframes pop {
+    0%   { transform: scale(1); }
+    30%  { transform: scale(1.08); }
+    60%  { transform: scale(0.97); }
+    100% { transform: scale(1); }
+}
+
+/* confetti */
+#confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+.shape-field {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.shape {
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+/* cube */
+.cube {
+    width: 45px;
+    height: 45px;
+    background: #0C234B;
+    border-radius: 6px;
+}
+
+.shape:hover {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 10px rgba(0,255,150,0.5));
+}
+
+.falling-shape {
+    position: fixed;
+    font-size: 28px;
+    pointer-events: none;
+    transition: all 0.6s ease;
+    z-index: 9999;
+}
+
+.floating-print {
+    position: fixed;
+    font-size: 28px;
+    pointer-events: none;
+    transition: all 0.8s cubic-bezier(.2,.8,.2,1);
+    z-index: 9999;
+}
+
+.recycling-area{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:80px;
+    margin:40px 0;
+}
+
+.shredder-side{
+    flex:0 0 auto;
+}
+
+.bag-side{
+    flex:0 0 auto;
+}
+
+#shredder-img{
+    width:350px;
+}
+
+#feed-bag{
+    width:170px;
+    cursor:pointer;
+    transition:0.25s;
+}
+
+#feed-bag:hover{
+    transform:scale(1.06);
+    filter:drop-shadow(0 0 12px rgba(255,210,0,.6));
+}
+
+.square{
+    width:32px;
+    height:32px;
+    background:#0C234B;
+    border-radius:4px;
+}
+
+.circle{
+    width:30px;
+    height:30px;
+    background:#AB0520;
+    border-radius:50%;
+}
+
+.triangle{
+    width:0;
+    height:0;
+    border-left:18px solid transparent;
+    border-right:18px solid transparent;
+    border-bottom:34px solid #FFD200;
+}
+
+.hexagon{
+    width:34px;
+    height:20px;
+    background:#0C234B;
+    clip-path:polygon(
+        25% 0%,
+        75% 0%,
+        100% 50%,
+        75% 100%,
+        25% 100%,
+        0% 50%
+    );
+}
+
+.dashboard {
+    max-width: 500px;
+    margin: 20px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    font-family: Arial, sans-serif;
+}
+
+/* header bar */
+.dash-header {
+    background: #AB0520; /* UA red */
+    color: white;
+    padding: 12px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* body */
+.dash-body {
+    background: #ffffff;
+    padding: 16px;
+}
+
+/* status line */
+
+/* SHREDDING state */
+@keyframes shreddingPulse {
+    0% {
+        text-shadow: 0 0 4px rgba(171, 5, 32, 0.2);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 12px rgba(171, 5, 32, 0.6);
+        transform: scale(1.03);
+    }
+    100% {
+        text-shadow: 0 0 4px rgba(171, 5, 32, 0.2);
+        transform: scale(1);
     }
 }
 
-function createRipple(x, y) {
-    const ripple = document.createElement("div");
-
-    ripple.style.position = "absolute";
-    ripple.style.left = x + "px";
-    ripple.style.top = y + "px";
-    ripple.style.width = "10px";
-    ripple.style.height = "10px";
-    ripple.style.borderRadius = "50%";
-    ripple.style.border = "2px solid rgba(0, 229, 255, 0.35)";
-    ripple.style.boxShadow = "0 0 12px rgba(0, 229, 255, 0.2)";
-    ripple.style.transform = "translate(-50%, -50%)";
-    ripple.style.pointerEvents = "none";
-    ripple.style.opacity = "0.6";
-
-    document.getElementById("confetti-container").appendChild(ripple);
-
-    let size = 10;
-    let opacity = 0.6;
-
-    function animate() {
-        size += 6;
-        opacity *= 0.93;
-
-        ripple.style.width = size + "px";
-        ripple.style.height = size + "px";
-        ripple.style.opacity = opacity;
-
-        if (opacity > 0.05) {
-            requestAnimationFrame(animate);
-        } else {
-            ripple.remove();
-        }
-    }
-
-    animate();
+/* "Status:" label */
+.status .label {
+    color: #0C234B; /* Arizona blue */
+    opacity: 0.9;
 }
 
-function createLightning(x, y) {
-    const container = document.getElementById("confetti-container");
-
-    const bolts = 4;
-
-    for (let b = 0; b < bolts; b++) {
-
-        const svgNS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(svgNS, "svg");
-
-        svg.style.position = "absolute";
-        svg.style.left = "0";
-        svg.style.top = "0";
-        svg.style.width = "100%";
-        svg.style.height = "100%";
-        svg.style.pointerEvents = "none";
-
-        const path = document.createElementNS(svgNS, "path");
-
-        // ⚡ direction per bolt
-        const baseAngle = Math.random() * Math.PI * 2;
-        const angle = baseAngle + (Math.random() - 0.5) * 0.5;
-
-        let d = `M ${x} ${y}`;
-
-        let segments = 7;
-        let length = 160 + Math.random() * 80;
-
-        let cx = x;
-        let cy = y;
-
-        for (let i = 0; i < segments; i++) {
-            let step = length / segments;
-
-            cx += Math.cos(angle) * step;
-            cy += Math.sin(angle) * step;
-
-            let wiggleX = (Math.random() - 0.5) * 25;
-            let wiggleY = (Math.random() - 0.5) * 25;
-
-            d += ` L ${cx + wiggleX} ${cy + wiggleY}`;
-        }
-
-        path.setAttribute("d", d);
-
-        // ⚡ CINEMATIC STROKE
-        path.setAttribute("stroke", "#BFF6FF");
-        path.setAttribute("stroke-width", "2.5");
-        path.setAttribute("fill", "none");
-        path.setAttribute("stroke-linecap", "round");
-        path.setAttribute("stroke-linejoin", "round");
-
-        // ⚡ CINEMATIC GLOW (IMPORTANT PART)
-        path.style.filter = `
-            drop-shadow(0 0 4px #00E5FF)
-            drop-shadow(0 0 10px #1E90FF)
-            drop-shadow(0 0 18px rgba(0, 229, 255, 0.6))
-        `;
-
-        // ⚡ DRAW ANIMATION
-        const lengthTotal = 400;
-        path.style.strokeDasharray = lengthTotal;
-        path.style.strokeDashoffset = lengthTotal;
-        path.style.transition =
-            "stroke-dashoffset 0.25s ease-out, opacity 0.6s ease-out";
-
-        // slight natural variation
-        path.style.opacity = 0.85 + Math.random() * 0.15;
-
-        svg.appendChild(path);
-        container.appendChild(svg);
-
-        requestAnimationFrame(() => {
-            path.style.strokeDashoffset = "0";
-        });
-
-        // fade out
-        setTimeout(() => {
-            path.style.opacity = "0";
-        }, 250 + Math.random() * 120);
-
-        setTimeout(() => {
-            svg.remove();
-        }, 700);
-    }
+/* value (READY / SHREDDING) */
+.status .value {
+    color: #0C234B;
+    transition: all 0.2s ease;
 }
 
-function createLightningShort(x, y) {
-    const container = document.getElementById("confetti-container");
-
-    const bolts = 3; // 👈 multiple strands again, but fewer than main
-
-    for (let b = 0; b < bolts; b++) {
-
-        const svgNS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(svgNS, "svg");
-
-        svg.style.position = "absolute";
-        svg.style.left = "0";
-        svg.style.top = "0";
-        svg.style.width = "100%";
-        svg.style.height = "100%";
-        svg.style.pointerEvents = "none";
-
-        const path = document.createElementNS(svgNS, "path");
-
-        const baseAngle = Math.random() * Math.PI * 2;
-        const angle = baseAngle + (Math.random() - 0.5) * 0.5;
-
-        let d = `M ${x} ${y}`;
-
-        // 🔥 shorter + simpler than main lightning
-        let segments = 5;
-        let length = 70 + Math.random() * 50;
-
-        let cx = x;
-        let cy = y;
-
-        for (let i = 0; i < segments; i++) {
-            let step = length / segments;
-
-            cx += Math.cos(angle) * step;
-            cy += Math.sin(angle) * step;
-
-            let wiggleX = (Math.random() - 0.5) * 18;
-            let wiggleY = (Math.random() - 0.5) * 18;
-
-            d += ` L ${cx + wiggleX} ${cy + wiggleY}`;
-        }
-
-        path.setAttribute("d", d);
-
-        // ⚡ slightly softer than main lightning
-        path.setAttribute("stroke", "#BFF6FF");
-        path.setAttribute("stroke-width", "2");
-        path.setAttribute("fill", "none");
-        path.setAttribute("stroke-linecap", "round");
-        path.setAttribute("stroke-linejoin", "round");
-
-        path.style.filter = `
-            drop-shadow(0 0 3px #00E5FF)
-            drop-shadow(0 0 8px #1E90FF)
-        `;
-
-        const lengthTotal = 250;
-        path.style.strokeDasharray = lengthTotal;
-        path.style.strokeDashoffset = lengthTotal;
-        path.style.transition =
-            "stroke-dashoffset 0.2s ease-out, opacity 0.4s ease-out";
-
-        svg.appendChild(path);
-        container.appendChild(svg);
-
-        requestAnimationFrame(() => {
-            path.style.strokeDashoffset = "0";
-        });
-
-        setTimeout(() => {
-            path.style.opacity = "0";
-        }, 180 + b * 40); // slight stagger = more natural
-
-        setTimeout(() => {
-            svg.remove();
-        }, 500);
-    }
+/* READY */
+.status .value.ready {
+    color: #0C234B;
 }
 
-function createGears(x, y) {
-    const container = document.getElementById("confetti-container");
-
-    for (let i = 0; i < 12; i++) {
-        const gear = document.createElement("div");
-        gear.classList.add("gear");
-        gear.innerText = "⚙️";
-
-        container.appendChild(gear);
-
-        let angle = Math.random() * 2 * Math.PI;
-        let speed = Math.random() * 7 + 3;
-        let distance = 0;
-
-        const vx = Math.cos(angle);
-        const vy = Math.sin(angle);
-
-        function animate() {
-            speed *= 0.96; // friction
-            distance += speed;
-
-            const posX = x + vx * distance;
-            const posY = y + vy * distance;
-
-            gear.style.left = posX + "px";
-            gear.style.top = posY + "px";
-
-            gear.style.transform = `rotate(${distance * 5}deg)`;
-
-            if (speed > 0.25) {
-                requestAnimationFrame(animate);
-            } else {
-                setTimeout(() => gear.remove(), 300);
-            }
-        }
-
-        animate();
-    }
+/* SHREDDING */
+.status .value.shredding {
+    color: #AB0520;
+    text-shadow: 0 0 8px rgba(171, 5, 32, 0.3);
+}
+.progress-bar {
+    width: 180px;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 999px;
+    overflow: hidden;
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
 }
 
-function createSpecialMarcusRocketLoop(x, y) {
-    const container = document.getElementById("confetti-container");
-
-    const rocket = document.createElement("div");
-    rocket.classList.add("rocket");
-
-    rocket.innerHTML = `
-        <div class="rocket-nose"></div>
-        <div class="rocket-body"></div>
-        <div class="rocket-fin left"></div>
-        <div class="rocket-fin right"></div>
-        <div class="rocket-flame"></div>
-    `;
-
-    container.appendChild(rocket);
-
-    const path = document.createElement("div");
-
-    path.style.position = "absolute";
-    path.style.width = "2px";
-    path.style.height = "0px";
-    path.style.pointerEvents = "none";
-
-    container.appendChild(path);
-
-    let phase = 1;
-    let t = 0;
-
-    const startX = x;
-    const startY = y;
-
-    const leftEdgeX = 140;
-    const topExitY = -150;
-
-    let posX = x;
-    let posY = y;
-    let ascentStartY = 0;
-
-    function pulse(x, y) {
-        const glow = document.createElement("div");
-
-        glow.style.position = "absolute";
-        glow.style.left = x + "px";
-        glow.style.top = y + "px";
-        glow.style.width = "10px";
-        glow.style.height = "10px";
-        glow.style.borderRadius = "50%";
-        glow.style.background = "rgba(0, 229, 255, 0.9)";
-        glow.style.boxShadow = "0 0 25px 10px rgba(0, 229, 255, 0.6)";
-        glow.style.transform = "translate(-50%, -50%)";
-        glow.style.pointerEvents = "none";
-
-        container.appendChild(glow);
-
-        let s = 10;
-        let o = 1;
-
-        function animate() {
-            s += 14;
-            o *= 0.85;
-
-            glow.style.width = s + "px";
-            glow.style.height = s + "px";
-            glow.style.opacity = o;
-
-            if (o > 0.05) {
-                requestAnimationFrame(animate);
-            } else {
-                glow.remove();
-            }
-        }
-
-        animate();
-    }
-
-    function animate() {
-
-        // =========================
-        // PHASE 1: MOVE LEFT
-        // =========================
-        if (phase === 1) {
-            t += 0.006;
-
-            posX = startX + (leftEdgeX - startX) * t;
-            posY = startY + Math.sin(t * Math.PI) * 35;
-        }
-        if (t >= 1) {
-            posX = leftEdgeX;
-            posY = startY;
-        
-            ascentStartY = posY;
-        
-            phase = 2;
-            t = 0;
-        
-            // 🚀 instead of explosion → ignition boost
-            rocket.classList.add("ignite");
-        
-            setTimeout(() => {
-                rocket.classList.remove("ignite");
-            }, 400);
-        }
-
-        // =========================
-        // PHASE 2: STRAIGHT UP (NO ROTATION EVER)
-        // =========================
-        else if (phase === 2) {
-
-            const speed = 0.004 + (t * 0.01);
-            t += speed;
-
-            posX = leftEdgeX;
-            posY = ascentStartY + (topExitY - ascentStartY) * t;
-
-            // tiny vibration ONLY (no directional drift)
-            posX += (Math.random() - 0.5) * 0.2;
-            posY += (Math.random() - 0.5) * 0.2;
-
-            path.style.left = leftEdgeX + "px";
-            path.style.top = ascentStartY + "px";
-            path.style.height = (ascentStartY - posY) + "px";
-
-            if (t >= 1) {
-                path.style.transition = "opacity 1.2s ease-out";
-                path.style.opacity = "0";
-
-                setTimeout(() => path.remove(), 1200);
-                rocket.remove();
-                return;
-            }
-        }
-
-        // =========================
-        // ONLY POSITION (NO ROTATION)
-        // =========================
-        rocket.style.left = posX + "px";
-        rocket.style.top = posY + "px";
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #228B22, #32CD32);
+    border-radius: 999px;
+    transition: width 0.08s linear;
 }
 
-function createConfetti(x, y) {
-    const container = document.getElementById("confetti-container");
-
-    const colors = ["#AB0520", "#0C234B", "#FFD200", "#aaaaaa"];
-
-    for (let i = 0; i < 60; i++) {
-        const piece = document.createElement("div");
-        piece.classList.add("confetti");
-
-        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-        piece.style.left = x + "px";
-        piece.style.top = y + "px";
-
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 250 + 50;
-
-        piece.style.setProperty("--x", Math.cos(angle) * distance + "px");
-        piece.style.setProperty("--y", Math.sin(angle) * distance + "px");
-
-        piece.style.width = (4 + Math.random() * 6) + "px";
-        piece.style.height = (6 + Math.random() * 10) + "px";
-
-        container.appendChild(piece);
-
-        setTimeout(() => piece.remove(), 1200);
-    }
-} 
-
-let slideIndex = 0;
-
-function showSlides() {
-    let slides = document.querySelectorAll(".slideshow .slide");
-
-    slides.forEach(slide => {
-        slide.classList.remove("active");
-    });
-
-    slideIndex++;
-
-    if (slideIndex > slides.length) {
-        slideIndex = 1;
-    }
-
-    slides[slideIndex - 1].classList.add("active");
-
-    setTimeout(showSlides, 3000); // changes image every 3 seconds
+/* fact box */
+.fact-box {
+    background: #f5f5f5;
+    border-left: 5px solid #0C234B;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 12px;
 }
 
-// start slideshow
-showSlides();
-
-function createConfetti(x, y) {
-    const container = document.getElementById("confetti-container");
-
-    const colors = ["#AB0520", "#0C234B", "#2f6fdd", "#aaaaaa", "#ffcc00"];
-
-    for (let i = 0; i < 80; i++) {   // 🔥 MORE PIECES = BIGGER EXPLOSION
-        const piece = document.createElement("div");
-        piece.classList.add("confetti");
-
-        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-        // start at click point
-        piece.style.left = x + "px";
-        piece.style.top = y + "px";
-
-        // 💥 RANDOM RADIAL EXPLOSION
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 300 + 50;  // BIGGER RANGE
-
-        const dx = Math.cos(angle) * distance + "px";
-        const dy = Math.sin(angle) * distance + "px";
-
-        piece.style.setProperty("--x", dx);
-        piece.style.setProperty("--y", dy);
-
-        // random size variation
-        const size = Math.random() * 8 + 4;
-        piece.style.width = size + "px";
-        piece.style.height = size * (Math.random() * 2 + 1) + "px";
-
-        container.appendChild(piece);
-
-        setTimeout(() => {
-            piece.remove();
-        }, 1200);
-    }
-}
-const SHREDDER_FACTS = [
-    "PLA is biodegradable under industrial composting conditions.",
-    "Calibration cubes test dimensional accuracy.",
-    "Warping happens from uneven cooling.",
-    "Lower print temperatures can reduce stringing.",
-    "Catalyst Studios generates around 50 kg of plastic waste each semester.",
-    "Recycling failed prints helps reduce landfill waste."
-];
-
-function getRandomFact() {
-    return SHREDDER_FACTS[
-        Math.floor(Math.random() * SHREDDER_FACTS.length)
-    ];
+.fact-title {
+    font-weight: bold;
+    color: #0C234B;
+    margin-bottom: 6px;
 }
 
-function feedBag() {
-
-    const img = document.getElementById("shredder-img");
-    const bag = document.getElementById("feed-bag");
-
-    const rect = img.getBoundingClientRect();
-    const bagRect = bag.getBoundingClientRect();
-
-    const shapes = ["square", "triangle", "circle", "hexagon"];
-    const type = shapes[Math.floor(Math.random() * shapes.length)];
-
-    const obj = document.createElement("div");
-    obj.className = `floating-print ${type}`;
-    document.body.appendChild(obj);
-
-    // ✅ STATUS + BAR
-    const status = document.querySelector(".status .value");
-    const bar = document.querySelector(".progress-fill");
-
-    if (status) {
-        status.textContent = "SHREDDING";
-        status.classList.remove("ready");
-        status.classList.add("shredding");
-    }
-
-    // ✅ SAFE BAR RESET
-    if (bar) {
-        bar.style.transition = "none";
-        bar.style.width = "0%";
-        bar.offsetHeight; // force reflow
-        bar.style.transition = "width 0.08s linear";
-    }
-
-    // Start at top of bag
-    const x0 = bagRect.left + bagRect.width * 0.45;
-    const y0 = bagRect.top + 20;
-
-    // End at shredder opening
-    const x2 = rect.left + rect.width * 0.82;
-    const y2 = rect.top + rect.height * 0.18;
-
-    const x1 = (x0 + x2) / 2;
-    const y1 = Math.min(y0, y2) - 220;
-
-    const start = performance.now();
-    const duration = 1800;
-
-    function animate(now) {
-
-        let t = (now - start) / duration;
-        if (t > 1) t = 1;
-
-        const e = 1 - Math.pow(1 - t, 3);
-
-        if (bar) bar.style.width = (t * 100) + "%";
-
-        const x =
-            (1 - e) * (1 - e) * x0 +
-            2 * (1 - e) * e * x1 +
-            e * e * x2;
-
-        const y =
-            (1 - e) * (1 - e) * y0 +
-            2 * (1 - e) * e * y1 +
-            e * e * y2;
-
-        obj.style.left = x + "px";
-        obj.style.top = y + "px";
-        obj.style.transform = "translate(-50%, -50%)";
-
-        if (t < 1) {
-            requestAnimationFrame(animate);
-        } else {
-
-            if (bar) bar.style.width = "100%";
-
-            // bounce shredder
-            img.classList.remove("pop");
-            void img.offsetWidth;
-            img.classList.add("pop");
-
-            // confetti burst
-            createConfetti(
-                rect.right - 20,
-                rect.bottom - rect.height * 0.2
-            );
-
-            recycleCount++;
-
-            const counter = document.getElementById("recycle-count");
-            const factBox = document.getElementById("fact-text");
-
-            if (counter) counter.textContent = recycleCount;
-            if (factBox) factBox.textContent = getRandomFact();
-
-            // ✅ RESET STATUS + BAR
-            setTimeout(() => {
-                if (status) {
-                    status.textContent = "READY";
-                    status.classList.remove("shredding");
-                    status.classList.add("ready");
-                }
-
-                if (bar) {
-                    bar.style.transition = "none";
-                    bar.style.width = "0%";
-                    bar.offsetHeight;
-                    bar.style.transition = "width 0.08s linear";
-                }
-
-            }, 400);
-
-            obj.remove();
-        }
-    }
-
-    requestAnimationFrame(animate);
+/* counter */
+.counter {
+    text-align: right;
+    font-weight: bold;
+    color: #AB0520;
 }
 
-let modelLoaded = false;
+/* ==============================
+   DESIGN RESOURCE BUTTONS
+   ============================== */
 
-function loadModel() {
-
-    if (modelLoaded) return;
-
-    const container = document.getElementById("model-container");
-
-    // Stop if the model container doesn't exist
-    if (!container) {
-        console.log("3D model container not found.");
-        return;
-    }
-
-    container.innerHTML = `
-        <model-viewer
-            src="models/MainAssembly_draco.glb"
-            alt="3D Plastic Shredder Model"
-            camera-controls
-            auto-rotate
-            shadow-intensity="1"
-            orientation="0deg 270deg 180deg"
-            style="width:100%; height:600px; background:#f5f5f5; border-radius:10px;">
-        </model-viewer>
-    `;
-
-    modelLoaded = true;
+.design-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 30px auto 10px auto;
+    flex-wrap: wrap;
 }
 
+.design-links a.design-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+
+    background-color: #0C234B;
+    color: white;
+
+    padding: 14px 22px;
+
+    min-width: 210px;
+
+    border: 2px solid #0C234B;
+    border-radius: 10px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+/* Hover */
+.design-links a.design-button:hover {
+    background-color: #AB0520;
+    border-color: #AB0520;
+    color: white;
+
+    text-decoration: none;
+
+    transform: translateY(-4px);
+
+    box-shadow: 0 6px 15px rgba(171, 5, 32, 0.35);
+}
+
+/* Click */
+.design-links a.design-button:active {
+    transform: translateY(-1px);
+}
+
+/* Keyboard focus */
+.design-links a.design-button:focus-visible {
+    outline: 3px solid #FFD200;
+    outline-offset: 3px;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+
+    .design-links {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .design-links a.design-button {
+        width: 100%;
+        min-width: 0;
+    }
+}
 
 /* ==============================
    DESIGN DROPDOWN MENU
@@ -866,42 +742,32 @@ function loadModel() {
     display: inline-block;
 }
 
-/* Keep the Design button looking exactly like the other tabs */
-.dropdown > .tab {
-    display: block;
-}
-
-/* Hidden by default */
+/* Hidden until Design is hovered */
 .dropdown-menu {
     display: none;
+
     position: absolute;
     top: 100%;
-    left: 0;
-
-    min-width: 100%;
-
-    padding-top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
 
     z-index: 1000;
-}
 
-/* Show menu when hovering over Design */
-.dropdown:hover .dropdown-menu {
-    display: flex;
     flex-direction: column;
     gap: 8px;
+
+    width: max-content;
 }
 
-/* Make the dropdown buttons look like your normal tabs */
+/* Show when hovering anywhere over the dropdown */
+.dropdown:hover .dropdown-menu {
+    display: flex;
+}
+
+/* Dropdown buttons */
 .dropdown-menu .tab {
-    width: 100%;
-    min-width: 220px;
+    width: 220px;
+    box-sizing: border-box;
+    padding: 18px 20px;
     white-space: nowrap;
-
-    padding: 18px 30px;
-}
-
-/* Don't let the submenu push the other tabs around */
-.dropdown-menu .tab:hover {
-    transform: scale(1.03);
 }
