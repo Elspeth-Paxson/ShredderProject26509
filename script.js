@@ -797,3 +797,53 @@ function loadModel() {
 
     modelLoaded = true;
 }
+
+/* ==============================
+   DESIGN DROPDOWN MENU
+   ============================== */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Keep the Design button looking exactly like the other tabs */
+.dropdown > .tab {
+    display: block;
+}
+
+/* Hidden by default */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    min-width: 100%;
+
+    padding-top: 8px;
+
+    z-index: 1000;
+}
+
+/* Show menu when hovering over Design */
+.dropdown:hover .dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Make the dropdown buttons look like your normal tabs */
+.dropdown-menu .tab {
+    width: 100%;
+    min-width: 220px;
+    white-space: nowrap;
+
+    padding: 18px 30px;
+}
+
+/* Don't let the submenu push the other tabs around */
+.dropdown-menu .tab:hover {
+    transform: scale(1.03);
+}
+
