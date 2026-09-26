@@ -783,6 +783,8 @@ function loadModel() {
 
     const container = document.getElementById("model-container");
 
+    if (!container) return;
+
     container.innerHTML = `
         <model-viewer
             src="models/MainAssembly_draco.glb"
