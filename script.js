@@ -2,829 +2,783 @@ let recycleCount = 0;
 
 function createBinaryRain(x, y) {
 
-    const container = document.getElementById("confetti-container");
+const container = document.getElementById("confetti-container");
 
-    const streams = 4;
-    const laneSpread = 70;
+const streams = 4;
+const laneSpread = 70;
 
-    for (let i = 0; i < streams; i++) {
+for (let i = 0; i < streams; i++) {
 
-        setTimeout(() => {
+setTimeout(() => {
 
-            const stream = document.createElement("div");
+const stream = document.createElement("div");
 
-            const laneOffset = (i - (streams - 1) / 2) * (laneSpread / streams);
-            const jitter = (Math.random() - 0.5) * 8;
+const laneOffset = (i - (streams - 1) / 2) * (laneSpread / streams);
+const jitter = (Math.random() - 0.5) * 8;
 
-            stream.style.position = "absolute";
-            stream.style.left = (x + laneOffset + jitter) + "px";
-            stream.style.top = (y - 5) + "px";
+stream.style.position = "absolute";
+stream.style.left = (x + laneOffset + jitter) + "px";
+stream.style.top = (y - 5) + "px";
 
-            stream.style.fontFamily = "Consolas, monospace";
-            stream.style.fontSize = "13px";
-            stream.style.lineHeight = "13px";
-            stream.style.textAlign = "center";
-            stream.style.pointerEvents = "none";
-            stream.style.whiteSpace = "pre";
+stream.style.fontFamily = "Consolas, monospace";
+stream.style.fontSize = "13px";
+stream.style.lineHeight = "13px";
+stream.style.textAlign = "center";
+stream.style.pointerEvents = "none";
+stream.style.whiteSpace = "pre";
 
-            stream.style.zIndex = 10 + i;
+stream.style.zIndex = 10 + i;
 
-            container.appendChild(stream);
+container.appendChild(stream);
 
-            let digits = "";
-            let count = 0;
-            let maxLines = 8 + Math.floor(Math.random() * 3);
+let digits = "";
+let count = 0;
+let maxLines = 8 + Math.floor(Math.random() * 3);
 
-            let fall = 0;
+let fall = 0;
 
-            const writer = setInterval(() => {
+const writer = setInterval(() => {
 
-                const bit = Math.random() < 0.5 ? "0" : "1";
+const bit = Math.random() < 0.5 ? "0" : "1";
 
-                digits += bit + "\n";
-                stream.textContent = digits;
+digits += bit + "\n";
+stream.textContent = digits;
 
-                count++;
+count++;
 
-                // 🌟 EARLY DIGITS = BRIGHTER ENERGY
-                if (count <= 2) {
-                    stream.style.color = "#7CFF9A";
-                    stream.style.textShadow = "0 0 10px #39FF14";
-                } else {
-                    stream.style.color = "#39FF14";
-                    stream.style.textShadow = "0 0 4px #39FF14";
-                }
+// 🌟 EARLY DIGITS = BRIGHTER ENERGY
+if (count <= 2) {
+stream.style.color = "#7CFF9A";
+stream.style.textShadow = "0 0 10px #39FF14";
+} else {
+stream.style.color = "#39FF14";
+stream.style.textShadow = "0 0 4px #39FF14";
+}
 
-                if (count >= maxLines) {
-                    clearInterval(writer);
-                }
+if (count >= maxLines) {
+clearInterval(writer);
+}
 
-            }, 70);
+}, 70);
 
-            function animate() {
+function animate() {
 
-                fall += 0.28;
+fall += 0.28;
 
-                // 🌙 fade gets stronger as it falls
-                const fade = 1 - (fall / 80);
+// 🌙 fade gets stronger as it falls
+const fade = 1 - (fall / 80);
 
-                stream.style.transform = `translateY(${fall}px)`;
-                stream.style.opacity = fade;
+stream.style.transform = `translateY(${fall}px)`;
+stream.style.opacity = fade;
 
-                if (fade > 0) {
-                    requestAnimationFrame(animate);
-                } else {
-                    stream.remove();
-                }
-            }
+if (fade > 0) {
+requestAnimationFrame(animate);
+} else {
+stream.remove();
+}
+}
 
-            requestAnimationFrame(animate);
+requestAnimationFrame(animate);
 
-        }, i * 120);
-    }
+}, i * 120);
+}
 }
 
 function sayHello(event) {
-    alert("Welcome to the Plastic Shredder Project! 🚀");
+alert("Welcome to the Plastic Shredder Project! 🚀");
 
-    createConfetti(event.clientX, event.clientY);
+createConfetti(event.clientX, event.clientY);
 }
 
-//function showTab(tabId, event) {
+function showTab(tabId, event) {
+  const sections = document.querySelectorAll(".tab-content");
+  sections.forEach(section => section.style.display = "none");
     // Hide all sections
-//    const sections = document.querySelectorAll(".tab-content");
-//    sections.forEach(section => section.style.display = "none");
+    const sections = document.querySelectorAll(".tab-content");
+    sections.forEach(section => section.style.display = "none");
 
-//    // Remove active tab styling
-//    const buttons = document.querySelectorAll(".tab");
-//    buttons.forEach(btn => btn.classList.remove("active"));
-//
+  const buttons = document.querySelectorAll(".tab");
+  buttons.forEach(btn => btn.classList.remove("active"));
+    // Remove active tab styling
+    const buttons = document.querySelectorAll(".tab");
+    buttons.forEach(btn => btn.classList.remove("active"));
+
+  document.getElementById(tabId).style.display = "block";
     // Show the selected tab
-//    document.getElementById(tabId).style.display = "block";
+    document.getElementById(tabId).style.display = "block";
 
+  event.currentTarget.classList.add("active");
     // Highlight the selected button
-//    event.currentTarget.classList.add("active");
+    event.currentTarget.classList.add("active");
 
     // Load the 3D model only when the Design tab is opened
-//    if (tabId === "design") {
-//        loadModel();
-//    }
-//}
-
-function showTab(tabId, event) {
-
-    // Hide every page section
-    const sections = document.querySelectorAll(".tab-content");
-
-    sections.forEach(section => {
-        section.style.display = "none";
-    });
-
-    // Remove active styling from every navigation button
-    const buttons = document.querySelectorAll(".tabs > .tab, .dropdown > .tab");
-
-    buttons.forEach(button => {
-        button.classList.remove("active");
-    });
-
-    // Find the section we are trying to open
-    const selectedSection = document.getElementById(tabId);
-
-    // Safety check
-    if (!selectedSection) {
-        console.error("Could not find tab section:", tabId);
-        return;
-    }
-
-    // Show selected section
-    selectedSection.style.display = "block";
-
-    // Mechanical and Electrical belong under Design
-    if (tabId === "mechanical" || tabId === "electrical") {
-
-        const designButton = document.querySelector(".dropdown > .tab");
-
-        if (designButton) {
-            designButton.classList.add("active");
-        }
-
-    } else {
-
-        // Highlight the button that was clicked
-        if (event && event.currentTarget) {
-            event.currentTarget.classList.add("active");
-        }
-    }
-
-    // Only try to load the CAD model on Design
     if (tabId === "design") {
         loadModel();
     }
 }
 
-
 function teamEffect(type, name = "", event) {
-    if (!event) return; // prevents crashes
+if (!event) return; // prevents crashes
 
-    const x = event.clientX;
-    const y = event.clientY;
+const x = event.clientX;
+const y = event.clientY;
 
-    /*if (type === "electrical") {
-        createRipple(x, y);
-        createLightning(x, y);
+/*if (type === "electrical") {
+       createRipple(x, y);
+       createLightning(x, y);
 
-        setTimeout(() => {
-            createLightningShort(
-                x + (Math.random() - 0.5) * 25,
-                y + (Math.random() - 0.5) * 25
-            );
-        }, 180);
-    } */
+       setTimeout(() => {
+           createLightningShort(
+               x + (Math.random() - 0.5) * 25,
+               y + (Math.random() - 0.5) * 25
+           );
+       }, 180);
+   } */
 
-    if (type === "electrical") {
-    createRipple(x, y);
-    createLightning(x, y);
+if (type === "electrical") {
+createRipple(x, y);
+createLightning(x, y);
 
-    setTimeout(() => {
-        createLightningShort(
-            x + (Math.random() - 0.5) * 25,
-            y + (Math.random() - 0.5) * 25
-        );
-    }, 180);
+setTimeout(() => {
+createLightningShort(
+x + (Math.random() - 0.5) * 25,
+y + (Math.random() - 0.5) * 25
+);
+}, 180);
 
-    // Only Elspeth gets the binary effect
-    if (name === "Elspeth") {
-        setTimeout(() => {
-            createBinaryRain(x, y);
-        }, 350);
-    }
+// Only Elspeth gets the binary effect
+if (name === "Elspeth") {
+setTimeout(() => {
+createBinaryRain(x, y);
+}, 350);
+}
 }
 
-    if (type === "mechanical") {
-        createGears(x, y);
+if (type === "mechanical") {
+createGears(x, y);
 
-        if (name === "Marcus") {
-            setTimeout(() => {
-                createSpecialMarcusRocketLoop(x, y);
-            }, 200);
-        }
-    }
+if (name === "Marcus") {
+setTimeout(() => {
+createSpecialMarcusRocketLoop(x, y);
+}, 200);
+}
+}
 
-    if (type === "management") {
-        createConfetti(x, y);
-    }
+if (type === "management") {
+createConfetti(x, y);
+}
 }
 
 function createRipple(x, y) {
-    const ripple = document.createElement("div");
+const ripple = document.createElement("div");
 
-    ripple.style.position = "absolute";
-    ripple.style.left = x + "px";
-    ripple.style.top = y + "px";
-    ripple.style.width = "10px";
-    ripple.style.height = "10px";
-    ripple.style.borderRadius = "50%";
-    ripple.style.border = "2px solid rgba(0, 229, 255, 0.35)";
-    ripple.style.boxShadow = "0 0 12px rgba(0, 229, 255, 0.2)";
-    ripple.style.transform = "translate(-50%, -50%)";
-    ripple.style.pointerEvents = "none";
-    ripple.style.opacity = "0.6";
+ripple.style.position = "absolute";
+ripple.style.left = x + "px";
+ripple.style.top = y + "px";
+ripple.style.width = "10px";
+ripple.style.height = "10px";
+ripple.style.borderRadius = "50%";
+ripple.style.border = "2px solid rgba(0, 229, 255, 0.35)";
+ripple.style.boxShadow = "0 0 12px rgba(0, 229, 255, 0.2)";
+ripple.style.transform = "translate(-50%, -50%)";
+ripple.style.pointerEvents = "none";
+ripple.style.opacity = "0.6";
 
-    document.getElementById("confetti-container").appendChild(ripple);
+document.getElementById("confetti-container").appendChild(ripple);
 
-    let size = 10;
-    let opacity = 0.6;
+let size = 10;
+let opacity = 0.6;
 
-    function animate() {
-        size += 6;
-        opacity *= 0.93;
+function animate() {
+size += 6;
+opacity *= 0.93;
 
-        ripple.style.width = size + "px";
-        ripple.style.height = size + "px";
-        ripple.style.opacity = opacity;
+ripple.style.width = size + "px";
+ripple.style.height = size + "px";
+ripple.style.opacity = opacity;
 
-        if (opacity > 0.05) {
-            requestAnimationFrame(animate);
-        } else {
-            ripple.remove();
-        }
-    }
+if (opacity > 0.05) {
+requestAnimationFrame(animate);
+} else {
+ripple.remove();
+}
+}
 
-    animate();
+animate();
 }
 
 function createLightning(x, y) {
-    const container = document.getElementById("confetti-container");
+const container = document.getElementById("confetti-container");
 
-    const bolts = 4;
+const bolts = 4;
 
-    for (let b = 0; b < bolts; b++) {
+for (let b = 0; b < bolts; b++) {
 
-        const svgNS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(svgNS, "svg");
+const svgNS = "http://www.w3.org/2000/svg";
+const svg = document.createElementNS(svgNS, "svg");
 
-        svg.style.position = "absolute";
-        svg.style.left = "0";
-        svg.style.top = "0";
-        svg.style.width = "100%";
-        svg.style.height = "100%";
-        svg.style.pointerEvents = "none";
+svg.style.position = "absolute";
+svg.style.left = "0";
+svg.style.top = "0";
+svg.style.width = "100%";
+svg.style.height = "100%";
+svg.style.pointerEvents = "none";
 
-        const path = document.createElementNS(svgNS, "path");
+const path = document.createElementNS(svgNS, "path");
 
-        // ⚡ direction per bolt
-        const baseAngle = Math.random() * Math.PI * 2;
-        const angle = baseAngle + (Math.random() - 0.5) * 0.5;
+// ⚡ direction per bolt
+const baseAngle = Math.random() * Math.PI * 2;
+const angle = baseAngle + (Math.random() - 0.5) * 0.5;
 
-        let d = `M ${x} ${y}`;
+let d = `M ${x} ${y}`;
 
-        let segments = 7;
-        let length = 160 + Math.random() * 80;
+let segments = 7;
+let length = 160 + Math.random() * 80;
 
-        let cx = x;
-        let cy = y;
+let cx = x;
+let cy = y;
 
-        for (let i = 0; i < segments; i++) {
-            let step = length / segments;
+for (let i = 0; i < segments; i++) {
+let step = length / segments;
 
-            cx += Math.cos(angle) * step;
-            cy += Math.sin(angle) * step;
+cx += Math.cos(angle) * step;
+cy += Math.sin(angle) * step;
 
-            let wiggleX = (Math.random() - 0.5) * 25;
-            let wiggleY = (Math.random() - 0.5) * 25;
+let wiggleX = (Math.random() - 0.5) * 25;
+let wiggleY = (Math.random() - 0.5) * 25;
 
-            d += ` L ${cx + wiggleX} ${cy + wiggleY}`;
-        }
+d += ` L ${cx + wiggleX} ${cy + wiggleY}`;
+}
 
-        path.setAttribute("d", d);
+path.setAttribute("d", d);
 
-        // ⚡ CINEMATIC STROKE
-        path.setAttribute("stroke", "#BFF6FF");
-        path.setAttribute("stroke-width", "2.5");
-        path.setAttribute("fill", "none");
-        path.setAttribute("stroke-linecap", "round");
-        path.setAttribute("stroke-linejoin", "round");
+// ⚡ CINEMATIC STROKE
+path.setAttribute("stroke", "#BFF6FF");
+path.setAttribute("stroke-width", "2.5");
+path.setAttribute("fill", "none");
+path.setAttribute("stroke-linecap", "round");
+path.setAttribute("stroke-linejoin", "round");
 
-        // ⚡ CINEMATIC GLOW (IMPORTANT PART)
-        path.style.filter = `
-            drop-shadow(0 0 4px #00E5FF)
-            drop-shadow(0 0 10px #1E90FF)
-            drop-shadow(0 0 18px rgba(0, 229, 255, 0.6))
-        `;
+// ⚡ CINEMATIC GLOW (IMPORTANT PART)
+path.style.filter = `
+           drop-shadow(0 0 4px #00E5FF)
+           drop-shadow(0 0 10px #1E90FF)
+           drop-shadow(0 0 18px rgba(0, 229, 255, 0.6))
+       `;
 
-        // ⚡ DRAW ANIMATION
-        const lengthTotal = 400;
-        path.style.strokeDasharray = lengthTotal;
-        path.style.strokeDashoffset = lengthTotal;
-        path.style.transition =
-            "stroke-dashoffset 0.25s ease-out, opacity 0.6s ease-out";
+// ⚡ DRAW ANIMATION
+const lengthTotal = 400;
+path.style.strokeDasharray = lengthTotal;
+path.style.strokeDashoffset = lengthTotal;
+path.style.transition =
+"stroke-dashoffset 0.25s ease-out, opacity 0.6s ease-out";
 
-        // slight natural variation
-        path.style.opacity = 0.85 + Math.random() * 0.15;
+// slight natural variation
+path.style.opacity = 0.85 + Math.random() * 0.15;
 
-        svg.appendChild(path);
-        container.appendChild(svg);
+svg.appendChild(path);
+container.appendChild(svg);
 
-        requestAnimationFrame(() => {
-            path.style.strokeDashoffset = "0";
-        });
+requestAnimationFrame(() => {
+path.style.strokeDashoffset = "0";
+});
 
-        // fade out
-        setTimeout(() => {
-            path.style.opacity = "0";
-        }, 250 + Math.random() * 120);
+// fade out
+setTimeout(() => {
+path.style.opacity = "0";
+}, 250 + Math.random() * 120);
 
-        setTimeout(() => {
-            svg.remove();
-        }, 700);
-    }
+setTimeout(() => {
+svg.remove();
+}, 700);
+}
 }
 
 function createLightningShort(x, y) {
-    const container = document.getElementById("confetti-container");
+const container = document.getElementById("confetti-container");
 
-    const bolts = 3; // 👈 multiple strands again, but fewer than main
+const bolts = 3; // 👈 multiple strands again, but fewer than main
 
-    for (let b = 0; b < bolts; b++) {
+for (let b = 0; b < bolts; b++) {
 
-        const svgNS = "http://www.w3.org/2000/svg";
-        const svg = document.createElementNS(svgNS, "svg");
+const svgNS = "http://www.w3.org/2000/svg";
+const svg = document.createElementNS(svgNS, "svg");
 
-        svg.style.position = "absolute";
-        svg.style.left = "0";
-        svg.style.top = "0";
-        svg.style.width = "100%";
-        svg.style.height = "100%";
-        svg.style.pointerEvents = "none";
+svg.style.position = "absolute";
+svg.style.left = "0";
+svg.style.top = "0";
+svg.style.width = "100%";
+svg.style.height = "100%";
+svg.style.pointerEvents = "none";
 
-        const path = document.createElementNS(svgNS, "path");
+const path = document.createElementNS(svgNS, "path");
 
-        const baseAngle = Math.random() * Math.PI * 2;
-        const angle = baseAngle + (Math.random() - 0.5) * 0.5;
+const baseAngle = Math.random() * Math.PI * 2;
+const angle = baseAngle + (Math.random() - 0.5) * 0.5;
 
-        let d = `M ${x} ${y}`;
+let d = `M ${x} ${y}`;
 
-        // 🔥 shorter + simpler than main lightning
-        let segments = 5;
-        let length = 70 + Math.random() * 50;
+// 🔥 shorter + simpler than main lightning
+let segments = 5;
+let length = 70 + Math.random() * 50;
 
-        let cx = x;
-        let cy = y;
+let cx = x;
+let cy = y;
 
-        for (let i = 0; i < segments; i++) {
-            let step = length / segments;
+for (let i = 0; i < segments; i++) {
+let step = length / segments;
 
-            cx += Math.cos(angle) * step;
-            cy += Math.sin(angle) * step;
+cx += Math.cos(angle) * step;
+cy += Math.sin(angle) * step;
 
-            let wiggleX = (Math.random() - 0.5) * 18;
-            let wiggleY = (Math.random() - 0.5) * 18;
+let wiggleX = (Math.random() - 0.5) * 18;
+let wiggleY = (Math.random() - 0.5) * 18;
 
-            d += ` L ${cx + wiggleX} ${cy + wiggleY}`;
-        }
+d += ` L ${cx + wiggleX} ${cy + wiggleY}`;
+}
 
-        path.setAttribute("d", d);
+path.setAttribute("d", d);
 
-        // ⚡ slightly softer than main lightning
-        path.setAttribute("stroke", "#BFF6FF");
-        path.setAttribute("stroke-width", "2");
-        path.setAttribute("fill", "none");
-        path.setAttribute("stroke-linecap", "round");
-        path.setAttribute("stroke-linejoin", "round");
+// ⚡ slightly softer than main lightning
+path.setAttribute("stroke", "#BFF6FF");
+path.setAttribute("stroke-width", "2");
+path.setAttribute("fill", "none");
+path.setAttribute("stroke-linecap", "round");
+path.setAttribute("stroke-linejoin", "round");
 
-        path.style.filter = `
-            drop-shadow(0 0 3px #00E5FF)
-            drop-shadow(0 0 8px #1E90FF)
-        `;
+path.style.filter = `
+           drop-shadow(0 0 3px #00E5FF)
+           drop-shadow(0 0 8px #1E90FF)
+       `;
 
-        const lengthTotal = 250;
-        path.style.strokeDasharray = lengthTotal;
-        path.style.strokeDashoffset = lengthTotal;
-        path.style.transition =
-            "stroke-dashoffset 0.2s ease-out, opacity 0.4s ease-out";
+const lengthTotal = 250;
+path.style.strokeDasharray = lengthTotal;
+path.style.strokeDashoffset = lengthTotal;
+path.style.transition =
+"stroke-dashoffset 0.2s ease-out, opacity 0.4s ease-out";
 
-        svg.appendChild(path);
-        container.appendChild(svg);
+svg.appendChild(path);
+container.appendChild(svg);
 
-        requestAnimationFrame(() => {
-            path.style.strokeDashoffset = "0";
-        });
+requestAnimationFrame(() => {
+path.style.strokeDashoffset = "0";
+});
 
-        setTimeout(() => {
-            path.style.opacity = "0";
-        }, 180 + b * 40); // slight stagger = more natural
+setTimeout(() => {
+path.style.opacity = "0";
+}, 180 + b * 40); // slight stagger = more natural
 
-        setTimeout(() => {
-            svg.remove();
-        }, 500);
-    }
+setTimeout(() => {
+svg.remove();
+}, 500);
+}
 }
 
 function createGears(x, y) {
-    const container = document.getElementById("confetti-container");
+const container = document.getElementById("confetti-container");
 
-    for (let i = 0; i < 12; i++) {
-        const gear = document.createElement("div");
-        gear.classList.add("gear");
-        gear.innerText = "⚙️";
+for (let i = 0; i < 12; i++) {
+const gear = document.createElement("div");
+gear.classList.add("gear");
+gear.innerText = "⚙️";
 
-        container.appendChild(gear);
+container.appendChild(gear);
 
-        let angle = Math.random() * 2 * Math.PI;
-        let speed = Math.random() * 7 + 3;
-        let distance = 0;
+let angle = Math.random() * 2 * Math.PI;
+let speed = Math.random() * 7 + 3;
+let distance = 0;
 
-        const vx = Math.cos(angle);
-        const vy = Math.sin(angle);
+const vx = Math.cos(angle);
+const vy = Math.sin(angle);
 
-        function animate() {
-            speed *= 0.96; // friction
-            distance += speed;
+function animate() {
+speed *= 0.96; // friction
+distance += speed;
 
-            const posX = x + vx * distance;
-            const posY = y + vy * distance;
+const posX = x + vx * distance;
+const posY = y + vy * distance;
 
-            gear.style.left = posX + "px";
-            gear.style.top = posY + "px";
+gear.style.left = posX + "px";
+gear.style.top = posY + "px";
 
-            gear.style.transform = `rotate(${distance * 5}deg)`;
+gear.style.transform = `rotate(${distance * 5}deg)`;
 
-            if (speed > 0.25) {
-                requestAnimationFrame(animate);
-            } else {
-                setTimeout(() => gear.remove(), 300);
-            }
-        }
+if (speed > 0.25) {
+requestAnimationFrame(animate);
+} else {
+setTimeout(() => gear.remove(), 300);
+}
+}
 
-        animate();
-    }
+animate();
+}
 }
 
 function createSpecialMarcusRocketLoop(x, y) {
-    const container = document.getElementById("confetti-container");
+const container = document.getElementById("confetti-container");
 
-    const rocket = document.createElement("div");
-    rocket.classList.add("rocket");
+const rocket = document.createElement("div");
+rocket.classList.add("rocket");
 
-    rocket.innerHTML = `
-        <div class="rocket-nose"></div>
-        <div class="rocket-body"></div>
-        <div class="rocket-fin left"></div>
-        <div class="rocket-fin right"></div>
-        <div class="rocket-flame"></div>
-    `;
+rocket.innerHTML = `
+       <div class="rocket-nose"></div>
+       <div class="rocket-body"></div>
+       <div class="rocket-fin left"></div>
+       <div class="rocket-fin right"></div>
+       <div class="rocket-flame"></div>
+   `;
 
-    container.appendChild(rocket);
+container.appendChild(rocket);
 
-    const path = document.createElement("div");
+const path = document.createElement("div");
 
-    path.style.position = "absolute";
-    path.style.width = "2px";
-    path.style.height = "0px";
-    path.style.pointerEvents = "none";
+path.style.position = "absolute";
+path.style.width = "2px";
+path.style.height = "0px";
+path.style.pointerEvents = "none";
 
-    container.appendChild(path);
+container.appendChild(path);
 
-    let phase = 1;
-    let t = 0;
+let phase = 1;
+let t = 0;
 
-    const startX = x;
-    const startY = y;
+const startX = x;
+const startY = y;
 
-    const leftEdgeX = 140;
-    const topExitY = -150;
+const leftEdgeX = 140;
+const topExitY = -150;
 
-    let posX = x;
-    let posY = y;
-    let ascentStartY = 0;
+let posX = x;
+let posY = y;
+let ascentStartY = 0;
 
-    function pulse(x, y) {
-        const glow = document.createElement("div");
+function pulse(x, y) {
+const glow = document.createElement("div");
 
-        glow.style.position = "absolute";
-        glow.style.left = x + "px";
-        glow.style.top = y + "px";
-        glow.style.width = "10px";
-        glow.style.height = "10px";
-        glow.style.borderRadius = "50%";
-        glow.style.background = "rgba(0, 229, 255, 0.9)";
-        glow.style.boxShadow = "0 0 25px 10px rgba(0, 229, 255, 0.6)";
-        glow.style.transform = "translate(-50%, -50%)";
-        glow.style.pointerEvents = "none";
+glow.style.position = "absolute";
+glow.style.left = x + "px";
+glow.style.top = y + "px";
+glow.style.width = "10px";
+glow.style.height = "10px";
+glow.style.borderRadius = "50%";
+glow.style.background = "rgba(0, 229, 255, 0.9)";
+glow.style.boxShadow = "0 0 25px 10px rgba(0, 229, 255, 0.6)";
+glow.style.transform = "translate(-50%, -50%)";
+glow.style.pointerEvents = "none";
 
-        container.appendChild(glow);
+container.appendChild(glow);
 
-        let s = 10;
-        let o = 1;
+let s = 10;
+let o = 1;
 
-        function animate() {
-            s += 14;
-            o *= 0.85;
+function animate() {
+s += 14;
+o *= 0.85;
 
-            glow.style.width = s + "px";
-            glow.style.height = s + "px";
-            glow.style.opacity = o;
+glow.style.width = s + "px";
+glow.style.height = s + "px";
+glow.style.opacity = o;
 
-            if (o > 0.05) {
-                requestAnimationFrame(animate);
-            } else {
-                glow.remove();
-            }
-        }
+if (o > 0.05) {
+requestAnimationFrame(animate);
+} else {
+glow.remove();
+}
+}
 
-        animate();
-    }
+animate();
+}
 
-    function animate() {
+function animate() {
 
-        // =========================
-        // PHASE 1: MOVE LEFT
-        // =========================
-        if (phase === 1) {
-            t += 0.006;
+// =========================
+// PHASE 1: MOVE LEFT
+// =========================
+if (phase === 1) {
+t += 0.006;
 
-            posX = startX + (leftEdgeX - startX) * t;
-            posY = startY + Math.sin(t * Math.PI) * 35;
-        }
-        if (t >= 1) {
-            posX = leftEdgeX;
-            posY = startY;
-        
-            ascentStartY = posY;
-        
-            phase = 2;
-            t = 0;
-        
-            // 🚀 instead of explosion → ignition boost
-            rocket.classList.add("ignite");
-        
-            setTimeout(() => {
-                rocket.classList.remove("ignite");
-            }, 400);
-        }
+posX = startX + (leftEdgeX - startX) * t;
+posY = startY + Math.sin(t * Math.PI) * 35;
+}
+if (t >= 1) {
+posX = leftEdgeX;
+posY = startY;
 
-        // =========================
-        // PHASE 2: STRAIGHT UP (NO ROTATION EVER)
-        // =========================
-        else if (phase === 2) {
+ascentStartY = posY;
 
-            const speed = 0.004 + (t * 0.01);
-            t += speed;
+phase = 2;
+t = 0;
 
-            posX = leftEdgeX;
-            posY = ascentStartY + (topExitY - ascentStartY) * t;
+// 🚀 instead of explosion → ignition boost
+rocket.classList.add("ignite");
 
-            // tiny vibration ONLY (no directional drift)
-            posX += (Math.random() - 0.5) * 0.2;
-            posY += (Math.random() - 0.5) * 0.2;
+setTimeout(() => {
+rocket.classList.remove("ignite");
+}, 400);
+}
 
-            path.style.left = leftEdgeX + "px";
-            path.style.top = ascentStartY + "px";
-            path.style.height = (ascentStartY - posY) + "px";
+// =========================
+// PHASE 2: STRAIGHT UP (NO ROTATION EVER)
+// =========================
+else if (phase === 2) {
 
-            if (t >= 1) {
-                path.style.transition = "opacity 1.2s ease-out";
-                path.style.opacity = "0";
+const speed = 0.004 + (t * 0.01);
+t += speed;
 
-                setTimeout(() => path.remove(), 1200);
-                rocket.remove();
-                return;
-            }
-        }
+posX = leftEdgeX;
+posY = ascentStartY + (topExitY - ascentStartY) * t;
 
-        // =========================
-        // ONLY POSITION (NO ROTATION)
-        // =========================
-        rocket.style.left = posX + "px";
-        rocket.style.top = posY + "px";
+// tiny vibration ONLY (no directional drift)
+posX += (Math.random() - 0.5) * 0.2;
+posY += (Math.random() - 0.5) * 0.2;
 
-        requestAnimationFrame(animate);
-    }
+path.style.left = leftEdgeX + "px";
+path.style.top = ascentStartY + "px";
+path.style.height = (ascentStartY - posY) + "px";
 
-    animate();
+if (t >= 1) {
+path.style.transition = "opacity 1.2s ease-out";
+path.style.opacity = "0";
+
+setTimeout(() => path.remove(), 1200);
+rocket.remove();
+return;
+}
+}
+
+// =========================
+// ONLY POSITION (NO ROTATION)
+// =========================
+rocket.style.left = posX + "px";
+rocket.style.top = posY + "px";
+
+requestAnimationFrame(animate);
+}
+
+animate();
 }
 
 function createConfetti(x, y) {
-    const container = document.getElementById("confetti-container");
+const container = document.getElementById("confetti-container");
 
-    const colors = ["#AB0520", "#0C234B", "#FFD200", "#aaaaaa"];
+const colors = ["#AB0520", "#0C234B", "#FFD200", "#aaaaaa"];
 
-    for (let i = 0; i < 60; i++) {
-        const piece = document.createElement("div");
-        piece.classList.add("confetti");
+for (let i = 0; i < 60; i++) {
+const piece = document.createElement("div");
+piece.classList.add("confetti");
 
-        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+piece.style.background = colors[Math.floor(Math.random() * colors.length)];
 
-        piece.style.left = x + "px";
-        piece.style.top = y + "px";
+piece.style.left = x + "px";
+piece.style.top = y + "px";
 
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 250 + 50;
+const angle = Math.random() * 2 * Math.PI;
+const distance = Math.random() * 250 + 50;
 
-        piece.style.setProperty("--x", Math.cos(angle) * distance + "px");
-        piece.style.setProperty("--y", Math.sin(angle) * distance + "px");
+piece.style.setProperty("--x", Math.cos(angle) * distance + "px");
+piece.style.setProperty("--y", Math.sin(angle) * distance + "px");
 
-        piece.style.width = (4 + Math.random() * 6) + "px";
-        piece.style.height = (6 + Math.random() * 10) + "px";
+piece.style.width = (4 + Math.random() * 6) + "px";
+piece.style.height = (6 + Math.random() * 10) + "px";
 
-        container.appendChild(piece);
+container.appendChild(piece);
 
-        setTimeout(() => piece.remove(), 1200);
-    }
+setTimeout(() => piece.remove(), 1200);
+}
 } 
 
 let slideIndex = 0;
 
 function showSlides() {
-    let slides = document.querySelectorAll(".slideshow .slide");
+let slides = document.querySelectorAll(".slideshow .slide");
 
-    slides.forEach(slide => {
-        slide.classList.remove("active");
-    });
+slides.forEach(slide => {
+slide.classList.remove("active");
+});
 
-    slideIndex++;
+slideIndex++;
 
-    if (slideIndex > slides.length) {
-        slideIndex = 1;
-    }
+if (slideIndex > slides.length) {
+slideIndex = 1;
+}
 
-    slides[slideIndex - 1].classList.add("active");
+slides[slideIndex - 1].classList.add("active");
 
-    setTimeout(showSlides, 3000); // changes image every 3 seconds
+setTimeout(showSlides, 3000); // changes image every 3 seconds
 }
 
 // start slideshow
 showSlides();
 
 function createConfetti(x, y) {
-    const container = document.getElementById("confetti-container");
+const container = document.getElementById("confetti-container");
 
-    const colors = ["#AB0520", "#0C234B", "#2f6fdd", "#aaaaaa", "#ffcc00"];
+const colors = ["#AB0520", "#0C234B", "#2f6fdd", "#aaaaaa", "#ffcc00"];
 
-    for (let i = 0; i < 80; i++) {   // 🔥 MORE PIECES = BIGGER EXPLOSION
-        const piece = document.createElement("div");
-        piece.classList.add("confetti");
+for (let i = 0; i < 80; i++) {   // 🔥 MORE PIECES = BIGGER EXPLOSION
+const piece = document.createElement("div");
+piece.classList.add("confetti");
 
-        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+piece.style.background = colors[Math.floor(Math.random() * colors.length)];
 
-        // start at click point
-        piece.style.left = x + "px";
-        piece.style.top = y + "px";
+// start at click point
+piece.style.left = x + "px";
+piece.style.top = y + "px";
 
-        // 💥 RANDOM RADIAL EXPLOSION
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = Math.random() * 300 + 50;  // BIGGER RANGE
+// 💥 RANDOM RADIAL EXPLOSION
+const angle = Math.random() * 2 * Math.PI;
+const distance = Math.random() * 300 + 50;  // BIGGER RANGE
 
-        const dx = Math.cos(angle) * distance + "px";
-        const dy = Math.sin(angle) * distance + "px";
+const dx = Math.cos(angle) * distance + "px";
+const dy = Math.sin(angle) * distance + "px";
 
-        piece.style.setProperty("--x", dx);
-        piece.style.setProperty("--y", dy);
+piece.style.setProperty("--x", dx);
+piece.style.setProperty("--y", dy);
 
-        // random size variation
-        const size = Math.random() * 8 + 4;
-        piece.style.width = size + "px";
-        piece.style.height = size * (Math.random() * 2 + 1) + "px";
+// random size variation
+const size = Math.random() * 8 + 4;
+piece.style.width = size + "px";
+piece.style.height = size * (Math.random() * 2 + 1) + "px";
 
-        container.appendChild(piece);
+container.appendChild(piece);
 
-        setTimeout(() => {
-            piece.remove();
-        }, 1200);
-    }
+setTimeout(() => {
+piece.remove();
+}, 1200);
+}
 }
 const SHREDDER_FACTS = [
-    "PLA is biodegradable under industrial composting conditions.",
-    "Calibration cubes test dimensional accuracy.",
-    "Warping happens from uneven cooling.",
-    "Lower print temperatures can reduce stringing.",
-    "Catalyst Studios generates around 50 kg of plastic waste each semester.",
-    "Recycling failed prints helps reduce landfill waste."
+"PLA is biodegradable under industrial composting conditions.",
+"Calibration cubes test dimensional accuracy.",
+"Warping happens from uneven cooling.",
+"Lower print temperatures can reduce stringing.",
+"Catalyst Studios generates around 50 kg of plastic waste each semester.",
+"Recycling failed prints helps reduce landfill waste."
 ];
 
 function getRandomFact() {
-    return SHREDDER_FACTS[
-        Math.floor(Math.random() * SHREDDER_FACTS.length)
-    ];
+return SHREDDER_FACTS[
+Math.floor(Math.random() * SHREDDER_FACTS.length)
+];
 }
 
 function feedBag() {
 
-    const img = document.getElementById("shredder-img");
-    const bag = document.getElementById("feed-bag");
+const img = document.getElementById("shredder-img");
+const bag = document.getElementById("feed-bag");
 
-    const rect = img.getBoundingClientRect();
-    const bagRect = bag.getBoundingClientRect();
+const rect = img.getBoundingClientRect();
+const bagRect = bag.getBoundingClientRect();
 
-    const shapes = ["square", "triangle", "circle", "hexagon"];
-    const type = shapes[Math.floor(Math.random() * shapes.length)];
+const shapes = ["square", "triangle", "circle", "hexagon"];
+const type = shapes[Math.floor(Math.random() * shapes.length)];
 
-    const obj = document.createElement("div");
-    obj.className = `floating-print ${type}`;
-    document.body.appendChild(obj);
+const obj = document.createElement("div");
+obj.className = `floating-print ${type}`;
+document.body.appendChild(obj);
 
-    // ✅ STATUS + BAR
-    const status = document.querySelector(".status .value");
-    const bar = document.querySelector(".progress-fill");
+// ✅ STATUS + BAR
+const status = document.querySelector(".status .value");
+const bar = document.querySelector(".progress-fill");
 
-    if (status) {
-        status.textContent = "SHREDDING";
-        status.classList.remove("ready");
-        status.classList.add("shredding");
-    }
+if (status) {
+status.textContent = "SHREDDING";
+status.classList.remove("ready");
+status.classList.add("shredding");
+}
 
-    // ✅ SAFE BAR RESET
-    if (bar) {
-        bar.style.transition = "none";
-        bar.style.width = "0%";
-        bar.offsetHeight; // force reflow
-        bar.style.transition = "width 0.08s linear";
-    }
+// ✅ SAFE BAR RESET
+if (bar) {
+bar.style.transition = "none";
+bar.style.width = "0%";
+bar.offsetHeight; // force reflow
+bar.style.transition = "width 0.08s linear";
+}
 
-    // Start at top of bag
-    const x0 = bagRect.left + bagRect.width * 0.45;
-    const y0 = bagRect.top + 20;
+// Start at top of bag
+const x0 = bagRect.left + bagRect.width * 0.45;
+const y0 = bagRect.top + 20;
 
-    // End at shredder opening
-    const x2 = rect.left + rect.width * 0.82;
-    const y2 = rect.top + rect.height * 0.18;
+// End at shredder opening
+const x2 = rect.left + rect.width * 0.82;
+const y2 = rect.top + rect.height * 0.18;
 
-    const x1 = (x0 + x2) / 2;
-    const y1 = Math.min(y0, y2) - 220;
+const x1 = (x0 + x2) / 2;
+const y1 = Math.min(y0, y2) - 220;
 
-    const start = performance.now();
-    const duration = 1800;
+const start = performance.now();
+const duration = 1800;
 
-    function animate(now) {
+function animate(now) {
 
-        let t = (now - start) / duration;
-        if (t > 1) t = 1;
+let t = (now - start) / duration;
+if (t > 1) t = 1;
 
-        const e = 1 - Math.pow(1 - t, 3);
+const e = 1 - Math.pow(1 - t, 3);
 
-        if (bar) bar.style.width = (t * 100) + "%";
+if (bar) bar.style.width = (t * 100) + "%";
 
-        const x =
-            (1 - e) * (1 - e) * x0 +
-            2 * (1 - e) * e * x1 +
-            e * e * x2;
+const x =
+(1 - e) * (1 - e) * x0 +
+2 * (1 - e) * e * x1 +
+e * e * x2;
 
-        const y =
-            (1 - e) * (1 - e) * y0 +
-            2 * (1 - e) * e * y1 +
-            e * e * y2;
+const y =
+(1 - e) * (1 - e) * y0 +
+2 * (1 - e) * e * y1 +
+e * e * y2;
 
-        obj.style.left = x + "px";
-        obj.style.top = y + "px";
-        obj.style.transform = "translate(-50%, -50%)";
+obj.style.left = x + "px";
+obj.style.top = y + "px";
+obj.style.transform = "translate(-50%, -50%)";
 
-        if (t < 1) {
-            requestAnimationFrame(animate);
-        } else {
+if (t < 1) {
+requestAnimationFrame(animate);
+} else {
 
-            if (bar) bar.style.width = "100%";
+if (bar) bar.style.width = "100%";
 
-            // bounce shredder
-            img.classList.remove("pop");
-            void img.offsetWidth;
-            img.classList.add("pop");
+// bounce shredder
+img.classList.remove("pop");
+void img.offsetWidth;
+img.classList.add("pop");
 
-            // confetti burst
-            createConfetti(
-                rect.right - 20,
-                rect.bottom - rect.height * 0.2
-            );
+// confetti burst
+createConfetti(
+rect.right - 20,
+rect.bottom - rect.height * 0.2
+);
 
-            recycleCount++;
+recycleCount++;
 
-            const counter = document.getElementById("recycle-count");
-            const factBox = document.getElementById("fact-text");
+const counter = document.getElementById("recycle-count");
+const factBox = document.getElementById("fact-text");
 
-            if (counter) counter.textContent = recycleCount;
-            if (factBox) factBox.textContent = getRandomFact();
+if (counter) counter.textContent = recycleCount;
+if (factBox) factBox.textContent = getRandomFact();
 
-            // ✅ RESET STATUS + BAR
-            setTimeout(() => {
-                if (status) {
-                    status.textContent = "READY";
-                    status.classList.remove("shredding");
-                    status.classList.add("ready");
-                }
+// ✅ RESET STATUS + BAR
+setTimeout(() => {
+if (status) {
+status.textContent = "READY";
+status.classList.remove("shredding");
+status.classList.add("ready");
+}
 
-                if (bar) {
-                    bar.style.transition = "none";
-                    bar.style.width = "0%";
-                    bar.offsetHeight;
-                    bar.style.transition = "width 0.08s linear";
-                }
+if (bar) {
+bar.style.transition = "none";
+bar.style.width = "0%";
+bar.offsetHeight;
+bar.style.transition = "width 0.08s linear";
+}
 
-            }, 400);
+}, 400);
 
-            obj.remove();
-        }
-    }
+obj.remove();
+}
+}
 
-    requestAnimationFrame(animate);
+requestAnimationFrame(animate);
 }
 
 let modelLoaded = false;
@@ -834,12 +788,6 @@ function loadModel() {
     if (modelLoaded) return;
 
     const container = document.getElementById("model-container");
-
-    // Stop if the model container doesn't exist
-    if (!container) {
-        console.log("3D model container not found.");
-        return;
-    }
 
     container.innerHTML = `
         <model-viewer
@@ -854,54 +802,4 @@ function loadModel() {
     `;
 
     modelLoaded = true;
-}
-
-
-/* ==============================
-   DESIGN DROPDOWN MENU
-   ============================== */
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-/* Keep the Design button looking exactly like the other tabs */
-.dropdown > .tab {
-    display: block;
-}
-
-/* Hidden by default */
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-
-    min-width: 100%;
-
-    padding-top: 8px;
-
-    z-index: 1000;
-}
-
-/* Show menu when hovering over Design */
-.dropdown:hover .dropdown-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-/* Make the dropdown buttons look like your normal tabs */
-.dropdown-menu .tab {
-    width: 100%;
-    min-width: 220px;
-    white-space: nowrap;
-
-    padding: 18px 30px;
-}
-
-/* Don't let the submenu push the other tabs around */
-.dropdown-menu .tab:hover {
-    transform: scale(1.03);
 }
