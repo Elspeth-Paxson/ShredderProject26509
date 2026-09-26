@@ -112,21 +112,39 @@ function sayHello(event) {
 //}
 
 function showTab(tabId, event) {
+
     // Hide all sections
     const sections = document.querySelectorAll(".tab-content");
-    sections.forEach(section => section.style.display = "none");
 
-    // Remove active tab styling
+    sections.forEach(section => {
+        section.style.display = "none";
+    });
+
+    // Remove active styling from all navigation buttons
     const buttons = document.querySelectorAll(".tab");
-    buttons.forEach(btn => btn.classList.remove("active"));
+
+    buttons.forEach(btn => {
+        btn.classList.remove("active");
+    });
 
     // Show selected section
-    document.getElementById(tabId).style.display = "block";
+    const selectedSection = document.getElementById(tabId);
 
-    // Keep Design active for its dropdown pages
+    if (selectedSection) {
+        selectedSection.style.display = "block";
+    }
+
+    // Keep Design highlighted when using its dropdown
     if (tabId === "mechanical" || tabId === "electrical") {
-        document.querySelector(".dropdown > .tab").classList.add("active");
+
+        const designButton = document.querySelector(".dropdown > .tab");
+
+        if (designButton) {
+            designButton.classList.add("active");
+        }
+
     } else {
+
         event.currentTarget.classList.add("active");
     }
 
@@ -135,6 +153,7 @@ function showTab(tabId, event) {
         loadModel();
     }
 }
+
 
 
 function teamEffect(type, name = "", event) {
