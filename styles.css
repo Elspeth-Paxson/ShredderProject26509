@@ -734,14 +734,14 @@ h3 {
 }
 
 /* ==============================
-   DESIGN PAGE BUTTONS
+   DESIGN SUB-TABS
    ============================== */
 
 .design-tabs {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin: 25px 0 30px 0;
+    margin: 20px 0 30px 0;
     flex-wrap: wrap;
 }
 
@@ -752,6 +752,7 @@ h3 {
     border: none;
     cursor: pointer;
 
+    /* Same blue as the main navigation */
     background: #0C234B;
     color: white;
 
@@ -760,13 +761,14 @@ h3 {
     transition: all 0.2s ease;
 }
 
+/* Same hover effect as your main tabs */
 .design-tab:hover {
     transform: scale(1.05);
     opacity: 0.9;
 }
 
+/* Same red as your main active tab */
 .design-tab.active {
     background: #AB0520;
     color: white;
 }
-
