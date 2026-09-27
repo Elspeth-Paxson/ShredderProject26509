@@ -114,23 +114,27 @@ function showTab(tabId, event) {
 
 function showDesignTab(tabId, event) {
 
-    // Hide all design-related sections
+    // Hide all Design sub-sections
     const sections = document.querySelectorAll(".design-tab-content");
+
     sections.forEach(section => {
         section.style.display = "none";
     });
 
-    // Show selected section
+    // Show the selected Design sub-section
     document.getElementById(tabId).style.display = "block";
 
-    // Update button styling
+    // Remove active styling from Design sub-tabs
     const buttons = document.querySelectorAll(".design-tab");
+
     buttons.forEach(button => {
         button.classList.remove("active");
     });
 
+    // Make clicked button red
     event.currentTarget.classList.add("active");
 }
+
 
 
 function teamEffect(type, name = "", event) {
