@@ -109,7 +109,31 @@ function showTab(tabId, event) {
     if (tabId === "design") {
         loadModel();
     }
+    <section id="mechanical" class="design-tab-content" style="display:none;">
+    <section id="electrical" class="design-tab-content" style="display:none;">
+
 }
+
+function showDesignTab(tabId, event) {
+
+    // Hide all design-related sections
+    const sections = document.querySelectorAll(".design-tab-content");
+    sections.forEach(section => {
+        section.style.display = "none";
+    });
+
+    // Show selected section
+    document.getElementById(tabId).style.display = "block";
+
+    // Update button styling
+    const buttons = document.querySelectorAll(".design-tab");
+    buttons.forEach(button => {
+        button.classList.remove("active");
+    });
+
+    event.currentTarget.classList.add("active");
+}
+
 
 function teamEffect(type, name = "", event) {
     if (!event) return; // prevents crashes
