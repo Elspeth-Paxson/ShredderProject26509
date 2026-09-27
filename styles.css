@@ -736,15 +736,11 @@ h3 {
 /* ==============================
    DESIGN SUB-TABS
    ============================== */
-/* ==============================
-   DESIGN SUB-TABS
-   ============================== */
-
 .design-tabs {
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin: 20px 0 30px 0;
+    margin: 25px 0;
     flex-wrap: wrap;
 }
 
@@ -768,6 +764,7 @@ h3 {
     opacity: 0.9;
 }
 
+/* SELECTED DESIGN SUB-TAB */
 .design-tab.active {
     background: #AB0520;
     color: white;
