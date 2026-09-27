@@ -135,6 +135,8 @@ function showDesignTab(tabId, event) {
     event.currentTarget.classList.add("active");
 }
 
+//sub sections
+
 function showDesignPage(pageId) {
 
     // Hide Design, Mechanical, and Electrical
