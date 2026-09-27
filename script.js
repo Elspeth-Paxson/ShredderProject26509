@@ -135,6 +135,27 @@ function showDesignTab(tabId, event) {
     event.currentTarget.classList.add("active");
 }
 
+function showDesignPage(pageId) {
+
+    // Hide Design, Mechanical, and Electrical
+    const pages = document.querySelectorAll("#design, #mechanical, #electrical");
+
+    pages.forEach(page => {
+        page.style.display = "none";
+    });
+
+    // Show the requested page
+    const page = document.getElementById(pageId);
+
+    if (page) {
+        page.style.display = "block";
+    }
+
+    // Load the model if returning to Design
+    if (pageId === "design") {
+        loadModel();
+    }
+}
 
 
 function teamEffect(type, name = "", event) {
