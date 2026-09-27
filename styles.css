@@ -736,67 +736,102 @@ h3 {
 /* ==============================
    DESIGN SUB-TABS
    ============================== */
+/* DESIGN SUB-TAB BUTTONS */
+
 .design-tabs {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin: 25px 0;
-    flex-wrap: wrap;
+    gap: 20px;
+    margin: 25px 0 35px 0;
 }
 
 .design-tab {
-    padding: 18px 30px;
-    font-size: 18px;
-    font-weight: bold;
-
-    border: none;
-    border-radius: 10px;
-
-    background: #0C234B;
+    background-color: #0C234B;
     color: white;
-
+    border: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-
-    transition: all 0.2s ease;
+    transition: background-color 0.25s ease, transform 0.15s ease;
 }
 
 .design-tab:hover {
-    background: #AB0520;
-    transform: scale(1.05);
+    background-color: #AB0520;
+    transform: translateY(-2px);
 }
+
+.design-tab.active {
+    background-color: #AB0520;
+}
+
+
+/* DESIGN LINK BUTTONS */
+
+.design-button {
+    display: inline-block;
+    background-color: #0C234B;
+    color: white;
+    text-decoration: none;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.15s ease;
+}
+
+.design-button:hover {
+    background-color: #AB0520;
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+}
+
+
+/* CAD MODEL ROW */
 
 .design-card-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 30px;
+    gap: 25px;
+    flex-wrap: wrap;
 }
 
 .design-card-text {
     flex: 1;
+    min-width: 250px;
 }
 
-.design-card-text h3 {
-    margin-top: 0;
+.design-card-image {
+    flex: 0 0 220px;
 }
 
-.design-card-row .design-button {
-    flex-shrink: 0;
+.design-card-image img {
+    width: 100%;
+    border-radius: 8px;
+    display: block;
+}
+
+.design-card-button {
+    flex: 0 0 auto;
 }
 
 
-/* Mobile */
-@media (max-width: 700px) {
+/* BACK TO DESIGN */
 
-    .design-card-row {
-        flex-direction: column;
-        align-items: stretch;
-        text-align: center;
-    }
+.back-to-design {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 40px;
+    padding: 20px;
+}
 
-    .design-card-row .design-button {
-        width: 100%;
-    }
-
+.back-to-design span {
+    font-weight: bold;
 }
 
