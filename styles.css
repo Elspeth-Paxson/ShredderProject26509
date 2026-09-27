@@ -764,3 +764,39 @@ h3 {
     background: #AB0520;
     transform: scale(1.05);
 }
+
+.design-card-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.design-card-text {
+    flex: 1;
+}
+
+.design-card-text h3 {
+    margin-top: 0;
+}
+
+.design-card-row .design-button {
+    flex-shrink: 0;
+}
+
+
+/* Mobile */
+@media (max-width: 700px) {
+
+    .design-card-row {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+
+    .design-card-row .design-button {
+        width: 100%;
+    }
+
+}
+
