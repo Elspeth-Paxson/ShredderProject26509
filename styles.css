@@ -835,3 +835,72 @@ h3 {
     font-weight: bold;
 }
 
+/* ==============================
+   INTERACTIVE CAD MODEL
+   ============================== */
+
+.interactive-cad-card {
+    text-align: left;
+}
+
+.cad-title-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.cad-title-row h3 {
+    margin: 0;
+}
+
+/* Make sure the CAD link always looks like a button */
+.cad-title-row .design-button {
+    display: inline-block;
+    background-color: #0C234B;
+    color: white;
+    text-decoration: none;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition:
+        background-color 0.25s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+.cad-title-row .design-button:hover {
+    background-color: #AB0520;
+    color: white;
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(171, 5, 32, 0.3);
+}
+
+/* CAD preview image underneath description */
+.cad-preview-image {
+    display: block;
+    width: 100%;
+    max-width: 650px;
+    height: auto;
+    margin: 20px auto 0 auto;
+    border-radius: 10px;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+
+    .cad-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .cad-title-row .design-button {
+        width: auto;
+    }
+}
+
