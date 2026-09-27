@@ -748,25 +748,19 @@ h3 {
     padding: 18px 30px;
     font-size: 18px;
     font-weight: bold;
+
     border: none;
-    cursor: pointer;
+    border-radius: 10px;
 
     background: #0C234B;
     color: white;
 
-    border-radius: 10px;
+    cursor: pointer;
 
     transition: all 0.2s ease;
 }
 
 .design-tab:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
-}
-
-/* SELECTED DESIGN SUB-TAB */
-.design-tab.active {
     background: #AB0520;
-    color: white;
+    transform: scale(1.05);
 }
-
