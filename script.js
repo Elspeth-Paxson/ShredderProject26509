@@ -109,8 +109,6 @@ function showTab(tabId, event) {
     if (tabId === "design") {
         loadModel();
     }
-    <section id="mechanical" class="design-tab-content" style="display:none;">
-    <section id="electrical" class="design-tab-content" style="display:none;">
 
 }
 
