@@ -91,26 +91,43 @@ function sayHello(event) {
 }
 
 function showTab(tabId, event) {
-    // Hide all sections
+
+    // Hide all main tab sections
     const sections = document.querySelectorAll(".tab-content");
-    sections.forEach(section => section.style.display = "none");
+    sections.forEach(section => {
+        section.style.display = "none";
+    });
 
-    // Remove active tab styling
+    // Hide all Design sub-pages too
+    const designPages = document.querySelectorAll(".design-page");
+    designPages.forEach(page => {
+        page.style.display = "none";
+    });
+
+    // Remove active styling from main tabs
     const buttons = document.querySelectorAll(".tab");
-    buttons.forEach(btn => btn.classList.remove("active"));
+    buttons.forEach(btn => {
+        btn.classList.remove("active");
+    });
 
-    // Show the selected tab
-    document.getElementById(tabId).style.display = "block";
+    // Show the selected main tab
+    const selectedTab = document.getElementById(tabId);
 
-    // Highlight the selected button
-    event.currentTarget.classList.add("active");
+    if (selectedTab) {
+        selectedTab.style.display = "block";
+    }
 
-    // Load the 3D model only when the Design tab is opened
+    // Highlight selected main tab
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add("active");
+    }
+
+    // Load the 3D model only when Design is opened
     if (tabId === "design") {
         loadModel();
     }
-
 }
+
 
 function showDesignTab(tabId, event) {
 
